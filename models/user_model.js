@@ -11,6 +11,10 @@ const userSchema = new schema(
       type: String,
       required: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -30,6 +34,30 @@ const userSchema = new schema(
     address: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    jobs_done: {
+      type: Number,
+      required: true,
+    },
+    per_hour_wage: {
+      type: Number,
+      required: true,
+    },
+    recommendation: {
+      type: String,
+      required: false,
+    },
+    average_rating: {
+      type: Number,
+      required: false,
     },
   },
   { collection: "user" }
