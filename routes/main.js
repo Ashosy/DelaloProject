@@ -1,23 +1,31 @@
 const express = require("express");
-const { user } = require("../controllers/user");
+
+const {}= require("../controllers/user"); // IMPORT USER FUNCTIONS HERE
+
 const {
   postProvider,
   getProvider,
   getProviderById,
 } = require("../controllers/provider");
-const { category } = require("../controllers/category");
-const { review } = require("../controllers/review");
-const { order } = require("../controllers/order");
-const router = express.Router();
 
-router.get("/user", user);
-router.get("/category", category);
-router.get("/review", review);
-router.get("/order", order);
+const {} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
+const {} = require("../controllers/review"); // IMPORT REVIEW FUNCTIONS HERE
+
+const router = express.Router();
+// user routes
 
 // provider routes
 router.post("/provider", postProvider);
 router.get("/provider", getProvider);
 router.get("/provider/:id", getProviderById);
+
+//category routes
+
+
+//order routes
+
+
+//review routes
+
 
 module.exports = router;

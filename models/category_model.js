@@ -13,7 +13,7 @@ const categorySchema = new schema(
       required: true,
     },
     numOfProviders: {
-      type: String,
+      type: Number,
       required: true,
     },
     description: {
