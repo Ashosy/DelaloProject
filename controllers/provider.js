@@ -21,7 +21,11 @@ const postProvider = (req, res) => {
   providersList
     .save()
     .then((result) => {
-      res.send(result);
+      const postResult = {
+        provider: result,
+        message: `Provider with email ${providersList.email} was created`,
+      };
+      res.send(postResult);
     })
     .catch((err) => {
       console.log(err);
@@ -39,4 +43,21 @@ const getProvider = (req, res) => {
     });
 };
 
-module.exports = { postProvider, getProvider };
+const getProviderById = (req, res) => {
+  models
+    .findById(req.params.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+
+// const getTopProviders = (req, res) => {
+//     models
+//         .average_rating
+// }
+
+module.exports = { postProvider, getProvider, getProviderById };
