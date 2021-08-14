@@ -37,19 +37,19 @@ const userSchema = new schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     category: {
       type: String,
-      required: true,
+      required: false,
     },
     jobs_done: {
       type: Number,
-      required: true,
+      required: false,
     },
     per_hour_wage: {
       type: Number,
-      required: true,
+      required: false,
     },
     recommendation: {
       type: String,
@@ -63,4 +63,4 @@ const userSchema = new schema(
   { collection: "user" }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("user", userSchema);

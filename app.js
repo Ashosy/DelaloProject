@@ -16,7 +16,7 @@ mongoose
   })
   .then(() =>
     app.listen(3000, () => {
-      console.log("Sever Listening");
+      console.log("Server Listening");
     })
   )
   .catch((err) => console.log(`Error ${err}`));
