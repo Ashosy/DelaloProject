@@ -24,4 +24,4 @@ mongoose.connect(DB_URI, {
 //Run this function once using 'node app.js', it will create the db locally with
 //all the collections. It will also add one document with sample data in each collection,
 //which you can delete afterwards.
-create(); //DON'T FORGET TO COMMENT THIS OUT ONCE YOU'VE RUN IT
+// create(); //DON'T FORGET TO COMMENT THIS OUT ONCE YOU'VE RUN IT
