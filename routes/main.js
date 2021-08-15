@@ -11,12 +11,16 @@ const {
 const {} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
 const {
   getCategories,
-  getCategoriesById,
+  getCategoryById,
   deleteCategory,
   addCategory
 } = require("../controllers/category"); // IMPORT CATEGORY FUNCTIONS HERE
 
-const {} = require("../controllers/review"); // IMPORT CATEGORY FUNCTIONS HERE
+const {
+  getReviews,
+  getReviewById,
+  addReview
+} = require("../controllers/review"); // IMPORT CATEGORY FUNCTIONS HERE
 
 const router = express.Router();
 // user routes
@@ -28,7 +32,7 @@ router.get("/provider/:id", getProviderById);
 
 //category routes
 router.get("/category", getCategories);
-router.get("/category/:id", getCategoriesById);
+router.get("/category/:id", getCategoryById);
 router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 
@@ -36,6 +40,9 @@ router.post("/category", addCategory);
 
 
 //review routes
+router.get("/review", getReviews);
+router.get("/review/:id", getReviewById);
+router.post("/review", addReview);
 
 
 module.exports = router;

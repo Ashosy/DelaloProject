@@ -13,7 +13,7 @@ const getCategories = (req, res) => {
         });
 }
 
-const getCategoriesById = (req, res) => {
+const getCategoryById = (req, res) => {
     Category
         .findById(req.params.id)
         .then((category) => {
@@ -48,24 +48,24 @@ const deleteCategory = (req, res) => {
 
 
 const addCategory = (req, res) => {
-    Category
-        .insertOne({ 
-            name: req.body.name,
-            image: req.body.image,
-            numOfProviders: req.body.numOfProviders,
-            description: req.body.description
-        })
-        .then((category) => {
-            res.status(201).json({
-                body: category,
-                message: `Inserted Category ${category.name} Successfully`
-            });
-        })
-        .catch((err) => {
-            res.json({
-                message: err.message
-            });
+    new Category({
+        name: req.body.name,
+        image: req.body.image,
+        numOfProviders: req.body.numOfProviders,
+        description: req.body.description
+    })
+    .save()
+    .then((category) => {
+        res.status(201).json({
+            body: category,
+            message: `Inserted Category ${category.name} Successfully`
         });
+    })
+    .catch((err) => {
+        res.json({
+            message: err.message
+        });
+    });
         
 }
 
@@ -74,4 +74,4 @@ const addCategory = (req, res) => {
 
 
 
-module.exports = { getCategories, getCategoriesById, deleteCategory, addCategory }; //EXPORT YOUR FUNCTIONS HERE
+module.exports = { getCategories, getCategoryById, deleteCategory, addCategory }; //EXPORT YOUR FUNCTIONS HERE
