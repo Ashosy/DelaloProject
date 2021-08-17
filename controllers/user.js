@@ -2,7 +2,7 @@ const User = require("../models/user_model");
 
 
 const postUser = (req, res) => {
-    const usersList = new models({
+    const usersList = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       password: req.body.password,
@@ -18,7 +18,7 @@ const postUser = (req, res) => {
       .then((result) => {
         const postResult = {
           user: result,
-          message: `Provider with email ${providersList.email} was created`,
+          message: `User with email ${usersList.email} was created`,
         };
         res.send(postResult);
       })
@@ -29,7 +29,7 @@ const postUser = (req, res) => {
 
 
 const getUsers = (req, res) => {
-    Review
+    User
         .find()
         .then((users) => {
             res.json(users);
@@ -42,7 +42,7 @@ const getUsers = (req, res) => {
 }
 
 const getUserById = (req, res) => {
-    Review
+    User
         .findById(req.params.id)
         .then((users) => {
             res.json(users)
@@ -54,4 +54,4 @@ const getUserById = (req, res) => {
         });
 }
 
-module.exports={}; //EXPORT YOUR FUNCTIONS HERE
+module.exports={postUser, getUsers, getUserById}; //EXPORT YOUR FUNCTIONS HERE

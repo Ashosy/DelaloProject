@@ -1,6 +1,9 @@
 const express = require("express");
 
-const {}= require("../controllers/user"); // IMPORT USER FUNCTIONS HERE
+const {
+  postUser, 
+  getUsers, 
+  getUserById}= require("../controllers/user"); // IMPORT USER FUNCTIONS HERE
 
 const {
   postProvider,
@@ -24,6 +27,9 @@ const {
 
 const router = express.Router();
 // user routes
+router.post("/users", postUser);
+router.get("/users", getUsers);
+router.get("/users/:id", getUserById);
 
 // provider routes
 router.post("/provider", postProvider);
