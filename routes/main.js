@@ -1,9 +1,14 @@
 const express = require("express");
+const verify = require ('../middlewares/verification');
 
 const {
-  postUser, 
+  register, 
   getUsers, 
-  getUserById}= require("../controllers/user"); // IMPORT USER FUNCTIONS HERE
+  getUserById,
+  deleteUser,
+  login,
+  logout
+}= require("../controllers/user"); // IMPORT USER FUNCTIONS HERE
 
 const {
   postProvider,
@@ -27,10 +32,12 @@ const {
 
 const router = express.Router();
 // user routes
-router.post("/users", postUser);
 router.get("/users", getUsers);
 router.get("/users/:id", getUserById);
-
+router.delete("/users/:id", deleteUser);
+router.post("/login", login);
+router.post("/register", register);
+router.post("/logout", logout);
 // provider routes
 router.post("/provider", postProvider);
 router.get("/provider", getProvider);
