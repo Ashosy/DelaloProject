@@ -2,9 +2,12 @@ const router = require("./routes/main");
 const express = require("express");
 const mongoose = require("mongoose");
 const create= require("./init_db");
+const dotenv = require('dotenv');
 
 const DB_URI = process.env.MONGO_URI || "mongodb://localhost:27017/delalodb";
 const app = express();
+
+dotenv.config();
 
 app.use(express.json());
 app.use("/", router);

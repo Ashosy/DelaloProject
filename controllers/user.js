@@ -1,5 +1,9 @@
 const User = require("../models/user_model");
 const {registerValidation, loginValidation} = require('../middlewares/validation')
+const bcrypt = require('bcryptjs');
+const { JsonWebTokenError } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+
 
 const login = async (req, res) => {
     const {error} = loginValidation(req.body);
@@ -20,11 +24,12 @@ const login = async (req, res) => {
     const token = jwt.sign({
         _id: user._id
     }, process.env.TOKEN_SECRET)
-    res.header('auth-token', token).send(token);
+    res.header('authToken', token).send(token);
 };
 
 const register = async (req, res) => {
     const {error} = registerValidation(req.body);
+
     if(error){
         return res.status(400).send((error.details[0].message).toString());
     }
@@ -52,14 +57,15 @@ const register = async (req, res) => {
     usersList
       .save()
       .then((result) => {
+        const token = jwt.sign({
+            _id: result._id
+        }, process.env.TOKEN_SECRET);
         const postResult = {
           user: result,
           message: `User with email ${usersList.email} was created`,
-        };
-        const token = jwt.sign({
-            _id: user._id
-        }, process.env.TOKEN_SECRET)
-        res.header('auth-token', token).send({token, postResult});
+          token:token
+        };       
+        res.header('authToken', token).send(postResult);
       })
       .catch((err) => {
         console.log(err);
@@ -110,6 +116,18 @@ const deleteUser = (req, res) => {
         });
 }
 
-const logout = (req, res) => {};
+const logout = (req, res) => {
+    const authToken=req.headers.authtoken;
+    jwt.sign(authToken, "", { expiresIn: 1 } , (logout, err) => {
+        if (logout) {
+        res.send({msg : 'You have been Logged Out',
+            token:null
+    });
+        } else {
+        res.send({msg:'Error'});
+        }
+        });
 
-module.exports={register, getUsers, getUserById, deleteUser}; //EXPORT YOUR FUNCTIONS HERE
+};
+
+module.exports={register, getUsers, getUserById, deleteUser, login,logout}; //EXPORT YOUR FUNCTIONS HERE
