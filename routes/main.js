@@ -32,6 +32,8 @@ const {
   getReviewById,
   addReview
 } = require("../controllers/review"); // IMPORT CATEGORY FUNCTIONS HERE
+const { getAllJobs } = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
+const {} = require("../controllers/review"); // IMPORT REVIEW FUNCTIONS HERE
 
 const router = express.Router();
 // user routes
@@ -56,6 +58,8 @@ router.post("/category", addCategory);
 
 router.get("/order", orderget);
 router.post("/order", orderPost);
+router.get("/allJobs/:id", getAllJobs);
+
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);

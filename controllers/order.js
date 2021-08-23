@@ -1,5 +1,31 @@
-const { models } = require("mongoose");
+const mongoose  = require("mongoose");
 const Order = require("../models/order_model");
+const User= require("../models/user_model");
+let objectId= mongoose.Types.ObjectId;
+const getAllJobs = async (req,res) =>{
+    try{
+        const status= req.body.status;
+        const completed=req.body.completed;
+        let jobs= await Order.find({provider_id: req.params.id});
+        let lst=[]
+        jobs.forEach((job)=>{
+            console.log(job.seeker_id)
+            
+            user= User.find({_id:objectId("611da02f22b0e41684455e3d")});
+            provider=User.find({_id:objectId("611da05a54a27c30da9fb1f3")});
+            lst.push({
+                "user":user,
+                "provider":provider,
+                "order":job,
+            });
+            
+        });
+        console.log(lst[0]);
+        return res.json(jobs);
+        // status and progress? should be known so that when provider clicks accept the status has to change to active
+        //put method is needed for jobs as well to update status
+        //when provider clicks accept or deny put route is called to update status, has to check whether there is another active job
+        //
 
 const date = new Date();
 const randomnum = Math.floor(Math.random() * 9999) + 1000;
@@ -74,3 +100,26 @@ const orderput = function(req, res){
     })
 }
 module.exports={orderPost, orderget}; //EXPORT YOUR FUNCTIONS HERE
+    }catch(err){
+        console.error("Error while occured: ",err)
+    }
+}
+
+const changeJobStatus= async (req,res)=>{
+    try{
+        const order_id= req.body.order_id;
+        const job= await Order.findOneAndUpdate({_id:order_id,provider_id:ObjectId(req.params.id)},
+            {
+                $set: {status:req.body.status}
+            }
+              
+        );
+            res.status(201).json({data:job});
+
+    }catch(err){
+        console.err("Error updating status: ",err);
+        
+    }
+}
+
+module.exports={getAllJobs}; //EXPORT YOUR FUNCTIONS HERE
