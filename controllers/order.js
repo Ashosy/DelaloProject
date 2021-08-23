@@ -105,7 +105,7 @@ module.exports={orderPost, orderget}; //EXPORT YOUR FUNCTIONS HERE
     }
 }
 
-const changeJobStatus= async (req,res)=>{
+const updateJobStatus= async (req,res)=>{
     try{
         const order_id= req.params.id;
         const providerId= req.body.provider_id;
@@ -141,6 +141,55 @@ const getActiveJob = async (req,res)=>{
     }catch(err){
         console.log("Error finding an active job: ",err)
     }
-}
+};
 
-module.exports={getAllJobs,changeJobStatus,getActiveJob}; //EXPORT YOUR FUNCTIONS HERE
+const getPendingJobs = async(req,res)=>{
+    try{
+        const jobs= await Order.find({provider_id:req.params.id,status:"pending"});
+        if(jobs.length!=0){
+            res.status(400).json(jobs);
+        }
+        else{
+            res.status(400).send("No pending jobs");
+        }
+    }catch(err){
+        console.log("Error finding pending jobs: ",err);
+    }
+};
+
+const getDeclinedJobs = async (req,res)=>{
+    try{
+        const jobs= await Order.find({provider_id:req.params.id,status:"declined"});
+        if(jobs.length!=0){
+            res.status(400).json(jobs);
+        }
+        else{
+            res.status(400).send("No declined jobs");
+        }
+    }catch(err){
+        console.log("Error finding declined jobs: ",err);
+    }
+};
+
+const getCompletedJobs = async (req,res)=>{
+    try{
+        const jobs= await Order.find({provider_id:req.params.id,is_completed:true});
+        if(jobs.length!=0){
+            res.status(400).json(jobs);
+        }
+        else{
+            res.status(400).send("No completed jobs");
+        }
+    }catch(err){
+        console.log("Error finding completed jobs: ",err);
+    }
+};
+
+module.exports={getAllJobs,
+                updateJobStatus,
+                getActiveJob,
+                getPendingJobs,
+                getDeclinedJobs,
+                getCompletedJobs
+    
+    }; //EXPORT YOUR FUNCTIONS HERE
