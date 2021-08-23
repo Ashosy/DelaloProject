@@ -33,7 +33,8 @@ const {
   addReview
 } = require("../controllers/review"); // IMPORT CATEGORY FUNCTIONS HERE
 
-const { getAllJobs, changeJobStatus, getActiveJob } = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
+
+const { getAllJobs, getActiveJob, getPendingJobs, updateJobStatus, getDeclinedJobs, getCompletedJobs } = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
 const {} = require("../controllers/review"); // IMPORT REVIEW FUNCTIONS HERE
 
 const router = express.Router();
@@ -60,8 +61,11 @@ router.post("/category", addCategory);
 router.get("/order", orderget);
 router.post("/order", orderPost);
 router.get("/allJobs/:id", getAllJobs);
-router.put("/changeStatus/:id",changeJobStatus);
+router.put("/updateStatus/:id",updateJobStatus);
 router.get("/activeJob/:id",getActiveJob);
+router.get("/pendingJobs/:id",getPendingJobs);
+router.get("/declinedJobs/:id",getDeclinedJobs);
+router.get("/completedJobs/:id",getCompletedJobs);
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);
