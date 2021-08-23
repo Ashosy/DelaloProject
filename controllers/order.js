@@ -101,16 +101,20 @@ const orderput = function(req, res){
 }
 module.exports={orderPost, orderget}; //EXPORT YOUR FUNCTIONS HERE
     }catch(err){
-        console.error("Error while occured: ",err)
+        console.error("Error finding jobs: ",err)
     }
 }
 
 const changeJobStatus= async (req,res)=>{
     try{
-        const order_id= req.body.order_id;
-        const job= await Order.findOneAndUpdate({_id:order_id,provider_id:ObjectId(req.params.id)},
+        const order_id= req.params.id;
+        const providerId= req.body.provider_id;
+        const job= await Order.findOneAndUpdate({_id:order_id,provider_id:providerId},
             {
                 $set: {status:req.body.status}
+            },
+            {
+                useFindAndModify:true,
             }
               
         );
@@ -120,6 +124,23 @@ const changeJobStatus= async (req,res)=>{
         console.err("Error updating status: ",err);
         
     }
+};
+
+
+const getActiveJob = async (req,res)=>{
+    try{
+
+        const job= await Order.find({provider_id:req.params.id,status:"active"});
+        if(job.length!=0){
+            res.status(400).json(job);
+        }
+        else{
+            res.status(400).send("No active jobs");
+        }
+
+    }catch(err){
+        console.log("Error finding an active job: ",err)
+    }
 }
 
-module.exports={getAllJobs}; //EXPORT YOUR FUNCTIONS HERE
+module.exports={getAllJobs,changeJobStatus,getActiveJob}; //EXPORT YOUR FUNCTIONS HERE
