@@ -16,7 +16,7 @@ const orderSchema = new schema(
 
     is_completed: {
       type: String,
-      required: true,
+      required: true, //why true
     },
 
     order_created_date: {

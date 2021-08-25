@@ -8,7 +8,10 @@ const {
   getProviderById,
 } = require("../controllers/provider");
 
-const {} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
+const { 
+  orderPost,
+  orderget
+} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
 const {
   getCategories,
   getCategoryById,
@@ -38,7 +41,8 @@ router.post("/category", addCategory);
 
 //order routes
 
-
+router.get("/order", orderget);
+router.post("/order", orderPost);
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);
