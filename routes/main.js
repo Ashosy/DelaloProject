@@ -16,7 +16,6 @@ const {
   getProviderById,
 } = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
-
 const { 
   orderPost,
   orderget,
@@ -79,6 +78,7 @@ router.get("/pendingJobs/:id",getPendingJobs);
 router.get("/declinedJobs/:id",getDeclinedJobs);
 router.get("/completedJobs/:id",getCompletedJobs);
 
+router.get("/order/:id", ordergetById);
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);
