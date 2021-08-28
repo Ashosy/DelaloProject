@@ -10,21 +10,29 @@ const time_now = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSe
 const orderdate = new Date(timeS.getTime());
 
 
-
-
+//get all orders
 const orderget = function(req, res){
-    Order
-        .find()
-        .then((orders)=>{
+    Order.find().then((orders)=>{
             res.status(201).json(orders);
-        })
-        .catch((err) => {
+        }).catch((err) => {
             res.json(
                 {message: err.message}
             );
         });
 
 };
+//get a single order
+const ordergetById = function(req, res){
+    Order.findById(req.params.id)
+    .then((order)=>{
+        res.send(order);
+    }).catch((err) => {
+        res.json(
+            {message: err.message}
+        );
+    });
+};
+//post order
 const orderPost = function(req, res){
    new Order({
         status : req.body.status,
@@ -37,40 +45,42 @@ const orderPost = function(req, res){
         unique_code : randomnum,
         seeker_id : req.body.seeker_id,
         provider_id : req.body.provider_id,
-        final_payment: req.body.final_payment,
+        final_payment: req.body.final_payment
 
     })
-    
     .save()
     .then((orders)=>{
         res.status(201).json({
             order : orders,
-            message: `order Successfully`
+            message: `order added`
         });
-    })
-   
-    .catch((err)=>{
+    }).catch((err)=>{
         res.json(
             {message: err.message}
         );
     })
 }
-
-const orderput = function(req, res){
-    new Order9({
-        status = req.body.status,
-        progress = req.body.progress,
-        result,
-        if(status){
-            if(status == "accepted"){result.status = "active"}
-            else if(status == "declined"){result.status = "declined"}
-        }
-        // if (progress=="started") {
-        //     now =`${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`,
-        //     time_difference = now - result.start_time,
-        //     hours = time_difference.Date.
+//update order
+const orderUpdate = function(req, res){
+    // new Order9({
+    //     status : req.body.status,
+    //     progress : req.body.progress,
+    //     result,
+    //     if(status){
+    //         if(status == "accepted"){
+    //             result.status = "active"
+    //         }
+    //         else if(
+    //             status == "declined"
+    //             ){result.status = "declined"
+    //         }
+    //     }
+    //     // if (progress=="started") {
+    //     //     now =`${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`,
+    //     //     time_difference = now - result.start_time,
+    //     //     hours = time_difference.Date.
             
-        // }
-    })
+    //     // }
+    // })
 }
-module.exports={orderPost, orderget}; //EXPORT YOUR FUNCTIONS HERE
+module.exports={orderPost, orderget, ordergetById}; //EXPORT YOUR FUNCTIONS HERE
