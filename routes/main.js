@@ -14,12 +14,8 @@ const {
   postProvider,
   getProvider,
   getProviderById,
-} = require("../controllers/provider");
+} = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
-const { 
-  orderPost,
-  orderget
-} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
 const {
   getCategories,
   getCategoryById,
@@ -31,13 +27,24 @@ const {
   getReviews,
   getReviewById,
   addReview
-} = require("../controllers/review"); // IMPORT CATEGORY FUNCTIONS HERE
+} = require("../controllers/review"); // // IMPORT REVIEW FUNCTIONS HERE
 
 
-const { getAllJobs, getActiveJob, getPendingJobs, updateJobStatus, getDeclinedJobs, getCompletedJobs } = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
-const {} = require("../controllers/review"); // IMPORT REVIEW FUNCTIONS HERE
+const { 
+  orderPost,
+  orderget,
+  getAllJobs, 
+  getActiveJob, 
+  getPendingJobs, 
+  updateJobStatus, 
+  getDeclinedJobs, 
+  getCompletedJobs } 
+  = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
+
 
 const router = express.Router();
+
+
 // user routes
 router.get("/users",verify, getUsers);
 router.get("/users/:id", getUserById);
@@ -45,6 +52,7 @@ router.delete("/users/:id", deleteUser);
 router.post("/login", login);
 router.post("/users", register);
 router.get("/logout",verify, logout);
+
 // provider routes
 router.post("/provider", postProvider);
 router.get("/provider", getProvider);
@@ -57,7 +65,6 @@ router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 
 //order routes
-
 router.get("/order", orderget);
 router.post("/order", orderPost);
 router.get("/allJobs/:id", getAllJobs);
