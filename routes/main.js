@@ -66,6 +66,7 @@ router.get("/activeJob/:id",getActiveJob);
 router.get("/pendingJobs/:id",getPendingJobs);
 router.get("/declinedJobs/:id",getDeclinedJobs);
 router.get("/completedJobs/:id",getCompletedJobs);
+
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);

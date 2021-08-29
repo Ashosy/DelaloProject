@@ -1,31 +1,8 @@
 const mongoose  = require("mongoose");
 const Order = require("../models/order_model");
 const User= require("../models/user_model");
+
 let objectId= mongoose.Types.ObjectId;
-const getAllJobs = async (req,res) =>{
-    try{
-        const status= req.body.status;
-        const completed=req.body.completed;
-        let jobs= await Order.find({provider_id: req.params.id});
-        let lst=[]
-        jobs.forEach((job)=>{
-            console.log(job.seeker_id)
-            
-            user= User.find({_id:objectId("611da02f22b0e41684455e3d")});
-            provider=User.find({_id:objectId("611da05a54a27c30da9fb1f3")});
-            lst.push({
-                "user":user,
-                "provider":provider,
-                "order":job,
-            });
-            
-        });
-        console.log(lst[0]);
-        return res.json(jobs);
-        // status and progress? should be known so that when provider clicks accept the status has to change to active
-        //put method is needed for jobs as well to update status
-        //when provider clicks accept or deny put route is called to update status, has to check whether there is another active job
-        //
 
 const date = new Date();
 const randomnum = Math.floor(Math.random() * 9999) + 1000;
@@ -34,8 +11,6 @@ const timeS = new Date();
 const time_now = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;
 
 const orderdate = new Date(timeS.getTime());
-
-
 
 
 const orderget = function(req, res){
@@ -99,7 +74,60 @@ const orderput = function(req, res){
         // }
     })
 }
-module.exports={orderPost, orderget}; //EXPORT YOUR FUNCTIONS HERE
+
+
+async function asyncForEach(jobs,callback){
+    for (let i=0;i<jobs.length;i++){
+        await callback(jobs[i],i,jobs);
+    };
+};
+
+const getAllJobs = async (req,res) =>{
+    try{
+        
+        let jobs= await Order.find({provider_id: req.params.id});
+        let lst=[]
+        if(jobs.length!=0){
+        const toList= async()=>{
+            await asyncForEach(jobs,async(job)=>{
+                const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+
+                const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                    if(err){
+                        return err
+                    }else if (userObj){
+                        return userObj
+                    }else{
+                        return null
+                    }
+                });
+
+                lst.push({
+                        "User":JSON.parse(JSON.stringify(findUser))[0],
+                        "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                        "Order":job,
+                    });
+
+                // console.log(lst)
+            });
+
+            res.send(lst);
+        };
+
+        toList();
+
+    }else{
+        res.status(400).send("No jobs to show");
+    }
+        
     }catch(err){
         console.error("Error finding jobs: ",err)
     }
@@ -118,7 +146,8 @@ const updateJobStatus= async (req,res)=>{
             }
               
         );
-            res.status(201).json({data:job});
+
+        res.status(201).json(job);
 
     }catch(err){
         console.err("Error updating status: ",err);
@@ -130,9 +159,45 @@ const updateJobStatus= async (req,res)=>{
 const getActiveJob = async (req,res)=>{
     try{
 
-        const job= await Order.find({provider_id:req.params.id,status:"active"});
-        if(job.length!=0){
-            res.status(400).json(job);
+        const jobs= await Order.find({provider_id:req.params.id,status:"active"});
+        let lst=[]
+        if(jobs.length!=0){
+            const toList= async()=>{
+                await asyncForEach(jobs,async(job)=>{
+                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":job,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(400).send(lst);
+            };
+    
+            toList();
+            
         }
         else{
             res.status(400).send("No active jobs");
@@ -146,8 +211,44 @@ const getActiveJob = async (req,res)=>{
 const getPendingJobs = async(req,res)=>{
     try{
         const jobs= await Order.find({provider_id:req.params.id,status:"pending"});
+        let lst=[]
         if(jobs.length!=0){
-            res.status(400).json(jobs);
+            const toList= async()=>{
+                await asyncForEach(jobs,async(job)=>{
+                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":job,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(400).send(lst);
+            };
+    
+            toList();
+            
         }
         else{
             res.status(400).send("No pending jobs");
@@ -160,8 +261,44 @@ const getPendingJobs = async(req,res)=>{
 const getDeclinedJobs = async (req,res)=>{
     try{
         const jobs= await Order.find({provider_id:req.params.id,status:"declined"});
+        let lst=[]
         if(jobs.length!=0){
-            res.status(400).json(jobs);
+            const toList= async()=>{
+                await asyncForEach(jobs,async(job)=>{
+                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":job,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(400).send(lst);
+            };
+    
+            toList();
+            
         }
         else{
             res.status(400).send("No declined jobs");
@@ -174,8 +311,44 @@ const getDeclinedJobs = async (req,res)=>{
 const getCompletedJobs = async (req,res)=>{
     try{
         const jobs= await Order.find({provider_id:req.params.id,is_completed:true});
+        let lst=[]
         if(jobs.length!=0){
-            res.status(400).json(jobs);
+            const toList= async()=>{
+                await asyncForEach(jobs,async(job)=>{
+                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":job,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(400).send(lst);
+            };
+    
+            toList();
+            
         }
         else{
             res.status(400).send("No completed jobs");
@@ -185,7 +358,9 @@ const getCompletedJobs = async (req,res)=>{
     }
 };
 
-module.exports={getAllJobs,
+module.exports={orderPost, 
+                orderget,
+                getAllJobs,
                 updateJobStatus,
                 getActiveJob,
                 getPendingJobs,

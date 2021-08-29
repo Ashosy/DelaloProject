@@ -47,11 +47,13 @@ const orderSchema = new schema(
     seeker_id: {
       type: Number,
       required: true,
+      ref:"User",
     },
 
     provider_id: {
       type: Number,
       required: true,
+      ref:"User"
     },
 
     final_payment: {
