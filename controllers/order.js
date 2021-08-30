@@ -9,7 +9,7 @@ const randomnum = Math.floor(Math.random() * 9999) + 1000;// random number for b
 
 const timeS = new Date();
 const time_now = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;// to get the current time
-const time_nowcalc = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;// to get the current time
+const time_now_calc = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;// to get the current time
 
 const orderdate = new Date(timeS.getTime()); 
 
