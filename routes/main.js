@@ -16,6 +16,13 @@ const {
   getProviderById,
 } = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
+const { 
+  orderPost,
+  orderget,
+  ordergetById,
+  orderDelete,
+  orderUpdate
+} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
 const {
   getCategories,
   getCategoryById,
@@ -74,6 +81,9 @@ router.get("/pendingJobs/:id",getPendingJobs);
 router.get("/declinedJobs/:id",getDeclinedJobs);
 router.get("/completedJobs/:id",getCompletedJobs);
 
+router.get("/order/:id", ordergetById);
+router.delete("/order/:id", orderDelete);
+router.put("/order/:id", orderUpdate);
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);
