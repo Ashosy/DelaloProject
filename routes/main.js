@@ -79,6 +79,8 @@ router.get("/declinedJobs/:id",getDeclinedJobs);
 router.get("/completedJobs/:id",getCompletedJobs);
 
 router.get("/order/:id", ordergetById);
+router.delete("/order/:id", orderDelete);
+router.put("/order/:id", orderUpdate);
 //review routes
 router.get("/review", getReviews);
 router.get("/review/:id", getReviewById);
