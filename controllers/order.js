@@ -5,36 +5,55 @@ const User= require("../models/user_model");
 let objectId= mongoose.Types.ObjectId;
 
 const date = new Date();
-const randomnum = Math.floor(Math.random() * 9999) + 1000;
+const randomnum = Math.floor(Math.random() * 9999) + 1000;// random number for b/n 1000-9999 for the unique code
 
 const timeS = new Date();
-const time_now = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;
+const time_now = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;// to get the current time
+const time_nowcalc = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`;// to get the current time
 
-const orderdate = new Date(timeS.getTime());
+const orderdate = new Date(timeS.getTime()); 
 
 
 //get all orders
 const orderget = function(req, res){
-    Order.find().then((orders)=>{
-            res.status(201).json(orders);
-        }).catch((err) => {
+    Order.find()
+        .then((orders)=>{
+            if(!orders){ 
+                res.status(404)
+                .send({message: `Couldn't Find`});
+            }
+            else
+           { res.status(201).json(orders);}
+        })
+        .catch((err) => {
             res.json(
                 {message: err.message}
             );
         });
 
 };
-//get a single order
+
+
+//get a single order by seeker_id
 const ordergetById = function(req, res){
-    Order.findById(req.params.id)
+    const s_id = {seeker_id:req.params.id}; // s_id to the requested id
+    Order.find(s_id)
     .then((order)=>{
-        res.send(order);
+        if(!order){
+            res.status(404)
+            .send({message: `Couldn't Find id ${req.params.id}`});
+        }
+        else
+        {res.status(200).send(order);}
+       
     }).catch((err) => {
         res.json(
-            {message: err.message}
+            {message:`Id ${req.params.id} Not Found`}
         );
     });
 };
+
+
 //post order
 const orderPost = function(req, res){
    new Order({
@@ -53,37 +72,84 @@ const orderPost = function(req, res){
     })
     .save()
     .then((orders)=>{
-        res.status(201).json({
+        if(!orders){
+            res.status(404)
+            .send({message: `Couldn't post`});
+        }
+        else{res.status(201).json({
             order : orders,
             message: `order added`
-        });
+        });}
     }).catch((err)=>{
         res.json(
             {message: err.message}
         );
     })
 }
-//update order
+
+
+
+//update order using seeker id
 const orderUpdate = function(req, res){
-    // new Order9({
-    //     status : req.body.status,
-    //     progress : req.body.progress,
-    //     result,
-    //     if(status){
-    //         if(status == "accepted"){
-    //             result.status = "active"
-    //         }
-    //         else if(
-    //             status == "declined"
-    //             ){result.status = "declined"
-    //         }
-    //     }
-    //     // if (progress=="started") {
-    //     //     now =`${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.getSeconds()}`,
-    //     //     time_difference = now - result.start_time,
-    //     //     hours = time_difference.Date.
-            
-    //     // }
-    // })
+    console.log(req);
+    if(req.params.status){
+        if(req.params.status == "accepted"){
+           req.params.status = "active";
+        }
+        else if(req.params.status == "declined"){
+            req.params.status = "decline";
+        }
+    }
+    if(req.params.progress == "started"){
+        const now = orderdate;
+        console.log(now);
+
+    }
+    Order.findByIdAndUpdate(
+       { 
+         _id: req.params.id
+        },
+    
+        req.body,
+        {new: true},
+    
+        )
+        
+        .then((order)=>{
+            if(!order){
+                res.status(404).send({
+                    message : `Couldn't update order with id ${req.params.id}`
+                });
+            }
+            else
+            {
+               
+                res.status(201).send(order);
+            }
+           
+        }).catch((err)=>{
+            res.status(500).send({
+                message : `Error updating ${req.params.id}`
+            })
+        })   
 }
-module.exports={orderPost, orderget, ordergetById}; //EXPORT YOUR FUNCTIONS HERE
+
+
+//delete order using seeker id
+const orderDelete = function(req, res){
+    Order.findByIdAndDelete({_id:req.params.id})
+        .then((result)=>{
+            if(!result){
+                res.status(404)
+                .send({message: `Couldn't Find id ${req.params.id}`});
+            }
+            else
+            {res.send(result);}
+            // console.log(`${req.params.id} deleted`);
+        })
+        .catch((err)=>{
+            console.log(msg.err);
+        })
+
+};
+module.exports={orderPost, orderget, ordergetById, orderDelete, orderUpdate}; //EXPORT YOUR FUNCTIONS HERE
