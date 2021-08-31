@@ -16,6 +16,21 @@ const {
   getProviderById,
 } = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
+
+const { 
+  orderPost,
+  orderget,
+  ordergetById,
+  orderDelete,
+  orderUpdate,
+  getAllJobs, 
+  getActiveJob, 
+  getPendingJobs, 
+  updateJobStatus, 
+  getDeclinedJobs, 
+  getCompletedJobs
+} = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
+
 const {
   getCategories,
   getCategoryById,
@@ -29,19 +44,7 @@ const {
   addReview
 } = require("../controllers/review"); // // IMPORT REVIEW FUNCTIONS HERE
 
-
-const { 
-  getAllJobs, 
-  getActiveJob, 
-  getPendingJobs, 
-  updateJobStatus, 
-  getDeclinedJobs, 
-  getCompletedJobs } 
-  = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
-
-
 const router = express.Router();
-
 
 // user routes
 router.get("/users",verify, getUsers);
@@ -63,6 +66,12 @@ router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 
 //order routes
+
+router.get("/order", orderget);
+router.post("/order", orderPost);
+router.get("/order/:id", ordergetById);
+router.delete("/order/:id", orderDelete);
+router.put("/order/:id", orderUpdate);
 router.get("/allJobs/:id", getAllJobs);
 router.put("/updateStatus/:id",updateJobStatus);
 router.get("/activeJob/:id",getActiveJob);
