@@ -31,8 +31,6 @@ const {
 
 
 const { 
-  orderPost,
-  orderget,
   getAllJobs, 
   getActiveJob, 
   getPendingJobs, 
@@ -65,8 +63,6 @@ router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 
 //order routes
-router.get("/order", orderget);
-router.post("/order", orderPost);
 router.get("/allJobs/:id", getAllJobs);
 router.put("/updateStatus/:id",updateJobStatus);
 router.get("/activeJob/:id",getActiveJob);
