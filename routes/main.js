@@ -63,7 +63,6 @@ router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 
 //order routes
-
 router.get("/allJobs/:id", getAllJobs);
 router.put("/updateStatus/:id",updateJobStatus);
 router.get("/activeJob/:id",getActiveJob);

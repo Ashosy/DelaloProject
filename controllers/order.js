@@ -286,8 +286,7 @@ const getCompletedJobs = async (req,res)=>{
     }
 };
 
-module.exports={orderPost, 
-                orderget,
+module.exports={
                 getAllJobs,
                 updateJobStatus,
                 getActiveJob,
