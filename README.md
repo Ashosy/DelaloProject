@@ -1,6 +1,13 @@
 # DelaloProject
 
 This is the backend part of a flutter delalo app using Nodejs, Express js and Mongodb.
+Feature List:
+
+Users and Providers CRUD 
+Searching Category of Services
+CRUD on Orders from users
+CRUD on Reviews from users
+Authentication and authorization 
 
 Group members name
 1. Amsale Gebrehana                 ATR/7021/11
