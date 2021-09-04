@@ -241,7 +241,7 @@ const getActiveJob = async (req,res)=>{
         if(jobs.length!=0){
             const toList= async()=>{
                 await asyncForEach(jobs,async(job)=>{
-                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                    const findUser = await User.find({_id:"611da02f22b0e41684455e3d"},(err,userObj)=>{
                                 if(err){
                                     return err
                                 }else if (userObj){
@@ -251,7 +251,7 @@ const getActiveJob = async (req,res)=>{
                                 }
                             });
     
-                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                    const findProvider= await User.find({_id:"611da02f22b0e41684455e3d"},(err,userObj)=>{
                         if(err){
                             return err
                         }else if (userObj){
@@ -292,7 +292,7 @@ const getPendingJobs = async(req,res)=>{
         if(jobs.length!=0){
             const toList= async()=>{
                 await asyncForEach(jobs,async(job)=>{
-                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
+                    const findUser = await User.find({_id:""},(err,userObj)=>{
                                 if(err){
                                     return err
                                 }else if (userObj){
@@ -302,7 +302,7 @@ const getPendingJobs = async(req,res)=>{
                                 }
                             });
     
-                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
+                    const findProvider= await User.find({_id:""},(err,userObj)=>{
                         if(err){
                             return err
                         }else if (userObj){
