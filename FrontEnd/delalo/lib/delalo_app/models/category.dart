@@ -1,4 +1,8 @@
 //category model
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+
+@immutable
 class Category {
   const Category(
       {required this.id,
@@ -10,6 +14,8 @@ class Category {
   final int numOfProviders;
   final String description;
 
+  @override
+  List<Object> get props => [id, image, numOfProviders, description];
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
         id: json['id'],
