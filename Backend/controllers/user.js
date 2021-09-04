@@ -155,7 +155,7 @@ const deleteUser = (req, res) => {
 
 const logout = (req, res) => {
     const authToken=req.headers.authtoken;
-    jwt.sign(authToken, "", { expiresIn: 1 } , (logout, err) => {
+    jwt.sign(authToken, "", { expiresIn: 0.1 } , (logout, err) => {
         if (logout) {
         res.send({msg : 'You have been Logged Out',
             token:null
