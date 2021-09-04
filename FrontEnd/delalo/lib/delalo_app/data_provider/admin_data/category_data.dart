@@ -59,8 +59,9 @@ class AdminCategoryDataProvider {
     }
   }
 
-  Future<void> deleteCourse(String id) async {
-    final http.Response response = await httpClient.delete(
+  Future<void> deleteCategory(String id) async {
+    try{
+      final http.Response response = await httpClient.delete(
         Uri.https(_baseurl, '/category/:$id'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -68,6 +69,34 @@ class AdminCategoryDataProvider {
     if (response.statusCode != 204) {
       throw Exception("Error deleting Category");
     }
+    }on SocketException catch (e) {
+      throw e;
+    } on HttpException catch (e) {
+      throw e;
+    }
   }
-  
+
+  Future<void> updateCategory(Category category) async {
+    try
+    {final http.Response response = await httpClient.put(
+      Uri.https(_baseurl, '/category/:${category.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id': category.id,
+        'image': category.image,
+        'numOfProviders': category.numOfProviders,
+        'description': category.description
+      }),
+    );
+    if (response.statusCode != 204) {
+      throw Exception('Error Updating category');
+    }
+    }on SocketException catch (e) {
+      throw e;
+    } on HttpException catch (e) {
+      throw e;
+    }
+  }
 }
