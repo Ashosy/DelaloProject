@@ -99,6 +99,43 @@ const getUserById = (req, res) => {
         });
 }
 
+const updateUser = function(req, res){
+    console.log(req);
+     if (!req.body) {
+    return res.status(400).send({
+      message: "Data to update can not be empty!"
+    });
+  }
+    User.findByIdAndUpdate(
+       { 
+         _id: req.params.id
+        },
+    
+        req.body,
+        {new: true},
+    
+        )
+        
+        .then((user)=>{
+            if(!user){
+                res.status(404).send({
+                    message : `Couldn't update user with id ${req.params.id}`
+                });
+            }
+            else
+            {
+               
+                res.status(201).send(user);
+            }
+           
+        }).catch((err)=>{
+            res.status(500).send({
+                message : `Error updating ${req.params.id}`
+            })
+        })   
+}
+
+
 const deleteUser = (req, res) => {
     User
         .findByIdAndDelete(req.params.id)
@@ -130,4 +167,4 @@ const logout = (req, res) => {
 
 };
 
-module.exports={register, getUsers, getUserById, deleteUser, login,logout}; //EXPORT YOUR FUNCTIONS HERE
+module.exports={register, getUsers, getUserById, deleteUser, login,logout, updateUser}; //EXPORT YOUR FUNCTIONS HERE
