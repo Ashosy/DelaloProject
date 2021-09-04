@@ -1,6 +1,6 @@
 # DelaloProject
 
-This is the backend part of a flutter delalo app using Nodejs, Express js and Mongodb.
+This repository includes the backend and frontend of a flutter app called Delalo, which is made using Nodejs, Express js and Mongodb.
 
 Description:
 
