@@ -1,6 +1,7 @@
 class User {
   const User(
-      {required this.firstname,
+      {required this.id,
+      required this.firstname,
       required this.lastname,
       required this.password,
       required this.email,
@@ -14,6 +15,7 @@ class User {
       required this.recommendation,
       required this.average_rating,
       required this.per_hour_wage});
+  final String id;
   final double firstname;
   final String lastname;
   final int password;
@@ -30,6 +32,7 @@ class User {
   final int average_rating;
   @override
   List<Object> get props => [
+        id,
         firstname,
         lastname,
         password,
@@ -49,6 +52,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+        id: json['_id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
         email: json['email'],

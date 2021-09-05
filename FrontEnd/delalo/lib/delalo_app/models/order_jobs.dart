@@ -48,7 +48,7 @@ class Order extends Equatable {
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-        id: json['id'],
+        id: json['_id'],
         status: json['status'],
         progress: json['progress'],
         order_created_date: json['order_created_date'],

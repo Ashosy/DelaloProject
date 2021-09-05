@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:delalo/delalo_app/models/order_jobs.dart';
+import 'package:delalo/delalo_app/models/models.dart';
+
 import 'package:http/http.dart' as http;
 
 class OrderDataProvider {
@@ -39,16 +40,28 @@ class OrderDataProvider {
     final response = await httpClient.get(Uri(path: '$_baseUrl/order'));
 
     if (response.statusCode == 200) {
-      final Orders = jsonDecode(response.body) as List;
-      return Orders.map((order) => Order.fromJson(order)).toList();
+      final orders = jsonDecode(response.body) as List;
+      return orders.map((order) => Order.fromJson(order)).toList();
     } else {
       throw Exception('Failed to load Orders');
     }
   }
 
-  Future<void> deleteOrder(String id) async {
+  Future<Order> getOrderById(User seeker) async {
+    final response =
+        await httpClient.get(Uri(path: '$_baseUrl/order/${seeker.id}'));
+
+    if (response.statusCode == 200) {
+      final order = jsonDecode(response.body);
+      return Order.fromJson(order);
+    } else {
+      throw Exception('Failed to load order by Id');
+    }
+  }
+
+  Future<void> deleteOrder(Order order) async {
     final http.Response response = await httpClient.delete(
-      Uri(path: '$_baseUrl/order/$id'),
+      Uri(path: '$_baseUrl/order/${order.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -59,7 +72,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<void> updateOrder(Order order) async {
+  Future<void> updateOrderStatus(Order order) async {
     final http.Response response = await httpClient.put(
       Uri(path: '$_baseUrl/order/${order.id}'),
       headers: <String, String>{
@@ -67,20 +80,106 @@ class OrderDataProvider {
       },
       body: jsonEncode(<String, dynamic>{
         'status': order.status,
-        'progress': order.progress,
-        'is_completed': order.is_completed,
-        'order_created_date': order.order_created_date,
-        'order_completed_date': order.order_completed_date,
-        'start_time': order.start_time,
-        'saved_time': order.saved_time,
-        'unique_code': order.unique_code,
-        'seeker_id': order.seeker_id,
-        'provider_id': order.provider_id,
       }),
     );
 
     if (response.statusCode != 204) {
-      throw Exception('Failed to update Order.');
+      throw Exception('Failed to update order status.');
+    }
+  }
+
+  Future<void> updateOrderProgress(Order order) async {
+    final http.Response response = await httpClient.put(
+      Uri(path: '$_baseUrl/order/${order.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'progress': order.progress,
+      }),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Failed to update order progress.');
+    }
+  }
+
+  Future<List<dynamic>> getAllJobs(User provider) async {
+    final response =
+        await httpClient.get(Uri(path: '$_baseUrl/allJobs/${provider.id}'));
+
+    if (response.statusCode == 200) {
+      final jobs = jsonDecode(response.body) as List;
+      return jobs.map((job) => OrderDetails.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load all jobs');
+    }
+  }
+
+  Future<void> updateJobStatus(Order job, User provider) async {
+    final http.Response response = await httpClient.put(
+      Uri(path: '$_baseUrl/updateStatus', queryParameters: <String, dynamic>{
+        'provider_id': provider.id,
+        '_id': job.id
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'status': job.status,
+      }),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Failed to update job status.');
+    }
+  }
+
+  Future<Order> getActiveJob(User provider) async {
+    final response =
+        await httpClient.get(Uri(path: '$_baseUrl/activeJob/${provider.id}'));
+
+    if (response.statusCode == 200) {
+      final job = jsonDecode(response.body);
+      return Order.fromJson(job);
+    } else {
+      throw Exception('Failed to load job by provider Id');
+    }
+  }
+
+  Future<List<dynamic>> getPendingJobs(User provider) async {
+    final response =
+        await httpClient.get(Uri(path: '$_baseUrl/pendingJobs/${provider.id}'));
+
+    if (response.statusCode == 200) {
+      final jobs = jsonDecode(response.body) as List;
+      return jobs.map((job) => OrderDetails.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load pending jobs');
+    }
+  }
+
+  Future<List<dynamic>> getDeclinedJobs(User provider) async {
+    final response = await httpClient
+        .get(Uri(path: '$_baseUrl/declinedJobs/${provider.id}'));
+
+    if (response.statusCode == 200) {
+      final jobs = jsonDecode(response.body) as List;
+      return jobs.map((job) => OrderDetails.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load declined jobs');
+    }
+  }
+
+  Future<List<dynamic>> getCompletedJobs(User provider) async {
+    final response = await httpClient
+        .get(Uri(path: '$_baseUrl/completedJobs/${provider.id}'));
+
+    if (response.statusCode == 200) {
+      final jobs = jsonDecode(response.body) as List;
+      return jobs.map((job) => OrderDetails.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load completed jobs');
     }
   }
 }
