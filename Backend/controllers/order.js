@@ -56,17 +56,14 @@ const ordergetById = function(req, res){
 //post order
 const orderPost = function(req, res){
    new Order({
-        status : req.body.status,
-        progress : req.body.progress,
-        is_completed : req.body.is_completed,
+        status : "pending",
+        is_completed : false,
         order_created_date : orderdate,
-        order_completed_date : req.body.order_completed_date,
-        start_time : time_now,
-        saved_time: req.body.saved_time,
+        saved_time: 0,
         unique_code : randomnum,
         seeker_id : req.body.seeker_id,
         provider_id : req.body.provider_id,
-        final_payment: req.body.final_payment
+        
 
     })
     .save()
@@ -86,51 +83,96 @@ const orderPost = function(req, res){
     })
 }
 
-
-
 //update order using seeker id
-const orderUpdate = function(req, res){
-    console.log(req);
-    if(req.params.status){
-        if(req.params.status == "accepted"){
-           req.params.status = "active";
-        }
-        else if(req.params.status == "declined"){
-            req.params.status = "decline";
-        }
-    }
-    if(req.params.progress == "started"){
-        const now = orderdate;
-        console.log(now);
-
-    }
-    Order.findByIdAndUpdate(
-       { 
-         _id: req.params.id
-        },
-    
-        req.body,
-        {new: true},
-    
-        )
-        
-        .then((order)=>{
-            if(!order){
-                res.status(404).send({
-                    message : `Couldn't update order with id ${req.params.id}`
-                });
-            }
-            else
+const orderUpdate = async function(req, res) {
+    try{
+        const order_id= req.params.id;
+        const progress= req.body.progress;
+        const order= await Order.findById(order_id);
+        const provider= await User.findById(order.provider_id);
+        // console.log(order.saved_time);
+        console.log(order.provider_id);
+        if(progress=="started"){
+            let current_time=new Date();
+            let minutes= current_time.getMinutes()/60;
+            let seconds= current_time.getSeconds()/3600;
+            const start_time=current_time.getHours()+minutes+seconds;
+            
+             const job= await Order.findOneAndUpdate({_id:order_id},
             {
-               
-                res.status(201).send(order);
+                $set: {start_time:start_time,
+                        progress:"started"
+                    }
+            },
+            {
+                useFindAndModify:true,
             }
-           
-        }).catch((err)=>{
-            res.status(500).send({
-                message : `Error updating ${req.params.id}`
-            })
-        })   
+              
+            );
+
+                res.status(201).json(job);
+        }
+        else if(progress=="paused"){
+            const start_time=order.start_time;
+            const pre_saved_time= order.saved_time;
+            let current_time=new Date();
+            let minutes= current_time.getMinutes()/60;
+            let seconds= current_time.getSeconds()/3600;
+            const paused_time=current_time.getHours()+minutes+seconds;
+            const saved_time=pre_saved_time+(paused_time-start_time);
+            
+            const job= await Order.findOneAndUpdate({_id:order_id},
+                {
+                    $set: {saved_time:saved_time,
+                            progress:"paused"
+                        }
+                },
+                {
+                    useFindAndModify:true,
+                }
+                  
+                );
+    
+                    res.status(201).json(job);
+
+        }
+        else if(progress=="finished"){
+            const start_time=order.start_time;
+            const pre_saved_time= order.saved_time;
+            let current_time=new Date();
+            let minutes= current_time.getMinutes()/60;
+            let seconds= current_time.getSeconds()/3600;
+            const finished_time= current_time.getHours()+minutes+seconds;
+            const saved_time= pre_saved_time +(finished_time-start_time);
+            const final_payment= saved_time* provider.per_hour_wage;
+            const completed_date= new Date();
+            // const order_completed_date= new Date(completed_date.getTime());
+            // console.log(order_completed_date);
+            const job= await Order.findOneAndUpdate({_id:order_id},
+                {
+                    $set: {saved_time:saved_time,
+                            final_payment:final_payment,
+                            is_completed:true,
+                            progress:"finished",
+                            order_completed_date:orderdate,
+                            status:"completed"
+                        }
+                },
+                {
+                    useFindAndModify:true,
+                }
+                  
+                );
+    
+                    res.status(201).json(job);
+        }
+
+        
+
+    }catch(err){
+        console.error("Error updating status: ",err);
+        
+    }
 }
 
 
@@ -186,7 +228,7 @@ const getAllJobs = async (req,res) =>{
                         return null
                     }
                 });
-
+                console.log(findUser);
                 lst.push({
                         "User":JSON.parse(JSON.stringify(findUser))[0],
                         "Provider":JSON.parse(JSON.stringify(findProvider))[0],
@@ -213,8 +255,15 @@ const getAllJobs = async (req,res) =>{
 const updateJobStatus= async (req,res)=>{
     try{
         const order_id= req.params.id;
-        const providerId= req.body.provider_id;
-        const job= await Order.findOneAndUpdate({_id:order_id,provider_id:providerId},
+        const status= req.body.status;
+        const jobs= await Order.find({_id:order_id});
+        if(status=="active"){
+            const checkStatus= await Order.find({provider_id:jobs[0].provider_id,status:"active"});
+            if(checkStatus.length!=0){
+                res.status(400).json({error:"You can't have more than one active job at the same time!"});
+            }
+        }
+        const job= await Order.findOneAndUpdate({_id:order_id},
             {
                 $set: {status:req.body.status}
             },
@@ -227,7 +276,7 @@ const updateJobStatus= async (req,res)=>{
         res.status(201).json(job);
 
     }catch(err){
-        console.err("Error updating status: ",err);
+        console.error("Error updating status: ",err);
         
     }
 };
@@ -241,7 +290,7 @@ const getActiveJob = async (req,res)=>{
         if(jobs.length!=0){
             const toList= async()=>{
                 await asyncForEach(jobs,async(job)=>{
-                    const findUser = await User.find({_id:"611da02f22b0e41684455e3d"},(err,userObj)=>{
+                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
                                 if(err){
                                     return err
                                 }else if (userObj){
@@ -251,7 +300,7 @@ const getActiveJob = async (req,res)=>{
                                 }
                             });
     
-                    const findProvider= await User.find({_id:"611da02f22b0e41684455e3d"},(err,userObj)=>{
+                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
                         if(err){
                             return err
                         }else if (userObj){
@@ -292,7 +341,7 @@ const getPendingJobs = async(req,res)=>{
         if(jobs.length!=0){
             const toList= async()=>{
                 await asyncForEach(jobs,async(job)=>{
-                    const findUser = await User.find({_id:""},(err,userObj)=>{
+                    const findUser = await User.find({_id:job.seeker_id},(err,userObj)=>{
                                 if(err){
                                     return err
                                 }else if (userObj){
@@ -302,7 +351,7 @@ const getPendingJobs = async(req,res)=>{
                                 }
                             });
     
-                    const findProvider= await User.find({_id:""},(err,userObj)=>{
+                    const findProvider= await User.find({_id:job.provider_id},(err,userObj)=>{
                         if(err){
                             return err
                         }else if (userObj){
