@@ -28,6 +28,24 @@ class User {
   final int per_hour_wage;
   final int recommendation;
   final int average_rating;
+  @override
+  List<Object> get props => [
+        firstname,
+        lastname,
+        password,
+        description,
+        email,
+        role,
+        phone,
+        image,
+        address,
+        description,
+        category,
+        jobs_done,
+        per_hour_wage,
+        recommendation,
+        average_rating
+      ];
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -46,4 +64,7 @@ class User {
         average_rating: json['average_rating'],
         password: json['password']);
   }
+  @override
+  String toString() =>
+      'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address, description: $description, category: $category, jobs_done: $jobs_done, image: $image, per_hour_wage: $per_hour_wage, recommendation: $recommendation, average_rating: $average_rating,  password: $password,  }';
 }
