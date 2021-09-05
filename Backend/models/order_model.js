@@ -15,8 +15,8 @@ const orderSchema = new schema(
     },
 
     is_completed: {
-      type: String,
-      required: true, //why true
+      type: Boolean,
+      required: true, 
     },
 
     order_created_date: {
@@ -30,8 +30,8 @@ const orderSchema = new schema(
     },
 
     start_time: {
-      type: Date,
-      required: true,
+      type: Number,
+      required: false,
     },
 
     saved_time: {
@@ -45,13 +45,13 @@ const orderSchema = new schema(
     },
 
     seeker_id: {
-      type: Number,
+      type: String,
       required: true,
       ref:"User",
     },
 
     provider_id: {
-      type: Number,
+      type: String,
       required: true,
       ref:"User"
     },
