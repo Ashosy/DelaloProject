@@ -3,7 +3,7 @@ import 'package:delalo/delalo_app/repository/user_repository/order_jobs_reposito
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DelaloApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
