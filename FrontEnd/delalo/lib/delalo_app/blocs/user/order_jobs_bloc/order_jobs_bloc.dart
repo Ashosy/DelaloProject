@@ -11,7 +11,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   @override
   Stream<OrderState> mapEventToState(OrderEvent event) async* {
-    if (event is OrderLoad) {
+    if (event is OrdersLoad) {
       yield OrderLoading();
       try {
         final orders = await orderRepository.getOrders();
@@ -33,7 +33,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
     if (event is OrderUpdate) {
       try {
-        await orderRepository.updateOrderProgress(event.order);
+        await orderRepository.updateOrder(event.order);
         final orders = await orderRepository.getOrders();
         yield OrdersLoadSuccess(orders);
       } catch (_) {

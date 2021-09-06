@@ -16,14 +16,6 @@ class OrderDataProvider {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'status': order.status,
-        'progress': order.progress,
-        'is_completed': order.is_completed,
-        'order_created_date': order.order_created_date,
-        'order_completed_date': order.order_completed_date,
-        'start_time': order.start_time,
-        'saved_time': order.saved_time,
-        'unique_code': order.unique_code,
         'seeker_id': order.seeker_id,
         'provider_id': order.provider_id,
       }),
@@ -36,7 +28,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<List<dynamic>> getOrders() async {
+  Future<List<Order>> getOrders() async {
     final response = await httpClient.get(Uri(path: '$_baseUrl/order'));
 
     if (response.statusCode == 200) {
@@ -72,23 +64,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<void> updateOrderStatus(Order order) async {
-    final http.Response response = await httpClient.put(
-      Uri(path: '$_baseUrl/order/${order.id}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'status': order.status,
-      }),
-    );
-
-    if (response.statusCode != 204) {
-      throw Exception('Failed to update order status.');
-    }
-  }
-
-  Future<void> updateOrderProgress(Order order) async {
+  Future<void> updateOrder(Order order) async {
     final http.Response response = await httpClient.put(
       Uri(path: '$_baseUrl/order/${order.id}'),
       headers: <String, String>{
@@ -104,7 +80,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<List<dynamic>> getAllJobs(User provider) async {
+  Future<List<OrderDetails>> getAllJobs(User provider) async {
     final response =
         await httpClient.get(Uri(path: '$_baseUrl/allJobs/${provider.id}'));
 
@@ -147,7 +123,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<List<dynamic>> getPendingJobs(User provider) async {
+  Future<List<OrderDetails>> getPendingJobs(User provider) async {
     final response =
         await httpClient.get(Uri(path: '$_baseUrl/pendingJobs/${provider.id}'));
 
