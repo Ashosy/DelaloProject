@@ -9,7 +9,7 @@ class AdminProviderDataProvider {
   AdminProviderDataProvider({required this.httpClient})
       : assert(httpClient != null);
 
-  Future<List> getProvidersFromProvider() async{
+  Future<List<User>> getProvidersFromProvider() async{
     try{
       final response = await httpClient.get(Uri.https(_baseurl, "/provider"));
       if(
