@@ -4,7 +4,6 @@ import 'package:delalo/delalo_app/repository/user_repository/order_jobs_reposito
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:delalo/routeGenerator.dart';
 import 'package:http/http.dart' as http;
 
 class MyApp extends StatelessWidget {
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.singleProviderPageName,
+        initialRoute: RouteGenerator. signupChoiceName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
