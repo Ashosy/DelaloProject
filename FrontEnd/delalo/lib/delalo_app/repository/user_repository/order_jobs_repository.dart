@@ -10,7 +10,7 @@ class OrderRepository {
     return await dataProvider.createOrder(order);
   }
 
-  Future<List<dynamic>> getOrders() async {
+  Future<List<Order>> getOrders() async {
     return await dataProvider.getOrders();
   }
 

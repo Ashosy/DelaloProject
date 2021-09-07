@@ -4,16 +4,19 @@ import 'package:delalo/delalo_app/models/models.dart';
 import 'package:http/http.dart' as http;
 
 class OrderDataProvider {
-  final _baseUrl = 'http://localhost:3000';
-  late final http.Client httpClient;
+  final _baseUrl = "localhost:3000";
+  final http.Client httpClient;
 
-  // OrderDataProvider({@required this.httpClient}) : assert(httpClient != null);
+  Uri generateUri(path) {
+    return Uri.http(_baseUrl, path);
+  }
 
+  OrderDataProvider({required this.httpClient});
   Future<Order> createOrder(Order order) async {
     final response = await httpClient.post(
-      Uri.http('localhost:3000', '/order'),
+      Uri(path: '$_baseUrl/order'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, dynamic>{
         'seeker_id': order.seeker_id,
@@ -29,11 +32,23 @@ class OrderDataProvider {
   }
 
   Future<List<Order>> getOrders() async {
-    final response = await httpClient.get(Uri(path: '$_baseUrl/order'));
+    final response = await httpClient.get(
+      generateUri('order'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
     if (response.statusCode == 200) {
-      final orders = jsonDecode(response.body) as List;
-      return orders.map((order) => Order.fromJson(order)).toList();
+      Iterable orders = jsonDecode(response.body);
+
+      List<Order> mappedOrders =
+          List<Order>.from(orders.map((order) => Order.fromJson(order)))
+              .toList();
+
+      return mappedOrders;
     } else {
       throw Exception('Failed to load Orders');
     }

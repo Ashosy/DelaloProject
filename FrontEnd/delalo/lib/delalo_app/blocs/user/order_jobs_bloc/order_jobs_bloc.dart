@@ -15,6 +15,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       yield OrderLoading();
       try {
         final orders = await orderRepository.getOrders();
+
         yield OrdersLoadSuccess(orders);
       } catch (_) {
         yield OrderOperationFailure();
