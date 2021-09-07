@@ -22,7 +22,7 @@ const orderget = function(req, res){
                 .send({message: `Couldn't Find`});
             }
             else
-           { res.status(201).json(orders);}
+           { res.status(200).json(orders);}
         })
         .catch((err) => {
             res.json(
