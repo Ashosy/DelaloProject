@@ -1,4 +1,5 @@
 const Category = require("../models/category_model");
+// const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 const getCategories = (req, res) => {
     Category
@@ -101,9 +102,24 @@ const updateCategory = function (req, res) {
     })
 }
 
+const seachCategory= async function(req,res){
+    const query=req.body.query
+    const categories= await Category.fuzzySearch(query,function(err, result) {
+        if (err) {
+          return res.status(404).json({message:err})
+          
+        } else {
+            return res.status(200).json({result})
+          
+        }
+    });
+   
+    // console.log(categories);
+
+}
 
 
 
 
 
-module.exports = { getCategories, getCategoryById, deleteCategory, addCategory, updateCategory }; //EXPORT YOUR FUNCTIONS HERE
+module.exports = { getCategories, getCategoryById, deleteCategory, addCategory, updateCategory , seachCategory}; //EXPORT YOUR FUNCTIONS HERE

@@ -36,7 +36,8 @@ const {
   getCategoryById,
   deleteCategory,
   addCategory,
-  updateCategory
+  updateCategory,
+  seachCategory
 } = require("../controllers/category"); // IMPORT CATEGORY FUNCTIONS HERE
 
 const {
@@ -68,6 +69,7 @@ router.get("/category/:id", getCategoryById);
 router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 router.put("/category/:id", updateCategory);
+router.get("/searchCategory",seachCategory);
 
 //order routes
 
