@@ -17,4 +17,6 @@ class Review {
         comment: json['comment'],
         order_id: json['order_id']);
   }
+  @override
+  String toString() => 'Review {rating: $rating, comment: $comment, order_id: $order_id}';
 }
