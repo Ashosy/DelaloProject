@@ -24,7 +24,12 @@ const login = async (req, res) => {
     const token = jwt.sign({
         _id: user._id
     }, process.env.TOKEN_SECRET)
-    res.header('authToken', token).send(token);
+    const userStore = {
+        role: user.role,
+        token: token
+    };
+
+    res.status(200).header('authToken', token).send(userStore);
 };
 
 const register = async (req, res) => {
@@ -101,7 +106,7 @@ const getUserById = (req, res) => {
 
 const getUserByEmail = (req, res) => {
     User
-        .findById(req.params.email)
+        .find({email:req.params.email})
         .then((users) => {
             res.json(users)
         })
