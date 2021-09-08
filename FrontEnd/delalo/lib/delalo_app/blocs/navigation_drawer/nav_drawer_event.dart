@@ -1,5 +1,3 @@
-import 'nav_drawer_state.dart';
-
 abstract class NavDrawerEvent{}
 class HomePageEvent extends NavDrawerEvent{}
 class AccountPageEvent extends NavDrawerEvent{}
