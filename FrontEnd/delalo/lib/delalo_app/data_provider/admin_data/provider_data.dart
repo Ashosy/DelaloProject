@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:delalo/delalo_app/models/user.dart';
+import 'package:delalo/delalo_app/models/models.dart';
 import 'package:http/http.dart' as http;
 class AdminProviderDataProvider {
   final _baseurl = 'http://127.0.0.1:3000';

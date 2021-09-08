@@ -23,4 +23,6 @@ class Category {
         numOfProviders: json['numOfProviders'],
         description: json['description']);
   }
+  @override
+  String toString() => 'Category {id: $id , image: $image, numOfProviders: $numOfProviders, description: $description}';
 }
