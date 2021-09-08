@@ -10,6 +10,15 @@ class OrderState extends Equatable {
 
 class OrderLoading extends OrderState {}
 
+class OrderLoadSuccess extends OrderState {
+  final Order order;
+
+  OrderLoadSuccess(this.order);
+
+  @override
+  List<Object> get props => [order];
+}
+
 class OrdersLoadSuccess extends OrderState {
   final List<dynamic> orders;
 

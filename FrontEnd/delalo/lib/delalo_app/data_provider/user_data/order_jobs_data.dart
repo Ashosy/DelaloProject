@@ -54,9 +54,9 @@ class OrderDataProvider {
     }
   }
 
-  Future<Order> getOrderById(User seeker) async {
+  Future<Order> getOrderById(String seeker_id) async {
     final response =
-        await httpClient.get(Uri(path: '$_baseUrl/order/${seeker.id}'));
+        await httpClient.get(Uri(path: '$_baseUrl/order/${seeker_id}'));
 
     if (response.statusCode == 200) {
       final order = jsonDecode(response.body);
@@ -150,7 +150,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<List<dynamic>> getDeclinedJobs(User provider) async {
+  Future<List<OrderDetails>> getDeclinedJobs(User provider) async {
     final response = await httpClient
         .get(Uri(path: '$_baseUrl/declinedJobs/${provider.id}'));
 
@@ -162,7 +162,7 @@ class OrderDataProvider {
     }
   }
 
-  Future<List<dynamic>> getCompletedJobs(User provider) async {
+  Future<List<OrderDetails>> getCompletedJobs(User provider) async {
     final response = await httpClient
         .get(Uri(path: '$_baseUrl/completedJobs/${provider.id}'));
 

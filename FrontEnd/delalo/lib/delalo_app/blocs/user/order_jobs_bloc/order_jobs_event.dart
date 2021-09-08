@@ -12,6 +12,14 @@ class OrdersLoad extends OrderEvent {
   List<Object> get props => [];
 }
 
+class OrderLoad extends OrderEvent {
+  final String seeker_id;
+  const OrderLoad(this.seeker_id);
+
+  @override
+  List<Object> get props => [];
+}
+
 class OrderCreate extends OrderEvent {
   final Order order;
 

@@ -14,8 +14,8 @@ class OrderRepository {
     return await dataProvider.getOrders();
   }
 
-  Future<Order> getOrderById(User seeker) async {
-    return await dataProvider.getOrderById(seeker);
+  Future<Order> getOrderById(String seeker_id) async {
+    return await dataProvider.getOrderById(seeker_id);
   }
 
   Future<void> deleteOrder(Order order) async {
@@ -26,7 +26,7 @@ class OrderRepository {
     return await dataProvider.updateOrder(order);
   }
 
-  Future<List<dynamic>> getAllJobs(User provider) async {
+  Future<List<OrderDetails>> getAllJobs(User provider) async {
     return await dataProvider.getAllJobs(provider);
   }
 
@@ -38,15 +38,15 @@ class OrderRepository {
     return await dataProvider.getActiveJob(provider);
   }
 
-  Future<List<dynamic>> getPendingJobs(User provider) async {
+  Future<List<OrderDetails>> getPendingJobs(User provider) async {
     return await dataProvider.getPendingJobs(provider);
   }
 
-  Future<List<dynamic>> getDeclinedJobs(User provider) async {
+  Future<List<OrderDetails>> getDeclinedJobs(User provider) async {
     return await dataProvider.getDeclinedJobs(provider);
   }
 
-  Future<List<dynamic>> getCompletedJobs(User provider) async {
+  Future<List<OrderDetails>> getCompletedJobs(User provider) async {
     return await dataProvider.getCompletedJobs(provider);
   }
 }

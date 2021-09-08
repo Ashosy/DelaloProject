@@ -32,14 +32,12 @@ class TodoListScreen extends StatelessWidget {
               return Text("Sorry loading failed");
             }
 
-            if (orderState is OrdersLoadSuccess) {
-              final orders = orderState.orders;
+            if (orderState is OrderLoadSuccess) {
+              final order = orderState.order;
 
               return ListView.builder(
-                itemCount: orders.length,
+                itemCount: 1,
                 itemBuilder: (_, idx) {
-                  final order = orders[idx];
-
                   return ListTile(title: Text(order.id));
                 },
               );
