@@ -1,7 +1,7 @@
 import 'package:delalo/delalo_app/blocs/blocs.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
-import 'package:delalo/delalo_app/screens/screens_route.dart';
+import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -25,10 +25,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: TodoListScreen.routeName,
-        routes: {
-          TodoListScreen.routeName: (ctx) => TodoListScreen(),
-        },
+        initialRoute: RouteGenerator. signupChoiceName,
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }
