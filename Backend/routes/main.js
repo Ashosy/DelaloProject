@@ -8,7 +8,8 @@ const {
   deleteUser,
   login,
   logout,
-  updateUser
+  updateUser,
+  getUserByEmail
 }= require("../controllers/user"); // IMPORT USER FUNCTIONS HERE
 
 const {
@@ -49,6 +50,7 @@ const router = express.Router();
 // user routes
 router.get("/users",verify, getUsers);
 router.get("/users/:id", getUserById);
+router.get("/users/byEmail/:email", getUserByEmail);
 router.delete("/users/:id", deleteUser);
 router.put("/users/:id", updateUser);
 router.post("/login", login);

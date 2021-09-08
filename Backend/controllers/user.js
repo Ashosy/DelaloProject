@@ -1,23 +1,23 @@
 const User = require("../models/user_model");
-const {registerValidation, loginValidation} = require('../middlewares/validation')
+const { registerValidation, loginValidation } = require('../middlewares/validation')
 const bcrypt = require('bcryptjs');
 const { JsonWebTokenError } = require('jsonwebtoken');
 const jwt = require('jsonwebtoken');
 
 
 const login = async (req, res) => {
-    const {error} = loginValidation(req.body);
-    if(error){
+    const { error } = loginValidation(req.body);
+    if (error) {
         return res.status(400).send((error.details[0].message).toString());
     }
 
-    const user = await User.findOne({email:req.body.email});
-    if(!user){
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
         return res.status(400).send('Email or password is incorrect');
     }
 
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if(!validPass){
+    if (!validPass) {
         return res.status(400).send('Email or password is incorrect');
     }
 
@@ -28,18 +28,18 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    const {error} = registerValidation(req.body);
+    const { error } = registerValidation(req.body);
 
-    if(error){
+    if (error) {
         return res.status(400).send((error.details[0].message).toString());
     }
 
-    const emailExist = await User.findOne({email:req.body.email});
-    if(emailExist){
+    const emailExist = await User.findOne({ email: req.body.email });
+    if (emailExist) {
         return res.status(400).send('Email already exists');
     }
 
-    const salt= await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     const usersList = new User({
@@ -51,26 +51,26 @@ const register = async (req, res) => {
         phone: req.body.phone,
         image: req.body.image,
         address: req.body.address,
-      });
+    });
 
-  
+
     usersList
-      .save()
-      .then((result) => {
-        const token = jwt.sign({
-            _id: result._id
-        }, process.env.TOKEN_SECRET);
-        const postResult = {
-          user: result,
-          message: `User with email ${usersList.email} was created`,
-          token:token
-        };       
-        res.header('authToken', token).send(postResult);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+        .save()
+        .then((result) => {
+            const token = jwt.sign({
+                _id: result._id
+            }, process.env.TOKEN_SECRET);
+            const postResult = {
+                user: result,
+                message: `User with email ${usersList.email} was created`,
+                token: token
+            };
+            res.header('authToken', token).send(postResult);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
 
 
 const getUsers = (req, res) => {
@@ -81,7 +81,7 @@ const getUsers = (req, res) => {
         })
         .catch((err) => {
             res.json(
-                {message: err.message}
+                { message: err.message }
             );
         });
 }
@@ -94,45 +94,58 @@ const getUserById = (req, res) => {
         })
         .catch((err) => {
             res.json(
-                {message: err.message}
+                { message: err.message }
             );
         });
 }
 
-const updateUser = function(req, res){
+const getUserByEmail = (req, res) => {
+    User
+        .findById(req.params.email)
+        .then((users) => {
+            res.json(users)
+        })
+        .catch((err) => {
+            res.json(
+                { message: err.message }
+            );
+        });
+}
+
+
+const updateUser = function (req, res) {
     console.log(req);
-     if (!req.body) {
-    return res.status(400).send({
-      message: "Data to update can not be empty!"
-    });
-  }
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Data to update can not be empty!"
+        });
+    }
     User.findByIdAndUpdate(
-       { 
-         _id: req.params.id
+        {
+            _id: req.params.id
         },
-    
+
         req.body,
-        {new: true},
-    
-        )
-        
-        .then((user)=>{
-            if(!user){
+        { new: true },
+
+    )
+
+        .then((user) => {
+            if (!user) {
                 res.status(404).send({
-                    message : `Couldn't update user with id ${req.params.id}`
+                    message: `Couldn't update user with id ${req.params.id}`
                 });
             }
-            else
-            {
-               
+            else {
+
                 res.status(201).send(user);
             }
-           
-        }).catch((err)=>{
+
+        }).catch((err) => {
             res.status(500).send({
-                message : `Error updating ${req.params.id}`
+                message: `Error updating ${req.params.id}`
             })
-        })   
+        })
 }
 
 
@@ -154,17 +167,18 @@ const deleteUser = (req, res) => {
 }
 
 const logout = (req, res) => {
-    const authToken=req.headers.authtoken;
-    jwt.sign(authToken, "", { expiresIn: 0.1 } , (logout, err) => {
+    const authToken = req.headers.authtoken;
+    jwt.sign(authToken, "", { expiresIn: 0.1 }, (logout, err) => {
         if (logout) {
-        res.send({msg : 'You have been Logged Out',
-            token:null
-    });
+            res.send({
+                msg: 'You have been Logged Out',
+                token: null
+            });
         } else {
-        res.send({msg:'Error'});
+            res.send({ msg: 'Error' });
         }
-        });
+    });
 
 };
 
-module.exports={register, getUsers, getUserById, deleteUser, login,logout, updateUser}; //EXPORT YOUR FUNCTIONS HERE
+module.exports = { register, getUsers, getUserById, deleteUser, login, logout, updateUser, getUserByEmail }; //EXPORT YOUR FUNCTIONS HERE
