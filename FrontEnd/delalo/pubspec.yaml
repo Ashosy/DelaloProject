@@ -31,8 +31,13 @@ dependencies:
   flutter_bloc: ^7.2.0
   http: ^0.13.3
   google_fonts: ^2.1.0
-  flutter_native_splash: 
+  flutter_native_splash:
   form_field_validator: ^1.1.0
+  givestarreviews: ^1.0.2
+  gradient_progress: ^0.0.1
+  slider_button: ^1.0.0
+  rating_dialog: ^2.0.1
+  prompt_dialog: ^1.0.5
 
 dev_dependencies:
   flutter_test:

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator. signupChoiceName,
+        initialRoute: RouteGenerator.ordersScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
