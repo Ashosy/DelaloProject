@@ -39,8 +39,11 @@ class LoginDataProvider {
       await SESSION.setString("role", toStore.role);
       await SESSION.setString("token", toStore.token);
       return;
+    } else if (response.statusCode == 400) {
+      throw LoginFailedException(errorText: response.body);
     } else {
-      throw LoginFailedException();
+      throw LoginFailedException(
+          errorText: "Connection error. Please try again");
     }
   }
 }
