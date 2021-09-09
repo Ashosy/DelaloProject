@@ -21,7 +21,7 @@ const {
 
 const { 
   orderPost,
-  orderget,
+  ordergetAll,
   ordergetById,
   orderDelete,
   orderUpdate,
@@ -75,7 +75,7 @@ router.get("/searchCategory",seachCategory);
 
 //order routes
 
-router.get("/order", orderget);
+router.get("/allOrders/:id", ordergetAll);
 router.post("/order", orderPost);
 router.get("/order/:id", ordergetById);
 router.delete("/order/:id", orderDelete);
