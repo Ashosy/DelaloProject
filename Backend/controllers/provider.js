@@ -54,10 +54,80 @@ const getProviderById = (req, res) => {
     });
 };
 
+const searchProviders= async function(req,res){
+  const keyword= req.body.keyword;
+  const perHourWage= req.body.per_hour_wage;
+  let rating= req.body.average_rating;
+  if(rating && perHourWage){
+    const providers= await models.fuzzySearch(keyword)
+    .find(
+      {
+        per_hour_wage:perHourWage,
+        average_rating:rating
+     
+     },function(err, result) {
+       if (err) {
+         return res.status(404).json({message:err})
+         
+       } else {
+           return res.status(200).json({result});
+         
+       }
+   });
+  }
+  else if(perHourWage){
+    const providers= await models.fuzzySearch(keyword)
+    .find(
+      {
+        per_hour_wage:perHourWage,
+       
+     },function(err, result) {
+       if (err) {
+         return res.status(404).json({message:err})
+         
+       } else {
+           return res.status(200).json({result});
+         
+       }
+   });
+  }
+
+  else if(rating){
+    const providers= await models.fuzzySearch(keyword)
+    .find(
+      {
+        
+        average_rating:rating
+     
+     },function(err, result) {
+       if (err) {
+         return res.status(404).json({message:err})
+         
+       } else {
+           return res.status(200).json({result});
+         
+       }
+   });
+  }
+
+  else{
+    const providers= await models.fuzzySearch(keyword,function(err, result) {
+       if (err) {
+         return res.status(404).json({message:err})
+         
+       } else {
+           return res.status(200).json({result});
+         
+       }
+   });
+  }
+  
+}
+
 
 // const getTopProviders = (req, res) => {
 //     models
 //         .average_rating
 // }
 
-module.exports = { postProvider, getProvider, getProviderById };
+module.exports = { postProvider, getProvider, getProviderById, searchProviders };

@@ -125,8 +125,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+  flutter_rating_bar:
+    dependency: transitive
+    description:
+      name: flutter_rating_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   flutter_test:
     dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -137,6 +149,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  givestarreviews:
+    dependency: "direct main"
+    description:
+      name: givestarreviews
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -144,6 +163,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  gradient_progress:
+    dependency: "direct main"
+    description:
+      name: gradient_progress
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   http:
     dependency: "direct main"
     description:
@@ -172,6 +198,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.3"
   matcher:
     dependency: transitive
     description:
@@ -270,6 +303,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.3"
+  prompt_dialog:
+    dependency: "direct main"
+    description:
+      name: prompt_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   provider:
     dependency: transitive
     description:
@@ -277,11 +317,67 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.0"
+  rating_dialog:
+    dependency: "direct main"
+    description:
+      name: rating_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  shared_preferences_macos:
+    dependency: transitive
+    description:
+      name: shared_preferences_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.99"
+  slider_button:
+    dependency: "direct main"
+    description:
+      name: slider_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   source_span:
     dependency: transitive
     description:
@@ -345,6 +441,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  vibration:
+    dependency: transitive
+    description:
+      name: vibration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.3"
+  vibration_web:
+    dependency: transitive
+    description:
+      name: vibration_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.2"
   win32:
     dependency: transitive
     description:

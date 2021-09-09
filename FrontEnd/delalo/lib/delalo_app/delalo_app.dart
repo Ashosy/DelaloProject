@@ -1,6 +1,7 @@
 import 'package:delalo/delalo_app/blocs/blocs.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
+import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +25,11 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        home: Scaffold(
+          drawer: NavigationDrawer(),
+        ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator. welcomeScreenName,
+        initialRoute: RouteGenerator.welcomeScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
