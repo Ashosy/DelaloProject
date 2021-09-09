@@ -1,43 +1,27 @@
-import 'package:delalo/delalo_app/models/models.dart';
+import 'package:delalo/delalo_app/models/category.dart';
 import 'package:equatable/equatable.dart';
+
 
 abstract class CategoryEvent extends Equatable {
   const CategoryEvent();
+}
+
+class LoadAllCategories extends CategoryEvent {
+  const LoadAllCategories();
 
   @override
+  // TO DO: implement props
   List<Object> get props => [];
 }
-//get category
-class CategoriesLoaded extends CategoryEvent {}
-//create category
-class CategoryAdded extends CategoryEvent {
+
+class AddCategory extends CategoryEvent {
   final Category category;
-  const CategoryAdded(this.category);
+  const AddCategory(this.category);
 
   @override
+  // TO DO: implement props
   List<Object> get props => [category];
 
   @override
-  String toString() => 'CategoryAdded {category: $category}';
-}
-// update category
-class CategoryUpdate extends CategoryEvent {
-  final Category category;
-  const CategoryUpdate(this.category);
-  @override
-  List<Object> get props => [category];
-
-  @override
-  String toString() => 'CategoryAdded {category: $category}';
-}
-// delete category
-class CategoryDelete extends CategoryEvent {
-  final Category category;
-  const CategoryDelete(this.category);
-
-  @override
-  List<Object> get props => [category];
-
-  @override
-  String toString() => 'Category Deleted {category: $category}';
+  String toString() => 'Added Category {category: $category}';
 }
