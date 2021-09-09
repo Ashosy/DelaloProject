@@ -1,5 +1,7 @@
 import 'package:delalo/delalo_app/blocs/blocs.dart';
+import 'package:delalo/delalo_app/models/models.dart';
 import 'package:delalo/delalo_app/repository/repository.dart';
+import 'package:delalo/delalo_app/screens/OrderJobScreens/activeJob.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
@@ -7,12 +9,35 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   OrderBloc({required this.orderRepository})
       : assert(orderRepository != null),
-        super(OrderLoading());
+        super(Loading());
 
   @override
   Stream<OrderState> mapEventToState(OrderEvent event) async* {
+    if (event is ProviderJobStatus) {
+      yield Loading();
+      try {
+        final activeJob = await orderRepository.getActiveJob(event.provider_id);
+
+        final pendingJobs =
+            await orderRepository.getPendingJobs(event.provider_id);
+
+        if (activeJob is OrderDetails) {
+          yield ActiveJobSuccess(activeJob, pendingJobs.length);
+        } else if (pendingJobs.length > 0 &&
+            pendingJobs[0] != "No Pending Jobs") {
+          yield PendingJobsLoadSuccess(pendingJobs);
+        } else {
+          yield PendingJobsLoadFailure();
+        }
+
+        // yield ActiveJobSuccess(job);
+      } catch (_) {
+        yield ActiveJobFailure();
+      }
+    }
+
     if (event is OrdersLoad) {
-      yield OrderLoading();
+      yield Loading();
       try {
         final orders = await orderRepository.getOrders();
 
@@ -22,7 +47,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       }
     }
     if (event is OrderLoad) {
-      yield OrderLoading();
+      yield Loading();
       try {
         final order = await orderRepository.getOrderById(event.seeker_id);
 

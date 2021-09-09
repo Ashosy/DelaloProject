@@ -20,6 +20,14 @@ class OrderLoad extends OrderEvent {
   List<Object> get props => [];
 }
 
+class ProviderJobStatus extends OrderEvent {
+  final String provider_id;
+  const ProviderJobStatus(this.provider_id);
+
+  @override
+  List<Object> get props => [];
+}
+
 class OrderCreate extends OrderEvent {
   final Order order;
 

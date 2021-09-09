@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'activeJob.dart';
 import 'historyJobs.dart';
-import 'pendingJobs.dart';
+import 'package:delalo/delalo_app/screens/OrderJobScreens/widgets/providerJob.dart';
 
 class JobsScreen extends StatelessWidget {
   static const String routeName = '/jobs';
@@ -30,7 +29,7 @@ class JobsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TabBarView(
               children: [
-                ActiveJob(),
+                ProviderJob(),
                 HistoryJobs(),
               ],
             ),

@@ -34,12 +34,12 @@ class OrderRepository {
     return await dataProvider.updateJobStatus(order, provider);
   }
 
-  Future<Order> getActiveJob(User provider) async {
-    return await dataProvider.getActiveJob(provider);
+  Future<dynamic> getActiveJob(String provider_id) async {
+    return await dataProvider.getActiveJob(provider_id);
   }
 
-  Future<List<OrderDetails>> getPendingJobs(User provider) async {
-    return await dataProvider.getPendingJobs(provider);
+  Future<List<dynamic>> getPendingJobs(String provider_id) async {
+    return await dataProvider.getPendingJobs(provider_id);
   }
 
   Future<List<OrderDetails>> getDeclinedJobs(User provider) async {

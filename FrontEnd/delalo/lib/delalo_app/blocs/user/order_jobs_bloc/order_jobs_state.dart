@@ -8,7 +8,30 @@ class OrderState extends Equatable {
   List<Object> get props => [];
 }
 
-class OrderLoading extends OrderState {}
+class Loading extends OrderState {}
+
+class ActiveJobSuccess extends OrderState {
+  final OrderDetails activeJob;
+  final int pendingOrdersLength;
+
+  ActiveJobSuccess(this.activeJob, this.pendingOrdersLength);
+
+  @override
+  List<Object> get props => [activeJob];
+}
+
+class ActiveJobFailure extends OrderState {}
+
+class PendingJobsLoadSuccess extends OrderState {
+  final List<dynamic> pendingJobs;
+
+  PendingJobsLoadSuccess([this.pendingJobs = const []]);
+
+  @override
+  List<Object> get props => [pendingJobs];
+}
+
+class PendingJobsLoadFailure extends OrderState {}
 
 class OrderLoadSuccess extends OrderState {
   final Order order;

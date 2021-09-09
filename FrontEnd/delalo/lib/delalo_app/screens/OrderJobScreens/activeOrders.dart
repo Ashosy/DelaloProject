@@ -18,7 +18,7 @@ class ActiveOrders extends StatelessWidget {
       body: Center(
         child: BlocBuilder<OrderBloc, OrderState>(
           builder: (_, orderState) {
-            if (orderState is OrderLoading) {
+            if (orderState is Loading) {
               return CircularProgressIndicator();
             }
 
