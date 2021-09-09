@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:delalo/delalo_app/screens/OrderJobScreens/widgets/rowTitle.dart';
 import 'package:delalo/delalo_app/screens/OrderJobScreens/widgets/rowContent.dart';
 
-import 'package:slider_button/slider_button.dart';
+// import 'package:slider_button/slider_button.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 

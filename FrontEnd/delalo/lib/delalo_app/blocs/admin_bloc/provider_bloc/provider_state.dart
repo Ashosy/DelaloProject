@@ -1,24 +1,17 @@
-import 'package:delalo/delalo_app/models/models.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class ProviderState extends Equatable {
-  const ProviderState();
-  @override
+abstract class ProvidersState extends Equatable {
+  const ProvidersState();
+    @override
   List<Object> get props => [];
 }
 
-class ProvidersLoadInProgress extends ProviderState {
-} //state fetching users providers from repository
-
-class ProviderLoadSuccess extends ProviderState {
-  //state after users providers have succecfully been loaded
-  final List<User> providers;
-
-  const ProviderLoadSuccess([this.providers = const []]);
+class ProviderLoading extends ProvidersState{}
+class ProviderLoaded extends ProvidersState{
+  final List<dynamic> providers;
+  ProviderLoaded([this.providers = const []]);
   @override
   List<Object> get props => [providers];
-
-  
 }
 
-class ProviderLoadFailiure extends ProviderState{}
+class ProvidersOperationsFailed extends ProvidersState{}

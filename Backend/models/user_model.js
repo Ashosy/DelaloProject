@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const mongoose_fuzzy_searching = require("custom-mongoose-fuzzy-searching");
 const schema = mongoose.Schema;
 const userSchema = new schema(
   {
@@ -63,4 +63,5 @@ const userSchema = new schema(
   { collection: "user" }
 );
 
+userSchema.plugin(mongoose_fuzzy_searching,{fields:['firstname','lastname','address']})
 module.exports = mongoose.model("user", userSchema);
