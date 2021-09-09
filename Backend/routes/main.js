@@ -16,6 +16,7 @@ const {
   postProvider,
   getProvider,
   getProviderById,
+  searchProviders
 } = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
 const { 
@@ -62,6 +63,7 @@ router.get("/logout",verify, logout);
 router.post("/provider", postProvider);
 router.get("/provider", getProvider);
 router.get("/provider/:id", getProviderById);
+router.get("/searchProviders",searchProviders);
 
 //category routes
 router.get("/category", getCategories);
