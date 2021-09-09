@@ -19,3 +19,15 @@ class SignupUserFailedException implements Exception {
     return errorText;
   }
 }
+
+
+class SignupProviderFailedException implements Exception {
+  final String errorText;
+
+  SignupProviderFailedException({required this.errorText});
+
+  @override
+  String toString() {
+    return errorText;
+  }
+}
