@@ -19,4 +19,4 @@ class UserLoadSuccess extends UserState {
   List<Object> get props => [user];
 }
 
-class CourseOperationFailure extends UserState {}
+class UserOperationFailure extends UserState {}
