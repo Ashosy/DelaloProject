@@ -10,27 +10,27 @@ class UserEditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile Page"),
+        title: Text("Edit Profile"),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.purple,
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+            //   child: InkWell(
+            //     onTap: () {
+            //       Navigator.pop(context);
+            //     },
+            //     child: Icon(
+            //       Icons.arrow_back,
+            //       color: Colors.purple,
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 55.0, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 55.0, vertical: 22),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

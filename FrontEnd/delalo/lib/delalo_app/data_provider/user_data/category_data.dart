@@ -22,6 +22,7 @@ class CategoryDataProvider {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    
 
     if (response.statusCode == 200) {
       Iterable Categories = jsonDecode(response.body);

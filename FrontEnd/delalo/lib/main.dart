@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: CategoryPage(),
-      //AccountPage(
+      // AccountPage(
       //     userInfo: UserInfo(
       //   "Janine Doe",
       //   "janine@doe.com",
