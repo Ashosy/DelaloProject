@@ -23,10 +23,11 @@ const login = async (req, res) => {
     }, process.env.TOKEN_SECRET)
     const userStore = {
         role: user.role,
+        id: user._id,
         token: token
     };
 
-    res.status(200).header('authToken', token).send(userStore);
+    res.status(200).send(userStore);
 };
 
 const register = async (req, res) => {
@@ -63,11 +64,11 @@ const register = async (req, res) => {
                 _id: result._id
             }, process.env.TOKEN_SECRET);
             const postResult = {
-                user: result,
-                message: `User with email ${usersList.email} was created`,
+                id: result._id,
+                role: result.role,
                 token: token
             };
-            res.header('authToken', token).send(postResult);
+            res.status(200).send(postResult);
         })
         .catch((err) => {
             console.log(err);

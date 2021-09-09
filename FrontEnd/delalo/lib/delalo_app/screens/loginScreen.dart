@@ -1,4 +1,4 @@
-import 'package:delalo/delalo_app/blocs/auth_bloc/login_bloc.dart';
+import 'package:delalo/delalo_app/blocs/auth_bloc/login_bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -37,7 +37,6 @@ class _LoginFormState extends State<LoginForm> {
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (_, state) {
           if (state is LoginFailure) {
-            print("it got here...login failure status");
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),

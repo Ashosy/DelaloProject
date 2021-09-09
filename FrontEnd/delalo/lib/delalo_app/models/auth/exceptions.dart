@@ -8,3 +8,14 @@ class LoginFailedException implements Exception {
     return errorText;
   }
 }
+
+class SignupUserFailedException implements Exception {
+  final String errorText;
+
+  SignupUserFailedException({required this.errorText});
+
+  @override
+  String toString() {
+    return errorText;
+  }
+}
