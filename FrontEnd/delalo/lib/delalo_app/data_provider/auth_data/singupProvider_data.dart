@@ -20,7 +20,7 @@ class SignupProviderDataProvider {
   }
 
   Future<void> signupProvider(SignupProvider signup) async {
-    final URL = Uri.http(_baseUrl, "/users");
+    final URL = Uri.http(_baseUrl, "/provider");
     print(signup.email);
     print(signup.password);
     print(signup.firstname);
@@ -29,6 +29,10 @@ class SignupProviderDataProvider {
     print(signup.phone);
     print(signup.image);
     print(signup.role);
+    print(signup.category);
+    print(signup.description);
+    print(signup.perHourWage);
+    print(signup.recommendation);
     print(URL);
 
     try {
@@ -44,8 +48,15 @@ class SignupProviderDataProvider {
             'address': signup.address,
             'phone': signup.phone,
             'image': signup.image,
-            'role': signup.role
+            'role': signup.role,
+            'description': signup.description,
+            'category': signup.category,
+            'jobs_done': 0,
+            'per_hour_wage': signup.perHourWage,
+            'recommendation': signup.recommendation,
+            'average_rating': 0
           }));
+
       if (response.statusCode == 200) {
         var signedUpProvider = UserStore.fromJson(jsonDecode(response.body));
 
@@ -63,14 +74,16 @@ class SignupProviderDataProvider {
 
         return;
       } else if (response.statusCode == 400) {
+        print(response.statusCode);
+        print(response.body);
         throw SignupProviderFailedException(errorText: response.body);
       } else {
         throw SignupProviderFailedException(
-            errorText: "Connection error. Please try again");
+            errorText: "Connection error. Please try again!");
       }
-    } on TypeError catch (e) {
+    } catch (e) {
       throw SignupProviderFailedException(
-          errorText: "Can not connect to internet ${e.runtimeType} add ${e}");
+          errorText: "Connection error. Please try again!");
     }
   }
 }

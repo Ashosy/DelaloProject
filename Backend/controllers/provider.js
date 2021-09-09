@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 
-const postProvider = (req, res) => {
-  const emailExist = await User.findOne({ email: req.body.email });
+const postProvider = async (req, res) => {
+  console.log("this got here");
+  const emailExist = await models.findOne({ email: req.body.email });
   if (emailExist) {
     return res.status(400).send('Email already exists');
   }

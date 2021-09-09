@@ -63,7 +63,7 @@ class _SignupUserFormState extends State<SignupUserForm> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
-                duration: Duration(seconds: 3),
+                duration: Duration(seconds: 4),
               ),
             );
             print(state.error);

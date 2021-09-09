@@ -7,6 +7,11 @@ class SignupProvider {
   final String phone;
   final String image;
   final String address;
+  final String description;
+  final String category;
+  final String recommendation;
+  final int perHourWage;
+
 
   SignupProvider(
       {required this.email,
@@ -16,5 +21,9 @@ class SignupProvider {
       required this.role,
       required this.phone,
       required this.image,
-      required this.address});
+      required this.address,
+      required this.description,
+      required this.category,
+      required this.recommendation,
+      required this.perHourWage});
 }

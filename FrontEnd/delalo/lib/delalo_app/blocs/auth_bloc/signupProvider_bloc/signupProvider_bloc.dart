@@ -14,6 +14,7 @@ class SignupProviderBloc extends Bloc<SignupProviderEvent, SignupProviderState> 
   Stream<SignupProviderState> mapEventToState(SignupProviderEvent event) async* {
     if (event is SignupProviderFormSubmitted) {
       yield SignupProviderLoading();
+      await Future.delayed(Duration(milliseconds: 500));
 
       try {
         SignupProvider providerToSignup = SignupProvider(
@@ -24,7 +25,11 @@ class SignupProviderBloc extends Bloc<SignupProviderEvent, SignupProviderState> 
           firstname: event.firstname,
           lastname: event.lastname,
           role: event.role,
-          image: event.image
+          image: event.image,
+          description: event.description,
+          category: event.category,
+          recommendation: event.recommendation,
+          perHourWage: event.perHourWage
         );
 
         await signupProviderRepository.signupProvider(providerToSignup);
