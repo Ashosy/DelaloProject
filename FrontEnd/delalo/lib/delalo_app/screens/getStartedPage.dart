@@ -86,7 +86,9 @@ class GetStartedScreen extends StatelessWidget {
                         width: 150,
                         height: 40,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                             Navigator.of(context).pushNamed(RouteGenerator.loginScreenName);
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.white),
