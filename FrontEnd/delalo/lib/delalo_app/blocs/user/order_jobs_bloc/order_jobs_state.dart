@@ -10,6 +10,41 @@ class OrderState extends Equatable {
 
 class Loading extends OrderState {}
 
+class JobStatusChanged extends OrderState {
+  JobStatusChanged();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AcceptJobSuccess extends OrderState {
+  AcceptJobSuccess();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AcceptJobFailure extends OrderState {
+  AcceptJobFailure();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeclineJobSuccess extends OrderState {
+  DeclineJobSuccess();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeclineJobFailure extends OrderState {
+  DeclineJobFailure();
+
+  @override
+  List<Object> get props => [];
+}
+
 class ActiveJobSuccess extends OrderState {
   final OrderDetails activeJob;
   final int pendingOrdersLength;

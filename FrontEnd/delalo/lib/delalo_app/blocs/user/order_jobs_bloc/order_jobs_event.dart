@@ -5,6 +5,22 @@ abstract class OrderEvent extends Equatable {
   const OrderEvent();
 }
 
+class AcceptJob extends OrderEvent {
+  final String order_id;
+  const AcceptJob(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeclineJob extends OrderEvent {
+  final String order_id;
+  const DeclineJob(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
 class OrdersLoad extends OrderEvent {
   const OrdersLoad();
 

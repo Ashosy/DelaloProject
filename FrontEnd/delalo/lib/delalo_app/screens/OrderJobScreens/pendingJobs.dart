@@ -3,16 +3,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PendingJobs extends StatelessWidget {
+class PendingJobs extends StatefulWidget {
   PendingJobs({Key? key}) : super(key: key);
 
   @override
+  _PendingJobsState createState() => _PendingJobsState();
+}
+
+class _PendingJobsState extends State<PendingJobs> {
+  @override
   Widget build(BuildContext context) {
-    // final orderBloc = BlocProvider.of<OrderBloc>(context);
+    final orderBloc = BlocProvider.of<OrderBloc>(context);
 
     return Scaffold(
       body: Center(
-        child: BlocBuilder<OrderBloc, OrderState>(
+        child: BlocConsumer<OrderBloc, OrderState>(
+          listener: (ctx, orderState) {},
           builder: (_, orderState) {
             if (orderState is Loading) {
               return CircularProgressIndicator();
@@ -25,12 +31,14 @@ class PendingJobs extends StatelessWidget {
                 itemCount: pendingJobs.length,
                 itemBuilder: (context, index) {
                   final job = pendingJobs[index];
+                  final userName =
+                      job.user!.firstname + " " + job.user!.lastname;
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundImage: AssetImage('assets/images/user.png'),
                     ),
                     title: Text(
-                      job.order.id,
+                      userName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -39,7 +47,7 @@ class PendingJobs extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Category Type'),
+                          Text(job.provider!.category),
                         ],
                       ),
                     ),
@@ -48,38 +56,52 @@ class PendingJobs extends StatelessWidget {
                       width: 120,
                       child: Row(
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                              ), // icon
-                              Text(
-                                'Accept',
-                                style: TextStyle(
+                          GestureDetector(
+                            onTap: () {
+                              orderBloc.add(
+                                AcceptJob(job.order.id),
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.check_circle,
                                   color: Colors.green,
-                                ),
-                              ), // text
-                            ],
+                                ), // icon
+                                Text(
+                                  'Accept',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  ),
+                                ), // text
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: 15,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.remove_circle,
-                                color: Colors.red,
-                              ), // icon
-                              Text(
-                                'Decline',
-                                style: TextStyle(
+                          GestureDetector(
+                            onTap: () {
+                              orderBloc.add(
+                                DeclineJob(job.order.id),
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.remove_circle,
                                   color: Colors.red,
-                                ),
-                              ), // text
-                            ],
+                                ), // icon
+                                Text(
+                                  'Decline',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ), // text
+                              ],
+                            ),
                           ),
                         ],
                       ),

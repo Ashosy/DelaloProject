@@ -30,8 +30,8 @@ class OrderRepository {
     return await dataProvider.getAllJobs(provider);
   }
 
-  Future<void> updateJobStatus(Order order, User provider) async {
-    return await dataProvider.updateJobStatus(order, provider);
+  Future<dynamic> updateJobStatus(String order_id, String status) async {
+    return await dataProvider.updateJobStatus(order_id, status);
   }
 
   Future<dynamic> getActiveJob(String provider_id) async {

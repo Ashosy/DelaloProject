@@ -13,6 +13,43 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   @override
   Stream<OrderState> mapEventToState(OrderEvent event) async* {
+    if (event is AcceptJob) {
+      yield Loading();
+      try {
+        final resStatus =
+            await orderRepository.updateJobStatus(event.order_id, "active");
+
+        if (resStatus == 201) {
+          print("job accepted");
+          yield AcceptJobSuccess();
+        } else {
+          yield AcceptJobFailure();
+        }
+
+        // yield ActiveJobSuccess(job);
+      } catch (_) {
+        yield ActiveJobFailure();
+      }
+    }
+    if (event is DeclineJob) {
+      yield Loading();
+      try {
+        final resStatus =
+            await orderRepository.updateJobStatus(event.order_id, "declined");
+
+        if (resStatus == 201) {
+          print("job declined");
+          yield DeclineJobSuccess();
+        } else {
+          yield DeclineJobFailure();
+        }
+
+        // yield ActiveJobSuccess(job);
+      } catch (_) {
+        yield ActiveJobFailure();
+      }
+    }
+
     if (event is ProviderJobStatus) {
       yield Loading();
       try {

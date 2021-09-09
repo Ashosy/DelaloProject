@@ -107,23 +107,23 @@ class OrderDataProvider {
     }
   }
 
-  Future<void> updateJobStatus(Order job, User provider) async {
-    final http.Response response = await httpClient.put(
-      Uri(path: '$_baseUrl/updateStatus', queryParameters: <String, dynamic>{
-        'provider_id': provider.id,
-        '_id': job.id
-      }),
+  Future<dynamic> updateJobStatus(String order_id, String status) async {
+    final response = await httpClient.put(
+      generateUri('updateStatus/${order_id}'),
       headers: <String, String>{
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'status': job.status,
+        'status': status,
       }),
     );
 
     if (response.statusCode != 204) {
       throw Exception('Failed to update job status.');
     }
+    return response.statusCode;
   }
 
   Future<dynamic> getActiveJob(String provider_id) async {
