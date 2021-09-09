@@ -7,3 +7,4 @@ export 'userOnly.dart';
 export 'auth/login.dart';
 export 'auth/user_store.dart';
 export 'auth/exceptions.dart';
+export 'auth/signup.dart';

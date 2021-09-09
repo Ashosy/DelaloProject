@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginDataProvider {
-  final _baseUrl = "localhost:3000";
+class SignupUserDataProvider {
+  final _baseUrl = "10.0.2.2:3000";
   final http.Client httpClient;
   static late SharedPreferences SESSION;
 
-  // final URL = Uri.parse('http://10.6.201.36:3000/login');
-
-  LoginDataProvider({required this.httpClient}) {
+  SignupUserDataProvider({required this.httpClient}) {
     getSharedPrefernce();
   }
 
@@ -21,14 +19,16 @@ class LoginDataProvider {
     SESSION = await SharedPreferences.getInstance();
   }
 
-  Uri generateUri(path) {
-    return Uri.http(_baseUrl, path);
-  }
-
-  Future<void> login(Login login) async {
-    final URL = Uri.http("10.0.2.2:3000", "/login");
-    print(login.email);
-    print(login.password);
+  Future<void> signupUser(SignupUser signup) async {
+    final URL = Uri.http(_baseUrl, "/users");
+    print(signup.email);
+    print(signup.password);
+    print(signup.firstname);
+    print(signup.lastname);
+    print(signup.address);
+    print(signup.phone);
+    print(signup.image);
+    print(signup.role);
     print(URL);
 
     try {
@@ -37,16 +37,23 @@ class LoginDataProvider {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, dynamic>{
-            'email': login.email,
-            'password': login.password
+            'email': signup.email,
+            'password': signup.password,
+            'firstname': signup.firstname,
+            'lastname': signup.lastname,
+            'address': signup.address,
+            'phone': signup.phone,
+            'image': signup.image,
+            'role': signup.role
           }));
       if (response.statusCode == 200) {
-        var toStore = UserStore.fromJson(jsonDecode(response.body));
-        print(toStore.role);
-        await SESSION.setString("email", login.email);
-        await SESSION.setString("role", toStore.role);
-        await SESSION.setString("token", toStore.token);
-        await SESSION.setString('id', toStore.id);
+        var signedUpUser = UserStore.fromJson(jsonDecode(response.body));
+
+        print(signedUpUser.role);
+        await SESSION.setString("email", signup.email);
+        await SESSION.setString('id', signedUpUser.id);
+        await SESSION.setString("role", signedUpUser.role);
+        await SESSION.setString("token", signedUpUser.token);
 
         // this is for debugging
         print(SESSION.getString('email'));
@@ -56,13 +63,13 @@ class LoginDataProvider {
 
         return;
       } else if (response.statusCode == 400) {
-        throw LoginFailedException(errorText: response.body);
+        throw SignupUserFailedException(errorText: response.body);
       } else {
-        throw LoginFailedException(
+        throw SignupUserFailedException(
             errorText: "Connection error. Please try again");
       }
     } on TypeError catch (e) {
-      throw LoginFailedException(
+      throw SignupUserFailedException(
           errorText: "Can not connect to internet ${e.runtimeType} add ${e}");
     }
   }
