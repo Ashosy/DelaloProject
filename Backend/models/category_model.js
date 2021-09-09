@@ -7,6 +7,7 @@ const categorySchema = new schema(
     name: {
       type: String,
       required: true,
+      unique: true 
     },
     image: {
       type: String,
