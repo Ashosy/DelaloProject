@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:delalo/delalo_app/models/models.dart';
+import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,11 +10,14 @@ class LoginDataProvider {
   final http.Client httpClient;
   static late SharedPreferences SESSION;
 
+  // final URL = Uri.parse('http://10.6.201.36:3000/login');
+
   LoginDataProvider({required this.httpClient}) {
     getSharedPrefernce();
   }
 
   static Future getSharedPrefernce() async {
+    WidgetsFlutterBinding.ensureInitialized();
     SESSION = await SharedPreferences.getInstance();
   }
 
@@ -22,28 +26,43 @@ class LoginDataProvider {
   }
 
   Future<void> login(Login login) async {
-    final response = await httpClient.post(Uri(path: '$_baseUrl/login'),
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'email': login.email,
-          'password': login.password
-        }));
+    final URL = Uri.http("10.0.2.2:3000", "/login");
+    print(login.email);
+    print(login.password);
+    print(URL);
 
-    if (response.statusCode == 200) {
-      var toStore = jsonDecode(response.body);
-      await SESSION.setString("email", login.email);
-      await SESSION.setString("role", toStore.role);
-      await SESSION.setString("token", toStore.token);
-      return;
-    } else if (response.statusCode == 400) {
-      throw LoginFailedException(errorText: response.body);
-    } else {
+    try {
+      final response = await httpClient.post(URL,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            'email': login.email,
+            'password': login.password
+          }));
+      if (response.statusCode == 200) {
+        var toStore = UserStore.fromJson(jsonDecode(response.body));
+        print(toStore.role);
+        await SESSION.setString("email", login.email);
+        await SESSION.setString("role", toStore.role);
+        await SESSION.setString("token", toStore.token);
+
+        // this is for debugging
+        print(SESSION.getString('email'));
+        print(SESSION.getString('token'));
+        print(SESSION.getString('role'));
+
+        
+        return;
+      } else if (response.statusCode == 400) {
+        throw LoginFailedException(errorText: response.body);
+      } else {
+        throw LoginFailedException(
+            errorText: "Connection error. Please try again");
+      }
+    } on TypeError catch (e) {
       throw LoginFailedException(
-          errorText: "Connection error. Please try again");
-    }
+          errorText: "Can not connect to internet ${e.runtimeType} add ${e}");
+    } 
   }
 }

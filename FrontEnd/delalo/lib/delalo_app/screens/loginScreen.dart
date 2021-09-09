@@ -21,8 +21,8 @@ class _LoginFormState extends State<LoginForm> {
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'password is required'),
     MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-        errorText: 'passwords must have at least one special character')
+    // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+    //     errorText: 'passwords must have at least one special character')
   ]);
 
   final emailValidator = MultiValidator([
@@ -37,15 +37,16 @@ class _LoginFormState extends State<LoginForm> {
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (_, state) {
           if (state is LoginFailure) {
+            print("it got here...login failure status");
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Processing Data'),
+              SnackBar(
+                content: Text(state.error),
                 duration: Duration(seconds: 3),
               ),
             );
-          }
-          else if (state is LoginSuccess) {
-             Navigator.of(context).pushNamed(RouteGenerator.singleProviderPageName);
+            print(state.error);
+          } else if (state is LoginSuccess) {
+            Navigator.of(context).pushNamed(RouteGenerator.singleProviderPageName);
           }
         },
         builder: (context, state) {
@@ -162,14 +163,13 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        
-                        (state is LoginLoading) 
-                        ? CircularProgressIndicator()
-                        : SizedBox(),
 
-                        
+                        (state is LoginLoading)
+                            ? CircularProgressIndicator()
+                            : SizedBox(),
+
                         SizedBox(height: 10),
-                        
+
                         // Don't have an account? option
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
