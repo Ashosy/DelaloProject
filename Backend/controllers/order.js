@@ -238,7 +238,7 @@ const getAllJobs = async (req,res) =>{
                 // console.log(lst)
             });
 
-            res.send(lst);
+            res.status(200).send(lst);
         };
 
         toList();
@@ -319,7 +319,7 @@ const getActiveJob = async (req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -370,7 +370,7 @@ const getPendingJobs = async(req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -420,7 +420,7 @@ const getDeclinedJobs = async (req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -470,7 +470,7 @@ const getCompletedJobs = async (req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
