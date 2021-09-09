@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'delalo_app/screens/allScreens.dart';
 
 class RouteGenerator {
-  static const String welcomeScreenName = "/";
+  static const String welcomeScreenName = "/welcomescreen";
   static const String getStartedScreenName = "/getStartedScreen";
   static const String signupChoiceName = "/signUpChoiceScreen";
   static const String singleProviderPageName = "/singleProviderPage";

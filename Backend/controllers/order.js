@@ -13,16 +13,130 @@ const time_now_calc = `${timeS.getHours()}` + `${timeS.getMinutes()}` +`${timeS.
 
 const orderdate = new Date(timeS.getTime()); 
 
+async function asyncForEach(jobs,callback){
+    for (let i=0;i<jobs.length;i++){
+        await callback(jobs[i],i,jobs);
+    };
+};
+
+
 //get all orders
-const orderget = function(req, res){
-    Order.find()
+const ordergetAllCompleted = function(req, res){
+    Order.find({is_completed:true})
         .then((orders)=>{
             if(!orders){ 
                 res.status(404)
-                .send({message: `Couldn't Find`});
+                .json({message: `Couldn't find order!`});
             }
             else
-           { res.status(200).json(orders);}
+           {  
+            if(orders.length!=0){
+                let lst=[];
+                 const toList= async()=>{
+                    await asyncForEach(orders,async(order)=>{
+                        const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                    if(err){
+                                        return err
+                                    }else if (userObj){
+                                        return userObj
+                                    }else{
+                                        return null
+                                    }
+                                });
+        
+                        const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+                        
+                        lst.push({
+                                "User":JSON.parse(JSON.stringify(findUser))[0],
+                                "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                                "Order":order,
+                            });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+        
+            }
+            else{
+                res.status(400).send("No completed orders to show");
+           }
+            
+           }
+        })
+        .catch((err) => {
+            res.json(
+                {message: err.message}
+            );
+        });
+
+};
+
+
+const ordergetAll = function(req, res){
+    Order.find({seeker_id:req.params.id})
+        .then((orders)=>{
+            if(!orders){ 
+                res.status(404)
+                .json({message: `Couldn't find order!`});
+            }
+            else
+           {  
+            if(orders.length!=0){
+                let lst=[];
+                 const toList= async()=>{
+                    await asyncForEach(orders,async(order)=>{
+                        const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                    if(err){
+                                        return err
+                                    }else if (userObj){
+                                        return userObj
+                                    }else{
+                                        return null
+                                    }
+                                });
+        
+                        const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+                        
+                        lst.push({
+                                "User":JSON.parse(JSON.stringify(findUser))[0],
+                                "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                                "Order":order,
+                            });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+        
+            }
+            else{
+                res.status(400).send("No orders to show");
+           }
+            
+           }
         })
         .catch((err) => {
             res.json(
@@ -81,6 +195,210 @@ const orderPost = function(req, res){
             {message: err.message}
         );
     })
+};
+
+const getActiveOrder= async function(req,res){
+    try{
+        const orders= await Order.find({seeker_id:req.params.id,status:"active"});
+        let lst=[];
+        if(orders.length!=0){
+            const toList= async()=>{
+                await asyncForEach(orders,async(order)=>{
+                    const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":order,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+            
+        }
+        else{
+            res.status(400).send("No active orders!");
+        }
+
+    }catch(err){
+        console.log("Error finding an active order: ",err);
+    }
+}
+
+const getPendingOrders= async function(req,res){
+    try{
+        const orders= await Order.find({seeker_id:req.params.id,status:"pending"});
+        let lst=[];
+        if(orders.length!=0){
+            const toList= async()=>{
+                await asyncForEach(orders,async(order)=>{
+                    const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":order,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+            
+        }
+        else{
+            res.status(400).send("No pending orders!");
+        }
+
+    }catch(err){
+        console.log("Error finding pending orders: ",err);
+    }
+}
+
+const getDeclinedOrders= async function(req,res){
+    try{
+        const orders= await Order.find({seeker_id:req.params.id,status:"declined"});
+        let lst=[];
+        if(orders.length!=0){
+            const toList= async()=>{
+                await asyncForEach(orders,async(order)=>{
+                    const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":order,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+            
+        }
+        else{
+            res.status(400).send("No declined orders!");
+        }
+
+    }catch(err){
+        console.log("Error finding declined orders: ",err);
+    }
+}
+
+const getCompletedOrders= async function(req,res){
+    try{
+        const orders= await Order.find({seeker_id:req.params.id,is_completed:true});
+        let lst=[];
+        if(orders.length!=0){
+            const toList= async()=>{
+                await asyncForEach(orders,async(order)=>{
+                    const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                if(err){
+                                    return err
+                                }else if (userObj){
+                                    return userObj
+                                }else{
+                                    return null
+                                }
+                            });
+    
+                    const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
+                    lst.push({
+                            "User":JSON.parse(JSON.stringify(findUser))[0],
+                            "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                            "Order":order,
+                        });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+            
+        }
+        else{
+            res.status(400).send("No completed orders!");
+        }
+
+    }catch(err){
+        console.log("Error finding completed orders: ",err);
+    }
 }
 
 //update order using seeker id
@@ -195,11 +513,6 @@ const orderDelete = function(req, res){
 };
 
 
-async function asyncForEach(jobs,callback){
-    for (let i=0;i<jobs.length;i++){
-        await callback(jobs[i],i,jobs);
-    };
-};
 
 const getAllJobs = async (req,res) =>{
     try{
@@ -238,7 +551,7 @@ const getAllJobs = async (req,res) =>{
                 // console.log(lst)
             });
 
-            res.send(lst);
+            res.status(200).send(lst);
         };
 
         toList();
@@ -319,7 +632,7 @@ const getActiveJob = async (req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -370,7 +683,7 @@ const getPendingJobs = async(req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -420,7 +733,7 @@ const getDeclinedJobs = async (req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -470,7 +783,7 @@ const getCompletedJobs = async (req,res)=>{
                     // console.log(lst)
                 });
     
-                res.status(400).send(lst);
+                res.status(200).send(lst);
             };
     
             toList();
@@ -485,10 +798,15 @@ const getCompletedJobs = async (req,res)=>{
 };
 
 module.exports={orderPost,
-                orderget, 
+                ordergetAll, 
                 ordergetById, 
                 orderDelete,
                 orderUpdate,
+                ordergetAllCompleted,
+                getActiveOrder,
+                getPendingOrders,
+                getDeclinedOrders,
+                getCompletedOrders,
                 getAllJobs,
                 updateJobStatus,
                 getActiveJob,

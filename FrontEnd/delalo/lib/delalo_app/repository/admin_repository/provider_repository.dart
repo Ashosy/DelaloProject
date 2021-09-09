@@ -4,8 +4,9 @@ import 'package:delalo/delalo_app/models/user.dart';
 class AdminProviderRepository {
   final AdminProviderDataProvider providerDataProvider;
   AdminProviderRepository({required this.providerDataProvider})
-      : assert(providerDataProvider != null);
+     ;
   Future<List<User>> getProvidersFromProvider() async {
+    print("This is on provider repository file");
     return await providerDataProvider.getProvidersFromProvider();
   }
 
