@@ -1,18 +1,15 @@
+import 'package:delalo/delalo_app/screens/edit_profile_user.dart';
 import 'package:flutter/material.dart';
+import 'package:delalo/main.dart';
 
 const appName = "Account Page";
 const infostyle =
     TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold);
 const detailstyle = TextStyle(fontSize: 17);
 
-class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
-
-  @override
-  _AccountPageState createState() => _AccountPageState();
-}
-
-class _AccountPageState extends State<AccountPage> {
+class AccountPage extends StatelessWidget {
+  const AccountPage({Key? key, required this.userInfo}) : super(key: key);
+  final UserInfo userInfo;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -39,27 +36,37 @@ class _AccountPageState extends State<AccountPage> {
                     color: Colors.white),
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              height: 60,
-              color: Colors.purple[200],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Edit Profile",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserEditProfile(user: userInfo),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    Icons.edit,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                ],
+                );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                color: Colors.purple[200],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Edit Profile",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      Icons.edit,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
@@ -95,7 +102,7 @@ class _AccountPageState extends State<AccountPage> {
                           style: detailstyle,
                         ),
                         Text(
-                          "Janine Doe",
+                          userInfo.name,
                           style: infostyle,
                         ),
                       ]),
@@ -108,7 +115,7 @@ class _AccountPageState extends State<AccountPage> {
                           style: detailstyle,
                         ),
                         Text(
-                          "janine@doe.com",
+                          userInfo.email,
                           style: infostyle,
                         ),
                       ]),
@@ -121,7 +128,7 @@ class _AccountPageState extends State<AccountPage> {
                           style: detailstyle,
                         ),
                         Text(
-                          "0977835613",
+                          userInfo.phoneNo,
                           style: infostyle,
                         ),
                       ]),
@@ -134,7 +141,7 @@ class _AccountPageState extends State<AccountPage> {
                           style: detailstyle,
                         ),
                         Text(
-                          "Addis Ababa, 5 kilo",
+                          userInfo.address,
                           style: infostyle,
                         ),
                       ]),
