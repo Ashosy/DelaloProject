@@ -21,6 +21,69 @@ async function asyncForEach(jobs,callback){
 
 
 //get all orders
+const ordergetAllCompleted = function(req, res){
+    Order.find({is_completed:true})
+        .then((orders)=>{
+            if(!orders){ 
+                res.status(404)
+                .json({message: `Couldn't find order!`});
+            }
+            else
+           {  
+            if(orders.length!=0){
+                let lst=[];
+                 const toList= async()=>{
+                    await asyncForEach(orders,async(order)=>{
+                        const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                    if(err){
+                                        return err
+                                    }else if (userObj){
+                                        return userObj
+                                    }else{
+                                        return null
+                                    }
+                                });
+        
+                        const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+                        
+                        lst.push({
+                                "User":JSON.parse(JSON.stringify(findUser))[0],
+                                "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                                "Order":order,
+                            });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+        
+            }
+            else{
+                res.status(400).send("No completed orders to show");
+           }
+            
+           }
+        })
+        .catch((err) => {
+            res.json(
+                {message: err.message}
+            );
+        });
+
+};
+
+
 const ordergetAll = function(req, res){
     Order.find({seeker_id:req.params.id})
         .then((orders)=>{
@@ -739,6 +802,7 @@ module.exports={orderPost,
                 ordergetById, 
                 orderDelete,
                 orderUpdate,
+                ordergetAllCompleted,
                 getActiveOrder,
                 getPendingOrders,
                 getDeclinedOrders,
