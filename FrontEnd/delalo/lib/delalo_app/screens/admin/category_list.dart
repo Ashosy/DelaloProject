@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'category_add.dart';
 
-
 class AdminCategoryList extends StatefulWidget {
   static const routeName = '/';
   // final CategoryArgument args;
@@ -24,19 +23,15 @@ class _AdminCategoryListState extends State<AdminCategoryList> {
 
   @override
   Widget build(BuildContext context) {
+    late String description;
     final categoryBloc = BlocProvider.of<CategoryBloc>(context);
-    final Category categorys;
-    String categoryName = "";
-    String categoryDescription = "";
-
+   
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // final category = Category(name: "De");
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AdminAddUpdateCategory(
-             
-            );
+            return AdminAddUpdateCategory();
           }));
           // AdminAddUpdateCategory();
         }
@@ -131,14 +126,14 @@ class _AdminCategoryListState extends State<AdminCategoryList> {
                                           mainAxisSize: MainAxisSize.min,
                                           // wrap content in flutter
                                           children: [
-                                           
-                                            TextField(
+                                            TextFormField(
                                               onChanged: (val) {
+                                                description =  val;
                                                 //  this.category
-                                                categoryDescription = val;
                                               },
                                               decoration: InputDecoration(
-                                                labelText: "Category Description",
+                                                  labelText:
+                                                      "Category Description",
                                                   hintText:
                                                       '${category.description}'),
                                             ),
@@ -156,14 +151,15 @@ class _AdminCategoryListState extends State<AdminCategoryList> {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            final newCategory = new Category(
+                                            final newCategory =  Category(
                                                 id: category.id,
-                                                name:category.name,
-                                                numOfProviders:category.numOfProviders,
+                                                name: category.name,
+                                                numOfProviders:
+                                                    category.numOfProviders,
                                                 image: category.image,
-                                                description: categoryDescription);
+                                                description:description);
                                             categoryBloc.add(
-                                                CategoryUpdate(newCategory));
+                                                AddCategory(newCategory));
                                             Navigator.pop(context, 'OK');
                                           },
                                           child: const Text(
