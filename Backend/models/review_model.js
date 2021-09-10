@@ -4,18 +4,18 @@ const schema = mongoose.Schema;
 
 const reviewSchema = new schema(
   {
+    __v: { type: Number, select: false},
     rating: {
       type: Number,
       required: true,
     },
-
     comment: {
       type: String,
-      required: true,
+      required: false,
     },
 
     order_id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },

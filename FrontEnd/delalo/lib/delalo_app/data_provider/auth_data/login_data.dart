@@ -25,11 +25,11 @@ class LoginDataProvider {
     return Uri.http(_baseUrl, path);
   }
 
-  Future<void> login(Login login) async {
+  Future<String> login(Login login) async {
     final URL = Uri.http("10.0.2.2:3000", "/login");
-    print(login.email);
-    print(login.password);
-    print(URL);
+    // print(login.email);
+    // print(login.password);
+    // print(URL);
 
     try {
       final response = await httpClient.post(URL,
@@ -47,16 +47,18 @@ class LoginDataProvider {
         await SESSION.setString("token", toStore.token);
         await SESSION.setString('id', toStore.id);
 
-        return;
+        return toStore.role;
       } else if (response.statusCode == 400) {
         throw LoginFailedException(errorText: response.body);
       } else {
         throw LoginFailedException(
             errorText: "Connection error. Please try again");
       }
-    } catch (e) {
+    } on LoginFailedException catch (e) {
       throw LoginFailedException(
-          errorText: "Connection error. Please try again!");
+          errorText: e.toString());
+    } catch (e){
+      throw LoginFailedException(errorText: "Connection error. Please try again");
     }
   }
 }

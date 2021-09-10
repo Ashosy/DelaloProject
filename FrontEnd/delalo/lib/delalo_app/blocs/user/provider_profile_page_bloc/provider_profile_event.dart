@@ -5,6 +5,7 @@ abstract class ProviderProfileEvent {}
 
 class LoadProviderInfo extends ProviderProfileEvent {
   final String providerId;
+  final String seekerId;
 
-  LoadProviderInfo({required this.providerId});
+  LoadProviderInfo({required this.providerId, required this.seekerId});
 }

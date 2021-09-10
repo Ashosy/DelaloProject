@@ -19,11 +19,18 @@ class ProviderProfileBloc
       await Future.delayed(Duration(milliseconds: 500));
       try {
         final providerLoaded =
-            await providerProfileRepository.getProvider(event.providerId);
-        yield ProviderInfoLoadSuccess(providerLoaded);
+            await providerProfileRepository.getProvider(event.providerId, event.seekerId);
+        yield ProviderInfoLoadSuccess(providerLoaded.provider, providerLoaded.isHired);
       } catch (e) {
         yield ProviderInfoLoadFailure();
       }
     }
+  }
+
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    
+    return super.close();
   }
 }

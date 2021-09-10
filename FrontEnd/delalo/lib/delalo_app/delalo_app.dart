@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:delalo/delalo_app/blocs/auth_bloc/login_bloc/login_bloc.dart';
 import 'package:delalo/delalo_app/blocs/blocs.dart';
 import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/provider_profile_bloc.dart';
+import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/reviews_of_provider_bloc.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/login_data.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/singupUser_data.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
@@ -58,14 +59,18 @@ class MyApp extends StatelessWidget {
                 SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
         BlocProvider(
             create: (context) =>
-                ProviderProfileBloc(providerProfileRepository: providerProfileRepository)..add(LoadProviderInfo(providerId: "613a6d0efa94bb01f0afbfa5")))                
+                ProviderProfileBloc(providerProfileRepository: providerProfileRepository)..add(LoadProviderInfo(providerId: "613a6d0efa94bb01f0afbfa5", seekerId: "6118e035e030821c38a75f24"))),
+        BlocProvider(
+            create: (context) =>
+                ReviewsOfProviderBloc(providerProfileRepository: providerProfileRepository)..add(LoadReviewsOfProvider(providerId: "613a6d0efa94bb01f0afbfa5")))        
+
       ],
       child: MaterialApp(
         home: Scaffold(
           drawer: NavigationDrawer(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.welcomeScreenName,
+        initialRoute: RouteGenerator.singleProviderPageName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

@@ -9,8 +9,9 @@ class ProviderInfoLoading extends ProviderProfileState {}
 
 class ProviderInfoLoadSuccess extends ProviderProfileState {
   final provider;
+  final bool isRequested;
 
-  ProviderInfoLoadSuccess(this.provider);
+  ProviderInfoLoadSuccess(this.provider, this.isRequested);
 }
 
 class ProviderInfoLoadFailure extends ProviderProfileState {}
