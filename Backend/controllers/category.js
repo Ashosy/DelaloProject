@@ -92,7 +92,7 @@ const updateCategory = function (req, res) {
             });
         }
         else {
-            res.status(201).send(category);
+            res.status(200).send(category);
         }
 
     }).catch((err) => {
