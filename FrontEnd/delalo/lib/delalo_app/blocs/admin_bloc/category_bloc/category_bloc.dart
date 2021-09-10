@@ -3,6 +3,7 @@ import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_state.
 import 'package:delalo/delalo_app/repository/admin_repository/category_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final AdminCategoryRepository categoryRepository;
 
@@ -56,3 +57,4 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
   }
 }
+
