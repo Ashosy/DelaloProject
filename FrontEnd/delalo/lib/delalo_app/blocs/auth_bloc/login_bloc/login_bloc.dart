@@ -18,8 +18,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         Login userLogger = Login(email: event.email, password: event.password);
 
-        await loginRepository.login(userLogger);
-        yield LoginSuccess();
+        String role = await loginRepository.login(userLogger);
+        yield LoginSuccess(role);
 
       } catch (e) {
         yield LoginFailure(error: e.toString());

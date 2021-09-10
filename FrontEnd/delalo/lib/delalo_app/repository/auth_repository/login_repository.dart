@@ -9,7 +9,7 @@ class LoginRepository {
 
   LoginRepository({required this.dataProvider});
 
-  Future<void> login(Login login) async {
-    await dataProvider.login(login);
+  Future<String> login(Login login) async {
+    return await dataProvider.login(login);
   }
 }

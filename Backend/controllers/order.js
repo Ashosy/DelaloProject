@@ -1,6 +1,7 @@
 const mongoose  = require("mongoose");
 const Order = require("../models/order_model");
 const User= require("../models/user_model");
+const Review= require("../models/review_model");
 
 let objectId= mongoose.Types.ObjectId;
 
@@ -54,10 +55,21 @@ const ordergetAllCompleted = function(req, res){
                             }
                         });
                         
+                        const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+        
                         lst.push({
                                 "User":JSON.parse(JSON.stringify(findUser))[0],
                                 "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                                 "Order":order,
+                                "Review":JSON.parse(JSON.stringify(findReview))[0]
                             });
     
                     // console.log(lst)
@@ -117,10 +129,21 @@ const ordergetAll = function(req, res){
                             }
                         });
                         
+                        const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+        
                         lst.push({
                                 "User":JSON.parse(JSON.stringify(findUser))[0],
                                 "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                                 "Order":order,
+                                "Review":JSON.parse(JSON.stringify(findReview))[0]
                             });
     
                     // console.log(lst)
@@ -224,10 +247,21 @@ const getActiveOrder= async function(req,res){
                         }
                     });
     
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -275,12 +309,22 @@ const getPendingOrders= async function(req,res){
                         }
                     });
     
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
-    
                     // console.log(lst)
                 });
     
@@ -326,10 +370,21 @@ const getDeclinedOrders= async function(req,res){
                         }
                     });
     
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -377,10 +432,22 @@ const getCompletedOrders= async function(req,res){
                         }
                     });
     
+                    
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -541,11 +608,21 @@ const getAllJobs = async (req,res) =>{
                         return null
                     }
                 });
-                console.log(findUser);
+                const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                    if(err){
+                        return err
+                    }else if (userObj){
+                        return userObj
+                    }else{
+                        return null
+                    }
+                });
+                // console.log(findUser);
                 lst.push({
                         "User":JSON.parse(JSON.stringify(findUser))[0],
                         "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                         "Order":job,
+                        "Review":JSON.parse(JSON.stringify(findReview))[0]
                     });
 
                 // console.log(lst)
@@ -622,11 +699,21 @@ const getActiveJob = async (req,res)=>{
                             return null
                         }
                     });
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
     
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -674,10 +761,21 @@ const getPendingJobs = async(req,res)=>{
                         }
                     });
     
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -724,10 +822,21 @@ const getDeclinedJobs = async (req,res)=>{
                         }
                     });
     
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -774,10 +883,21 @@ const getCompletedJobs = async (req,res)=>{
                         }
                     });
     
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -797,6 +917,28 @@ const getCompletedJobs = async (req,res)=>{
     }
 };
 
+const getOrderByIds = function(req, res){
+    const seekerId = req.params.seekerId;// s_id to the requested id
+    const providerId = req.params.providerId;
+
+    Order.findOne({seeker_id: seekerId, provider_id: providerId})
+    .then((order)=>{
+        if(!order){
+            res.status(200).json({order: ""});
+        }
+        else
+        {res.status(200).json({order: order});}
+       
+    }).catch((err) => {
+        // res.json(
+        //     {order: ''}
+        // );
+        res.json(
+            {order: err}
+        );
+    });
+};
+
 module.exports={orderPost,
                 ordergetAll, 
                 ordergetById, 
@@ -812,6 +954,7 @@ module.exports={orderPost,
                 getActiveJob,
                 getPendingJobs,
                 getDeclinedJobs,
-                getCompletedJobs
+                getCompletedJobs,
+                getOrderByIds
     
     }; //EXPORT YOUR FUNCTIONS HERE
