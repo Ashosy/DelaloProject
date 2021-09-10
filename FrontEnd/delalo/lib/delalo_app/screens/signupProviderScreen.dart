@@ -1,4 +1,4 @@
-import 'package:delalo/delalo_app/blocs/auth_bloc/signupUser_bloc/signupUser_bloc.dart';
+import 'package:delalo/delalo_app/blocs/auth_bloc/signupProvider_bloc/signupProvider_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,32 +7,48 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../routeGenerator.dart';
 
-class SignupUserForm extends StatefulWidget {
-  SignupUserForm({Key? key}) : super(key: key);
+class SignupProviderForm extends StatefulWidget {
+  SignupProviderForm({Key? key}) : super(key: key);
 
   @override
-  _SignupUserFormState createState() => _SignupUserFormState();
+  _SignupProviderFormState createState() => _SignupProviderFormState();
 }
 
-class _SignupUserFormState extends State<SignupUserForm> {
+class _SignupProviderFormState extends State<SignupProviderForm> {
   final _formKey = GlobalKey<FormState>();
+
+  // form field fields
   late String firstname;
   late String lastname;
-  final String role = "user";
   late String email;
   late String password;
   late String phone;
-  late String image = "assets/images/user.png";
+  late String description;
+  late String recommendation;
+  late String perHourWage;
+
+  final String role = "provider";
+  final String image = "assets/images/user.png";
+
   String address = "Addis Ababa";
+  String category = 'Electrician';
 
   String _selectedValue = 'Addis Ababa';
-
+  String _selectedCategoryValue = 'Electrician';
   List<String> _locations = [
     'Addis Ababa',
     'Bahirdar',
     'Mekele',
     'Hawassa',
     'Adama'
+  ];
+
+  List<String> _categories = [
+    'Electrician',
+    'Construction',
+    'Painting',
+    'Chemist',
+    'Mechanic'
   ];
 
   final passwordValidator = MultiValidator([
@@ -55,11 +71,12 @@ class _SignupUserFormState extends State<SignupUserForm> {
 
   @override
   Widget build(BuildContext context) {
-    final signupUserBlocProvider = BlocProvider.of<SignupUserBloc>(context);
+    final signupProviderBlocProvider =
+        BlocProvider.of<SignupProviderBloc>(context);
     return Scaffold(
-      body: BlocConsumer<SignupUserBloc, SignupUserState>(
+      body: BlocConsumer<SignupProviderBloc, SignupProviderState>(
         listener: (_, state) {
-          if (state is SignupUserFailure) {
+          if (state is SignupProviderFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
@@ -67,7 +84,7 @@ class _SignupUserFormState extends State<SignupUserForm> {
               ),
             );
             print(state.error);
-          } else if (state is SignupUserSuccess) {
+          } else if (state is SignupProviderSuccess) {
             Navigator.of(context)
                 .pushNamed(RouteGenerator.singleProviderPageName);
           }
@@ -102,9 +119,7 @@ class _SignupUserFormState extends State<SignupUserForm> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Add TextFormFields and ElevatedButton here.
-
-                        // email field
+                        // email field==========================================================
                         Container(
                           padding: EdgeInsets.only(right: 20, left: 20),
                           child: TextFormField(
@@ -125,7 +140,7 @@ class _SignupUserFormState extends State<SignupUserForm> {
                           height: 20,
                         ),
 
-                        // firstname field
+                        // firstname field==========================================================
                         Container(
                           padding: EdgeInsets.only(right: 20, left: 20),
                           child: TextFormField(
@@ -147,7 +162,7 @@ class _SignupUserFormState extends State<SignupUserForm> {
                           height: 20,
                         ),
 
-                        // last name field
+                        // last name field===========================================================
                         Container(
                           padding: EdgeInsets.only(right: 20, left: 20),
                           child: TextFormField(
@@ -169,7 +184,7 @@ class _SignupUserFormState extends State<SignupUserForm> {
                           height: 20,
                         ),
 
-                        // password field
+                        // password field==============================================================
                         Container(
                           padding: EdgeInsets.only(left: 20, right: 20),
                           child: TextFormField(
@@ -190,11 +205,40 @@ class _SignupUserFormState extends State<SignupUserForm> {
                         ),
                         SizedBox(height: 20),
 
-                        // phone number field
+                        // recommendation link field=============================================================
                         Container(
                           padding: EdgeInsets.only(right: 20, left: 20),
                           child: TextFormField(
                             // The validator receives the text that the user has entered.
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.insert_link),
+                              labelText: "Recommendation Link",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            validator: (value) {
+                              var val = value.toString();
+                              if (!Uri.parse(val).isAbsolute) {
+                                return 'Invalid link';
+                              } else if (value == null) {
+                                return 'Field is required';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              this.recommendation = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        // phone number field===================================================================
+                        Container(
+                          padding: EdgeInsets.only(right: 20, left: 20),
+                          child: TextFormField(
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
@@ -216,7 +260,70 @@ class _SignupUserFormState extends State<SignupUserForm> {
                           height: 20,
                         ),
 
-                        // address dropdown field============================
+                        // per hour wage field====================================================================
+                        Container(
+                          padding: EdgeInsets.only(right: 20, left: 20),
+                          child: TextFormField(
+                            // The validator receives the text that the user has entered.
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.attach_money),
+                              labelText: "Per Hour Wage",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            validator: nameValidator,
+                            onChanged: (value) {
+                              this.perHourWage = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        // category dropdown field ===============================================================
+                        Container(
+                          padding: EdgeInsets.only(right: 20, left: 20),
+                          child: DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.work),
+                              labelText: "Category",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            value: _selectedCategoryValue,
+                            hint: Text(
+                              'choose one',
+                            ),
+                            isExpanded: true,
+                            onChanged: (input) {
+                              this.category = input.toString();
+                              setState(() {
+                                _selectedCategoryValue = input.toString();
+                              });
+                            },
+                            onSaved: (input) {
+                              setState(() {
+                                _selectedCategoryValue = input.toString();
+                              });
+                            },
+                            items: _categories.map((String val) {
+                              return DropdownMenuItem(
+                                value: val,
+                                child: Text(
+                                  val,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        // address dropdown field=================================================================
                         Container(
                           padding: EdgeInsets.only(right: 20, left: 20),
                           child: DropdownButtonFormField(
@@ -255,7 +362,29 @@ class _SignupUserFormState extends State<SignupUserForm> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        (state is SignupUserLoading)
+
+                        // Description Field ===============================================================
+                        Container(
+                          padding: EdgeInsets.only(right: 20, left: 20),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.description),
+                              labelText: "Description",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            validator: nameValidator,
+                            onChanged: (value) {
+                              this.description = value;
+                            },
+                            minLines: 6,
+                            maxLines: 10,
+                          ),
+                        ),
+                        SizedBox(height: 40),
+
+                        (state is SignupProviderLoading)
                             ? CircularProgressIndicator()
                             : SizedBox(),
 
@@ -266,12 +395,9 @@ class _SignupUserFormState extends State<SignupUserForm> {
                           margin: EdgeInsets.only(left: 30),
                           child: ElevatedButton(
                             onPressed: () {
-                              // Validate returns true if the form is valid, or false otherwise.
                               if (_formKey.currentState!.validate()) {
-                                // If the form is valid, display a snackbar. In the real world,
-                                // you'd often call a server or save the information in a database.
-                                signupUserBlocProvider.add(
-                                  SignupUserFormSubmitted(
+                                signupProviderBlocProvider.add(
+                                  SignupProviderFormSubmitted(
                                       email: this.email,
                                       password: this.password,
                                       firstname: this.firstname,
@@ -279,7 +405,11 @@ class _SignupUserFormState extends State<SignupUserForm> {
                                       role: this.role,
                                       phone: this.phone,
                                       image: this.image,
-                                      address: this.address),
+                                      address: this.address,
+                                      description: this.description,
+                                      category: this.category,
+                                      recommendation: this.category,
+                                      perHourWage: int.parse(this.perHourWage)),
                                 );
                               }
                             },
@@ -314,17 +444,14 @@ class _SignupUserFormState extends State<SignupUserForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              flex: 0,
-                              child: Text("Already have an account?"),
+                            Text("Already have an account?"),
+                            SizedBox(
+                              width: 10,
                             ),
-                            Expanded(
-                              flex: 0,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Login",
-                                ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Login",
                               ),
                             ),
                           ],

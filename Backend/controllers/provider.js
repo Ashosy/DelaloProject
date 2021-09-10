@@ -1,10 +1,23 @@
 const models = require("../models/user_model");
+const categoryModels = require("../models/category_model");
+const orderModel = require("../models/order_model");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-const postProvider = (req, res) => {
+const postProvider = async (req, res) => {
+  console.log("this got here");
+  const emailExist = await models.findOne({ email: req.body.email });
+  if (emailExist) {
+    return res.status(400).send("Email already exists");
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
   const providersList = new models({
     firstname: req.body.firstname,
     lastname: req.body.lastname,
-    password: req.body.password,
+    password: hashedPassword,
     email: req.body.email,
     role: req.body.role,
     phone: req.body.phone,
@@ -21,11 +34,18 @@ const postProvider = (req, res) => {
   providersList
     .save()
     .then((result) => {
+      const token = jwt.sign(
+        {
+          _id: result._id,
+        },
+        process.env.TOKEN_SECRET
+      );
       const postResult = {
-        provider: result,
-        message: `Provider with email ${providersList.email} was created`,
+        id: result._id,
+        role: result.role,
+        token: token,
       };
-      res.send(postResult);
+      res.status(200).send(postResult);
     })
     .catch((err) => {
       console.log(err);
@@ -35,8 +55,12 @@ const postProvider = (req, res) => {
 const getProvider = (req, res) => {
   models
     .find()
-    .then((results) => {
-      res.send(results);
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No providers found" });
+      } else {
+        res.send(result);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -47,87 +71,135 @@ const getProviderById = (req, res) => {
   models
     .findById(req.params.id)
     .then((result) => {
-      res.send(result);
+      if (!result) {
+        res.send({ message: "No provider with this Id found" });
+      } else {
+        res.send(result);
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-const searchProviders= async function(req,res){
-  const keyword= req.body.keyword;
-  const perHourWage= req.body.per_hour_wage;
-  let rating= req.body.average_rating;
-  if(rating && perHourWage){
-    const providers= await models.fuzzySearch(keyword)
-    .find(
+const updateProviderById = (req, res) => {
+  models.findById(req.params.id).then((result) => {
+    result.jobs_done += 1;
+    rating = req.body.average_rating;
+    review_count = orderModel.findById(result.id);
+  });
+};
+const searchProviders = async function (req, res) {
+  const keyword = req.body.keyword;
+  const perHourWage = req.body.per_hour_wage;
+  let rating = req.body.average_rating;
+  if (rating && perHourWage) {
+    const providers = await models.fuzzySearch(keyword).find(
       {
-        per_hour_wage:perHourWage,
-        average_rating:rating
-     
-     },function(err, result) {
-       if (err) {
-         return res.status(404).json({message:err})
-         
-       } else {
-           return res.status(200).json({result});
-         
-       }
-   });
-  }
-  else if(perHourWage){
-    const providers= await models.fuzzySearch(keyword)
-    .find(
+        per_hour_wage: perHourWage,
+        average_rating: rating,
+      },
+      function (err, result) {
+        if (err) {
+          return res.status(404).json({ message: err });
+        } else {
+          return res.status(200).json({ result });
+        }
+      }
+    );
+  } else if (perHourWage) {
+    const providers = await models.fuzzySearch(keyword).find(
       {
-        per_hour_wage:perHourWage,
-       
-     },function(err, result) {
-       if (err) {
-         return res.status(404).json({message:err})
-         
-       } else {
-           return res.status(200).json({result});
-         
-       }
-   });
-  }
-
-  else if(rating){
-    const providers= await models.fuzzySearch(keyword)
-    .find(
+        per_hour_wage: perHourWage,
+      },
+      function (err, result) {
+        if (err) {
+          return res.status(404).json({ message: err });
+        } else {
+          return res.status(200).json({ result });
+        }
+      }
+    );
+  } else if (rating) {
+    const providers = await models.fuzzySearch(keyword).find(
       {
-        
-        average_rating:rating
-     
-     },function(err, result) {
-       if (err) {
-         return res.status(404).json({message:err})
-         
-       } else {
-           return res.status(200).json({result});
-         
-       }
-   });
+        average_rating: rating,
+      },
+      function (err, result) {
+        if (err) {
+          return res.status(404).json({ message: err });
+        } else {
+          return res.status(200).json({ result });
+        }
+      }
+    );
+  } else {
+    const providers = await models.fuzzySearch(keyword, function (err, result) {
+      if (err) {
+        return res.status(404).json({ message: err });
+      } else {
+        return res.status(200).json({ result });
+      }
+    });
   }
+};
 
-  else{
-    const providers= await models.fuzzySearch(keyword,function(err, result) {
-       if (err) {
-         return res.status(404).json({message:err})
-         
-       } else {
-           return res.status(200).json({result});
-         
-       }
-   });
-  }
-  
-}
+const getTopProviders = (req, res) => {
+  models
+    .find()
+    .where("average_rating")
+    .gte(3)
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No top providers found" });
+      } else {
+        res.send(result);
+      }
+    })
+    .catch((err) => {
+      res.send({ message: err.message });
+    });
+};
 
+const getProvidersByCategory = (req, res) => {
+  models
+    .find()
+    .where("category")
+    .equals(req.params.category_name)
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No providers within this category" });
+      } else {
+        res.send(result);
+      }
+    })
+    .catch((err) => {
+      res.send({ message: err.message });
+    });
+};
 
-// const getTopProviders = (req, res) => {
-//     models
-//         .average_rating
-// }
+const getTopProvidersByCategory = (req, res) => {
+  models
+    .find()
+    .where({ category: req.params.category_name })
+    .where("average_rating")
+    .gte(3)
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No top providers within this category" });
+      } else {
+        res.send(result);
+      }
+    });
+};
 
-module.exports = { postProvider, getProvider, getProviderById, searchProviders };
+module.exports = {
+  postProvider,
+  getProvider,
+  searchProviders,
+  getProviderById,
+  updateProviderById,
+  getTopProviders,
+  getProvidersByCategory,
+  getTopProvidersByCategory,
+};

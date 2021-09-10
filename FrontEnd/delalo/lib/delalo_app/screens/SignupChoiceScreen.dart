@@ -23,8 +23,9 @@ class SignupChoice extends StatelessWidget {
             Expanded(
               flex: 0,
               child: ElevatedButton(
-                onPressed: (){
-                  Navigator.of(context).pushNamed(RouteGenerator.signupUserScreenName);
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(RouteGenerator.signupUserScreenName);
                 },
                 style: ButtonStyle(
                   fixedSize:
@@ -49,12 +50,14 @@ class SignupChoice extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(height: 20),
             Expanded(
               flex: 0,
               child: ElevatedButton(
-                onPressed: (){},
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(RouteGenerator.signupProviderScreenName);
+                },
                 style: ButtonStyle(
                   fixedSize:
                       MaterialStateProperty.all<Size?>(Size.fromHeight(50)),

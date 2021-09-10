@@ -4,6 +4,7 @@ import 'package:delalo/delalo_app/data_provider/auth_data/login_data.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/singupUser_data.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/login_repository.dart';
+import 'package:delalo/delalo_app/repository/auth_repository/signupProvider_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupUser_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
@@ -12,7 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
+import 'blocs/auth_bloc/signupProvider_bloc/signupProvider_bloc.dart';
 import 'blocs/auth_bloc/signupUser_bloc/signupUser_bloc.dart';
+import 'data_provider/auth_data/singupProvider_data.dart';
 
 class MyApp extends StatelessWidget {
   static final httpClient = http.Client();
@@ -25,6 +28,8 @@ class MyApp extends StatelessWidget {
       LoginRepository(dataProvider: LoginDataProvider(httpClient: httpClient));
   final signupUserRepository = SignupUserRepository(
       dataProvider: SignupUserDataProvider(httpClient: httpClient));
+  final signupProviderRepository = SignupProviderRepository(
+      dataProvider: SignupProviderDataProvider(httpClient: httpClient));    
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,10 @@ class MyApp extends StatelessWidget {
             create: (context) => LoginBloc(loginRepository: loginRepository)),
         BlocProvider(
             create: (context) =>
-                SignupUserBloc(signupUserRepository: signupUserRepository))
+                SignupUserBloc(signupUserRepository: signupUserRepository)),
+        BlocProvider(
+            create: (context) =>
+                SignupProviderBloc(signupProviderRepository: signupProviderRepository))
       ],
       child: MaterialApp(
         home: Scaffold(
