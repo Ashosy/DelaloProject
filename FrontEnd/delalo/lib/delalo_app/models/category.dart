@@ -9,7 +9,7 @@ class Category {
       required this.image,
       required this.numOfProviders,
       required this.description});
-  final int id;
+  final String id;
   final String image;
   final int numOfProviders;
   final String description;
@@ -18,7 +18,7 @@ class Category {
   List<Object> get props => [id, image, numOfProviders, description];
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-        id: json['id'],
+        id: json['_id'],
         image: json['image'],
         numOfProviders: json['numOfProviders'],
         description: json['description']);

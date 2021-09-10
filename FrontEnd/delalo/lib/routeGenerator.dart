@@ -1,3 +1,4 @@
+import 'package:delalo/delalo_app/screens/category_page.dart';
 import 'package:delalo/delalo_app/screens/signupProviderScreen.dart';
 import 'package:flutter/material.dart';
 import 'delalo_app/screens/allScreens.dart';
@@ -13,6 +14,7 @@ class RouteGenerator {
   static const String ordersScreenName = "/orderScreen";
   static const String jobsScreenName = "/jobScreen";
   static const String orderDetailScreenName = "/orderDetails";
+  static const String categoryListPage= "/cateogry";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -30,6 +32,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => OrdersScreen());
       case jobsScreenName:
         return MaterialPageRoute(builder: (_) => JobsScreen());
+      case categoryListPage:
+        return MaterialPageRoute(builder: (_) => CategoryPage());
       case orderDetailScreenName:
         final args = settings.arguments as ScreenArguments;
         return MaterialPageRoute(builder: (context) {

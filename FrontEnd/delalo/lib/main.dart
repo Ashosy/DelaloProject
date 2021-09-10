@@ -14,11 +14,7 @@ import 'delalo_app/repository/user_repository/category_repository.dart';
 import 'delalo_app/delalo_app.dart';
 import 'package:http/http.dart' as http;
 
-final CategoryRepository categoryRepository = CategoryRepository(
-  dataProvider: CategoryDataProvider(
-    httpClient: http.Client(),
-  ),
-);
+
 
 class UserInfo {
   final String name;
@@ -32,44 +28,39 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // final categoryRepository =
-  //     CategoryRepository(dataProvider: CategoryDataProvider());
+// class MyApp extends StatelessWidget {
+//   // final categoryRepository =
+//   //     CategoryRepository(dataProvider: CategoryDataProvider());
 
-  @override
-  Widget build(BuildContext context) {
-    return
-        // MultiBlocProvider(
-        //     providers: [
-        //       BlocProvider(
-        //         create: (ctx) =>
-        //             CategoryBloc(categoryRepository: categoryRepository)
-        //               ..add(
-        //                 CategoriesLoad(),
-        //               ),
-        //       ),
-        //     ],
-        //     child:
-        MaterialApp(
-      // debugShowCheckedModeBanner: false,
-      // initialRoute: CategoryPage.routeName,
-      // routes: {
-      //   CategoryPage.routeName: (ctx) => CategoryPage(),
-      // },
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:
-          //CategoryPage(),
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//         // MultiBlocProvider(
+//         //     providers: [
+              
+//         //       ),
+//         //     ],
+//         //     child:
+//         MaterialApp(
+//       // debugShowCheckedModeBanner: false,
+//       // initialRoute: CategoryPage.routeName,
+//       // routes: {
+//       //   CategoryPage.routeName: (ctx) => CategoryPage(),
+//       // },
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home:
+//           MyApp(),
 
-          AccountPage(
-              userInfo: UserInfo(
-        "Janine Doe",
-        "janine@doe.com",
-        "0945633210",
-        "Addis Ababa, 5kilo",
-      )),
-    );
-  }
-}
+//         //   AccountPage(
+//         //       userInfo: UserInfo(
+//         // "Janine Doe",
+//         // "janine@doe.com",
+//         // "0945633210",
+//         // "Addis Ababa, 5kilo",
+    
+//     );
+//   }
+// }

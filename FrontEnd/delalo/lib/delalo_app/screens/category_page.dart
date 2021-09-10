@@ -19,13 +19,14 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
-    final categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    // final categoryBloc = BlocProvider.of<CategoryBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Cateogories"),
       ),
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (_, CategoryState) {
+          print(CategoryState);
           if (CategoryState is CategoryLoading) {
             return Text("Loading...");
           }
