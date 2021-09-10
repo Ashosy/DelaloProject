@@ -24,7 +24,7 @@ class _AdminCategoryListState extends State<AdminCategoryList> {
   @override
   Widget build(BuildContext context) {
     late String description;
-    final categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    final categoryBloc = BlocProvider.of<AdminCategoryBloc>(context);
    
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
@@ -51,7 +51,7 @@ class _AdminCategoryListState extends State<AdminCategoryList> {
         backgroundColor: Colors.purple,
       ),
       body: Center(
-        child: BlocBuilder<CategoryBloc, CategoryState>(
+        child: BlocBuilder<AdminCategoryBloc, CategoryState>(
             builder: (_, categoryState) {
           if (categoryState is CategoryLoading) {
             return CircularProgressIndicator();

@@ -8,7 +8,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoryRepository categoryRepository;
 
   CategoryBloc({required this.categoryRepository})
-      : assert(CategoryRepository != null),
+      : 
         super(CategoryLoading());
 
   @override

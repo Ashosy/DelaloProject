@@ -21,6 +21,8 @@ class RouteGenerator {
     switch (settings.name) {
       case welcomeScreenName:
         return MaterialPageRoute(builder: (_) => WelcomeScreen());
+      case adminScreenName:
+        return MaterialPageRoute(builder: (_) => AdminScreen());
       case getStartedScreenName:
         return MaterialPageRoute(builder: (_) => GetStartedScreen());
       case loginScreenName:

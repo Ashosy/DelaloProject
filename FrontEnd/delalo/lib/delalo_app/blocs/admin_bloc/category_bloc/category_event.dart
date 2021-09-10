@@ -2,6 +2,8 @@ import 'package:delalo/delalo_app/models/category.dart';
 import 'package:equatable/equatable.dart';
 
 
+
+
 abstract class CategoryEvent extends Equatable {
   const CategoryEvent();
 }
@@ -51,4 +53,5 @@ class CategoryDelete extends CategoryEvent {
   @override
   String toString() => 'Delated Category {category: $categoryId}';
 }
+
 

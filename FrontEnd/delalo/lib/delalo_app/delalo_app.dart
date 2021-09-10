@@ -17,12 +17,13 @@ import 'package:delalo/delalo_app/repository/auth_repository/signupUser_reposito
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/single_provider_page_repository.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
-import 'package:/delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
+// import 'package:/delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
+import 'blocs/admin_bloc/category_bloc/category_bloc.dart';
 import 'blocs/admin_bloc/category_bloc/category_event.dart';
 import 'blocs/admin_bloc/order_bloc/order_bloc.dart';
 import 'blocs/admin_bloc/order_bloc/order_event.dart';
@@ -67,12 +68,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // BlocProvider(
-        //     create: (context) =>
-        //         CategoryBloc(categoryRepository: categoryRepository)
-        //           ..add(
-        //             LoadAllCategories(),
-        //           )),
+        BlocProvider(
+            create: (context) =>
+                AdminCategoryBloc(categoryRepository: categoryRepository)
+                  ..add(
+                    LoadAllCategories(),
+                  )),
         BlocProvider(
             create: (context) =>
                 ProvidersBloc(providersRepository: providersRepository)
@@ -116,7 +117,7 @@ class MyApp extends StatelessWidget {
           drawer: NavigationDrawer(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.loginScreenName,
+        initialRoute: RouteGenerator.adminScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

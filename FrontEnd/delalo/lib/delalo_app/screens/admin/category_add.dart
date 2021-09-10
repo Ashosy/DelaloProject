@@ -27,13 +27,13 @@ class _AdminAddUpdateCategoryState extends State<AdminAddUpdateCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    final categoryBloc = BlocProvider.of<AdminCategoryBloc>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: Text("Delalo"),
       ),
-      body: BlocConsumer<CategoryBloc, CategoryState>(
+      body: BlocConsumer<AdminCategoryBloc, CategoryState>(
         listener: (_, state) {
           // TO DO: implement listener
           if (state is CategoryLoading) {

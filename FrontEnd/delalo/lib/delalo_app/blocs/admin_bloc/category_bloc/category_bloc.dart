@@ -3,11 +3,10 @@ import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_state.
 import 'package:delalo/delalo_app/repository/admin_repository/admin_category_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
+class AdminCategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final AdminCategoryRepository categoryRepository;
 
-  CategoryBloc({required this.categoryRepository}) : super(CategoryLoading());
+  AdminCategoryBloc({required this.categoryRepository}) : super(CategoryLoading());
 
   @override
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {
