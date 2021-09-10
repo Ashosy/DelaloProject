@@ -76,7 +76,7 @@ router.get("/category/:id", getCategoryById);
 router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 router.put("/category/:id", updateCategory);
-router.get("/searchCategory",seachCategory);
+router.get("/searchCategory/:query",seachCategory);
 
 //order routes
 
