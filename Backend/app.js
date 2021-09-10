@@ -7,7 +7,10 @@ const dotenv = require("dotenv");
 const DB_URI = process.env.MONGO_URI || "mongodb://localhost:27017/delalodb";
 const app = express();
 
+
+
 dotenv.config();
+
 
 app.use(express.json());
 app.use("/", router);

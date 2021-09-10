@@ -14,7 +14,7 @@ class Category {
   final int numOfProviders;
   final String description;
 
-  @override
+
   List<Object> get props => [id, image, numOfProviders, description];
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
@@ -23,4 +23,6 @@ class Category {
         numOfProviders: json['numOfProviders'],
         description: json['description']);
   }
+  @override
+  String toString() => 'Category {id: $id , image: $image, numOfProviders: $numOfProviders, description: $description}';
 }
