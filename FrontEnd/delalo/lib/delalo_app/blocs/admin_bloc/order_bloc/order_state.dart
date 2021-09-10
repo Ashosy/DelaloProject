@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-
 class OrderState extends Equatable {
   const OrderState();
 
