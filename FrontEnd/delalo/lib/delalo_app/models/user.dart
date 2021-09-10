@@ -31,7 +31,7 @@ class User extends Equatable {
   final String? description;
   final String? category;
   final int? jobs_done;
-  final double? per_hour_wage;
+  final int? per_hour_wage;
   final String? recommendation;
   final double? average_rating;
   @override
@@ -54,23 +54,24 @@ class User extends Equatable {
         average_rating
       ];
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-      id: json['_id'],
-      firstname: json['firstname'],
-      lastname: json['lastname'],
-      email: json['email'],
-      role: json['role'],
-      phone: json['phone'],
-      address: json['address'],
-      description: json['description'],
-      category: json['category'],
-      jobs_done: json['jobs_done'],
-      image: json['image'],
-      per_hour_wage: json['per_hour_wage'],
-      recommendation: json['recommendation'],
-      average_rating: json['average_rating'],
-      password: json['password']);
-
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+        id: json['_id'],
+        firstname: json['firstname'],
+        lastname: json['lastname'],
+        email: json['email'],
+        role: json['role'],
+        phone: json['phone'],
+        address: json['address'],
+        description: json['description'],
+        category: json['category'],
+        jobs_done: json['jobs_done'],
+        image: json['image'],
+        per_hour_wage: json['per_hour_wage'],
+        recommendation: json['recommendation'],
+        average_rating: json['average_rating'],
+        password: json['password']);
+  }
   @override
   String toString() =>
       'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address, description: $description, category: $category, jobs_done: $jobs_done, image: $image, per_hour_wage: $per_hour_wage, recommendation: $recommendation, average_rating: $average_rating,  password: $password,  }';

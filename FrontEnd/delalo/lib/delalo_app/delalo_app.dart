@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   final signupUserRepository = SignupUserRepository(
       dataProvider: SignupUserDataProvider(httpClient: httpClient));
   final signupProviderRepository = SignupProviderRepository(
-      dataProvider: SignupProviderDataProvider(httpClient: httpClient));    
+      dataProvider: SignupProviderDataProvider(httpClient: httpClient));
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +47,15 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
-            create: (context) =>
-                SignupProviderBloc(signupProviderRepository: signupProviderRepository))
+            create: (context) => SignupProviderBloc(
+                signupProviderRepository: signupProviderRepository))
       ],
       child: MaterialApp(
         home: Scaffold(
           drawer: NavigationDrawer(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.jobsScreenName,
+        initialRoute: RouteGenerator.ordersScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

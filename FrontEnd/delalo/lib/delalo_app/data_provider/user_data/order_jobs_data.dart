@@ -4,7 +4,7 @@ import 'package:delalo/delalo_app/models/models.dart';
 import 'package:http/http.dart' as http;
 
 class OrderDataProvider {
-  final _baseUrl = "localhost:3000";
+  final _baseUrl = "10.5.228.139:3000";
   final http.Client httpClient;
 
   Uri generateUri(path) {
@@ -66,10 +66,12 @@ class OrderDataProvider {
     }
   }
 
-  Future<void> deleteOrder(Order order) async {
-    final http.Response response = await httpClient.delete(
-      Uri(path: '$_baseUrl/order/${order.id}'),
+  Future<dynamic> deleteOrder(String order_id) async {
+    final response = await httpClient.get(
+      generateUri('order/${order_id}'),
       headers: <String, String>{
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
@@ -77,16 +79,19 @@ class OrderDataProvider {
     if (response.statusCode != 204) {
       throw Exception('Failed to delete Order.');
     }
+    return response.statusCode;
   }
 
-  Future<void> updateOrder(Order order) async {
-    final http.Response response = await httpClient.put(
-      Uri(path: '$_baseUrl/order/${order.id}'),
+  Future<void> updateOrder(String order_id) async {
+    final response = await httpClient.put(
+      generateUri('order/${order_id}'),
       headers: <String, String>{
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'progress': order.progress,
+        'progress': "order.progress",
       }),
     );
 
@@ -127,49 +132,55 @@ class OrderDataProvider {
   }
 
   Future<dynamic> getActiveJob(String provider_id) async {
-    final response = await httpClient
-        .get(generateUri('activeJob/${provider_id}'), headers: <String, String>{
-      'Accept': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-
-    if (response.statusCode == 200) {
-      final job = jsonDecode(response.body);
-      return OrderDetails.fromJson(job[0]);
-    } else if (response.statusCode == 400) {
-      return "No Active Job";
-    } else {
-      throw Exception('Failed to load job by provider Id');
+    try {
+      final response = await httpClient.get(
+          generateUri('activeJob/${provider_id}'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+      if (response.statusCode == 200) {
+        final job = jsonDecode(response.body);
+        return OrderDetails.fromJson(job[0]);
+      } else if (response.statusCode == 400) {
+        return "No Active Job";
+      } else {
+        throw Exception('Failed to load job by provider Id');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 
   Future<List<dynamic>> getPendingJobs(String provider_id) async {
-    print("here");
-    final response = await httpClient.get(
-        generateUri('pendingJobs/${provider_id}'),
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json; charset=UTF-8',
-        });
+    try {
+      final response = await httpClient.get(
+          generateUri('pendingJobs/${provider_id}'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
 
-    print(response.body);
-    if (response.statusCode == 200) {
-      Iterable jobs = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        Iterable jobs = jsonDecode(response.body);
 
-      List<OrderDetails> mappedJobs =
-          List<OrderDetails>.from(jobs.map((job) => OrderDetails.fromJson(job)))
-              .toList();
-      return mappedJobs;
-    } else {
-      return ["No Pending Jobs"];
+        List<OrderDetails> mappedJobs = List<OrderDetails>.from(
+            jobs.map((job) => OrderDetails.fromJson(job))).toList();
+        print("m$mappedJobs");
+        return mappedJobs;
+      } else {
+        return ["No Pending Jobs"];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 
-  Future<List<OrderDetails>> getDeclinedJobs(User provider) async {
+  Future<List<dynamic>> getDeclinedJobs(String provider_id) async {
     final response = await httpClient
-        .get(Uri(path: '$_baseUrl/declinedJobs/${provider.id}'));
+        .get(Uri(path: '$_baseUrl/declinedJobs/${provider_id}'));
 
     if (response.statusCode == 200) {
       final jobs = jsonDecode(response.body) as List;
@@ -188,8 +199,6 @@ class OrderDataProvider {
           'Content-Type': 'application/json; charset=UTF-8',
         });
 
-    print(response.body);
-
     if (response.statusCode == 200) {
       Iterable jobs = jsonDecode(response.body);
 
@@ -197,6 +206,101 @@ class OrderDataProvider {
           List<OrderDetails>.from(jobs.map((job) => OrderDetails.fromJson(job)))
               .toList();
       return mappedJobs;
+    } else {
+      return ["No History yet"];
+    }
+  }
+
+  Future<List<dynamic>> getPendingOrders(String seeker_id) async {
+    try {
+      final response = await httpClient.get(
+          generateUri('pendingOrders/${seeker_id}'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+
+      if (response.statusCode == 200) {
+        Iterable jobs = jsonDecode(response.body);
+
+        List<OrderDetails> mappedJobs = List<OrderDetails>.from(
+            jobs.map((job) => OrderDetails.fromJson(job))).toList();
+
+        return mappedJobs;
+      } else {
+        return ["No Pending Orders"];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<dynamic>> getDeclinedOrders(String seeker_id) async {
+    try {
+      final response = await httpClient.get(
+          generateUri('declinedOrders/${seeker_id}'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+
+      if (response.statusCode == 200) {
+        Iterable jobs = jsonDecode(response.body);
+
+        List<OrderDetails> mappedJobs = List<OrderDetails>.from(
+            jobs.map((job) => OrderDetails.fromJson(job))).toList();
+
+        return mappedJobs;
+      } else {
+        return ["No Declined Orders"];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<dynamic>> getActiveOrders(String seeker_id) async {
+    try {
+      final response = await httpClient.get(
+          generateUri('activeOrder/${seeker_id}'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+
+      if (response.statusCode == 200) {
+        Iterable orders = jsonDecode(response.body);
+
+        List<OrderDetails> mappedOrders = List<OrderDetails>.from(
+            orders.map((order) => OrderDetails.fromJson(order))).toList();
+
+        return mappedOrders;
+      } else {
+        return ["No Active Orders"];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<dynamic>> getCompletedOrders(String seeker_id) async {
+    final response = await httpClient.get(
+        generateUri('completedOrders/${seeker_id}'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+
+    if (response.statusCode == 200) {
+      Iterable orders = jsonDecode(response.body);
+
+      List<OrderDetails> mappedOrders = List<OrderDetails>.from(
+          orders.map((order) => OrderDetails.fromJson(order))).toList();
+      return mappedOrders;
     } else {
       return ["No History yet"];
     }

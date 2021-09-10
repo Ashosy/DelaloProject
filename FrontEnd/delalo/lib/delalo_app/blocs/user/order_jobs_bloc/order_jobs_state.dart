@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class OrderState extends Equatable {
   const OrderState();
-
+  final String failureMessage = "Failed to load";
   @override
   List<Object> get props => [];
 }
@@ -45,17 +45,81 @@ class DeclineJobFailure extends OrderState {
   List<Object> get props => [];
 }
 
+class DeclineOrderSuccess extends OrderState {
+  DeclineOrderSuccess();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeclineOrderFailure extends OrderState {
+  DeclineOrderFailure();
+
+  @override
+  List<Object> get props => [];
+}
+
 class ActiveJobSuccess extends OrderState {
   final OrderDetails activeJob;
-  final int pendingOrdersLength;
 
-  ActiveJobSuccess(this.activeJob, this.pendingOrdersLength);
+  ActiveJobSuccess(this.activeJob);
 
   @override
   List<Object> get props => [activeJob];
 }
 
 class ActiveJobFailure extends OrderState {}
+
+class PendingOrdersLoadSuccess extends OrderState {
+  final List<dynamic> pendingOrders;
+
+  PendingOrdersLoadSuccess([this.pendingOrders = const []]);
+
+  @override
+  List<Object> get props => [pendingOrders];
+}
+
+class PendingOrdersLoadFailure extends OrderState {}
+
+class PendingOrdersEmpltyFailure extends OrderState {
+  final String message;
+
+  PendingOrdersEmpltyFailure({required this.message});
+}
+
+class DeclinedOrdersLoadSuccess extends OrderState {
+  final List<dynamic> declinedOrders;
+
+  DeclinedOrdersLoadSuccess([this.declinedOrders = const []]);
+
+  @override
+  List<Object> get props => [declinedOrders];
+}
+
+class DeclinedOrdersLoadFailure extends OrderState {}
+
+class DeclinedOrdersEmpltyFailure extends OrderState {
+  final String message;
+
+  DeclinedOrdersEmpltyFailure({required this.message});
+}
+
+class ActiveOrdersLoadSuccess extends OrderState {
+  final List<dynamic> activeOrders;
+
+  ActiveOrdersLoadSuccess([this.activeOrders = const []]);
+
+  @override
+  List<Object> get props => [activeOrders];
+}
+
+class ActiveOrdersLoadFailure extends OrderState {}
+
+class ActiveOrdersEmpltyFailure extends OrderState {
+  final String message;
+
+  ActiveOrdersEmpltyFailure({required this.message});
+}
 
 class PendingJobsLoadSuccess extends OrderState {
   final List<dynamic> pendingJobs;
@@ -68,6 +132,12 @@ class PendingJobsLoadSuccess extends OrderState {
 
 class PendingJobsLoadFailure extends OrderState {}
 
+class PendingJobsEmpltyFailure extends OrderState {
+  final String message;
+
+  PendingJobsEmpltyFailure({required this.message});
+}
+
 class CompletedJobsLoadSuccess extends OrderState {
   final List<dynamic> completedJobs;
 
@@ -78,6 +148,29 @@ class CompletedJobsLoadSuccess extends OrderState {
 }
 
 class CompletedJobsLoadFailure extends OrderState {}
+
+class CompletedJobsEmpltyFailure extends OrderState {
+  final String message;
+
+  CompletedJobsEmpltyFailure({required this.message});
+}
+
+class CompletedOrdersLoadSuccess extends OrderState {
+  final List<dynamic> completedOrders;
+
+  CompletedOrdersLoadSuccess([this.completedOrders = const []]);
+
+  @override
+  List<Object> get props => [completedOrders];
+}
+
+class CompletedOrdersLoadFailure extends OrderState {}
+
+class CompletedOrdersEmpltyFailure extends OrderState {
+  final String message;
+
+  CompletedOrdersEmpltyFailure({required this.message});
+}
 
 class OrderLoadSuccess extends OrderState {
   final Order order;

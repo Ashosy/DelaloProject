@@ -8,8 +8,9 @@ class HistoryOrders extends StatelessWidget {
   HistoryOrders({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
-    // final orderBloc = BlocProvider.of<OrderBloc>(context);
-
+    final String seeker_id = "61332f352eb4f64398fa7678";
+    final orderBloc = BlocProvider.of<OrderBloc>(context);
+    orderBloc.add(CompleteOrdersLoad(seeker_id));
     return Scaffold(
       body: Center(
         child: BlocBuilder<OrderBloc, OrderState>(
@@ -18,38 +19,47 @@ class HistoryOrders extends StatelessWidget {
               return CircularProgressIndicator();
             }
 
-            if (orderState is CompletedJobsLoadFailure) {
-              return Text("Sorry loading failed");
+            if (orderState is CompletedOrdersLoadFailure) {
+              return Text(orderState.failureMessage);
             }
 
-            if (orderState is CompletedJobsLoadSuccess) {
-              final jobs = orderState.completedJobs;
+            if (orderState is CompletedOrdersEmpltyFailure) {
+              return Text(orderState.message);
+            }
+
+            if (orderState is CompletedOrdersLoadSuccess) {
+              final jobs = orderState.completedOrders;
 
               return ListView.builder(
                 itemCount: jobs.length,
                 itemBuilder: (context, index) {
                   final job = jobs[index];
+                  final orderCreatedDate =
+                      job.order!.order_created_date!.substring(0, 24);
+                  final orderCompletedDate =
+                      job.order!.order_completed_date!.substring(0, 24);
+                  final providerName =
+                      job.provider!.firstname + " " + job.provider!.lastname;
                   return Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: ListTile(
-                      leading: Container(
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 15,
-                              backgroundImage: AssetImage('assets/lake.jpg'),
+                      leading: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 15,
+                            backgroundImage:
+                                AssetImage('assets/images/user.png'),
+                          ),
+                          Text(
+                            providerName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              job.order.id,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       title: Text(
-                        '153.06ETB',
+                        job.order.final_payment,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -58,7 +68,6 @@ class HistoryOrders extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Category Type'),
                             Row(
                               children: [
                                 Icon(
@@ -66,7 +75,7 @@ class HistoryOrders extends StatelessWidget {
                                   color: Colors.grey,
                                   size: 16,
                                 ),
-                                Text('Addis Ababa'),
+                                Text(job.user.address),
                               ],
                             ),
                             Row(
@@ -76,7 +85,7 @@ class HistoryOrders extends StatelessWidget {
                                   color: Colors.grey,
                                   size: 16,
                                 ),
-                                Text('+251911111111'),
+                                Text(job.provider.phone),
                               ],
                             ),
                             Row(
@@ -87,14 +96,14 @@ class HistoryOrders extends StatelessWidget {
                                   size: 16,
                                 ),
                                 Text(
-                                    'Sat, August 12, 2021 3:54 A.M. -\n Sat, August 13, 2021 3:54 P.M. '),
+                                    '$orderCreatedDate -\n $orderCompletedDate. '),
                               ],
                             ),
                             StarRating(
-                              value: 3,
+                              value: job.review.rating,
                               onChanged: null,
                             ),
-                            Text('He did a good job. Satisfying service!')
+                            Text(job.review.comment)
                           ],
                         ),
                       ),

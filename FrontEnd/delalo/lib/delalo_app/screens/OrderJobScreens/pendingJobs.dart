@@ -3,22 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PendingJobs extends StatefulWidget {
+class PendingJobs extends StatelessWidget {
   PendingJobs({Key? key}) : super(key: key);
 
   @override
-  _PendingJobsState createState() => _PendingJobsState();
-}
-
-class _PendingJobsState extends State<PendingJobs> {
-  @override
   Widget build(BuildContext context) {
-    final orderBloc = BlocProvider.of<OrderBloc>(context);
+    // final orderBloc = BlocProvider.of<OrderBloc>(context);
 
     return Scaffold(
       body: Center(
-        child: BlocConsumer<OrderBloc, OrderState>(
-          listener: (ctx, orderState) {},
+        child: BlocBuilder<OrderBloc, OrderState>(
           builder: (_, orderState) {
             if (orderState is Loading) {
               return CircularProgressIndicator();
@@ -31,14 +25,12 @@ class _PendingJobsState extends State<PendingJobs> {
                 itemCount: pendingJobs.length,
                 itemBuilder: (context, index) {
                   final job = pendingJobs[index];
-                  final userName =
-                      job.user!.firstname + " " + job.user!.lastname;
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundImage: AssetImage('assets/images/user.png'),
                     ),
                     title: Text(
-                      userName,
+                      job.order.id,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -47,7 +39,7 @@ class _PendingJobsState extends State<PendingJobs> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(job.provider!.category),
+                          Text('Category Type'),
                         ],
                       ),
                     ),
@@ -56,52 +48,38 @@ class _PendingJobsState extends State<PendingJobs> {
                       width: 120,
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              orderBloc.add(
-                                AcceptJob(job.order.id),
-                              );
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.check_circle,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ), // icon
+                              Text(
+                                'Accept',
+                                style: TextStyle(
                                   color: Colors.green,
-                                ), // icon
-                                Text(
-                                  'Accept',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                  ),
-                                ), // text
-                              ],
-                            ),
+                                ),
+                              ), // text
+                            ],
                           ),
                           SizedBox(
                             width: 15,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              orderBloc.add(
-                                DeclineJob(job.order.id),
-                              );
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.remove_circle,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.remove_circle,
+                                color: Colors.red,
+                              ), // icon
+                              Text(
+                                'Decline',
+                                style: TextStyle(
                                   color: Colors.red,
-                                ), // icon
-                                Text(
-                                  'Decline',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                  ),
-                                ), // text
-                              ],
-                            ),
+                                ),
+                              ), // text
+                            ],
                           ),
                         ],
                       ),

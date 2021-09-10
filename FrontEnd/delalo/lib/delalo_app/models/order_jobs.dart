@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class Order extends Equatable {
+class Order {
   final String id;
   final String? status;
   final String? progress;
@@ -14,7 +14,7 @@ class Order extends Equatable {
   final int? unique_code;
   final String seeker_id;
   final String provider_id;
-  final int? final_payment;
+  final double? final_payment;
 
   Order({
     required this.id,
@@ -31,35 +31,23 @@ class Order extends Equatable {
     required this.provider_id,
   });
 
-  @override
-  List<Object?> get props => [
-        id,
-        status,
-        progress,
-        order_created_date,
-        order_completed_date,
-        start_time,
-        saved_time,
-        unique_code,
-        seeker_id,
-        provider_id,
-        final_payment
-      ];
-
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
-      id: json['_id'],
-      status: json['status'],
-      progress: json['progress'],
-      order_created_date: json['order_created_date'],
-      order_completed_date: json['order_completed_date'],
-      is_completed: json['is_completed'],
-      start_time: json['start_time'],
-      saved_time: json['saved_time'],
-      unique_code: json['unique_code'],
-      seeker_id: json['seeker_id'],
-      provider_id: json['provider_id'],
-      final_payment: json['final_payment']);
-
+  factory Order.fromJson(Map<String, dynamic> json) {
+    print("order$json");
+    // print(double.parse(json['saved_time']).runtimeType);
+    return Order(
+        id: json['_id'],
+        status: json['status'],
+        progress: json['progress'],
+        order_created_date: json['order_created_date'],
+        order_completed_date: json['order_completed_date'],
+        is_completed: json['is_completed'],
+        start_time: json['start_time'],
+        saved_time: json['saved_time'],
+        unique_code: json['unique_code'],
+        seeker_id: json['seeker_id'],
+        provider_id: json['provider_id'],
+        final_payment: json['final_payment']);
+  }
   @override
   String toString() =>
       'Order { id: $id, status: $status, seekerID: $seeker_id, providerID: $provider_id }';

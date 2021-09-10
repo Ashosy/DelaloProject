@@ -90,11 +90,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     },
   );
 
-  late String orderId;
+  late String order;
 
   @override
   Widget build(BuildContext context) {
-    final orderId = argObj['orderId'];
+    final order = argObj['order'];
+    print(order);
 
     return Scaffold(
       appBar: AppBar(
@@ -104,7 +105,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(children: [
-            Text(orderId),
+            Text(order.order.id),
             Container(
                 child: GradientProgressIndicator(
               radius: 120,
@@ -153,7 +154,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         builder: (context) => _rating_dialog,
                       );
                     },
-                    child: const Text('Start time'),
+                    child: Icon(
+                      Icons.play_circle_outline,
+                      color: Colors.green,
+                      size: 30.0,
+                    ),
                   ),
                   // ElevatedButton(
                   //   style: ElevatedButton.styleFrom(
@@ -163,7 +168,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   //   onPressed: () {
                   //     print("pressed");
                   //   },
-                  //   child: const Text('Pause time'),
+                  //   child: Icon(
+                  //   Icons.pause_circle_outline,
+                  //   color: Colors.green,
+                  //   size: 30.0,
+                  // ),
                   // ),
                 ],
               ),

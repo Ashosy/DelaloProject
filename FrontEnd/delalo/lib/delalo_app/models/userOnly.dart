@@ -1,38 +1,25 @@
-class UserOnly{
-  const UserOnly(
-      {required this.id,
-      required this.firstname,
-      required this.lastname,
-      required this.password,
-      required this.email,
-      required this.role,
-      required this.phone,
-      required this.image,
-      required this.address,});
+class UserOnly {
+  const UserOnly({
+    required this.id,
+    required this.firstname,
+    required this.lastname,
+    required this.password,
+    required this.email,
+    required this.role,
+    required this.phone,
+    required this.image,
+    required this.address,
+  });
   final String id;
-  final double firstname;
+  final String firstname;
   final String lastname;
-  final int password;
-  final int email;
-  final int role;
-  final int phone;
-  final int image;
-  final int address;
-  
-  @override
-  List<Object> get props => [
-        id,
-        firstname,
-        lastname,
-        password,
-        email,
-        role,
-        phone,
-        image,
-        address,
-      ];
+  final String password;
+  final String email;
+  final String role;
+  final String phone;
+  final String image;
+  final String address;
 
-  @override
   factory UserOnly.fromJson(Map<String, dynamic> json) {
     return UserOnly(
         id: json['_id'],

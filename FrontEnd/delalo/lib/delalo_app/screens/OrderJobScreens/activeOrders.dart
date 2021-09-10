@@ -12,7 +12,9 @@ class ActiveOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final orderBloc = BlocProvider.of<OrderBloc>(context);
+    final String seeker_id = "61332f352eb4f64398fa7678";
+    final orderBloc = BlocProvider.of<OrderBloc>(context);
+    orderBloc.add(DeclinedOrdersLoad(seeker_id));
 
     return Scaffold(
       body: Center(
@@ -21,25 +23,34 @@ class ActiveOrders extends StatelessWidget {
             if (orderState is Loading) {
               return CircularProgressIndicator();
             }
-
-            if (orderState is OrderOperationFailure) {
-              return Text("Sorry loading failed");
+            if (orderState is ActiveOrdersLoadFailure) {
+              return Text(orderState.failureMessage);
             }
 
-            if (orderState is OrdersLoadSuccess) {
-              final activeOrders = orderState.orders;
+            if (orderState is ActiveOrdersEmpltyFailure) {
+              return Text(orderState.message);
+            }
+
+            if (orderState is ActiveOrdersLoadSuccess) {
+              final activeOrders = orderState.activeOrders;
 
               return ListView.builder(
                 itemCount: activeOrders.length,
                 itemBuilder: (context, index) {
-                  final order = activeOrders[index];
+                  final currentOrder = activeOrders[index];
+                  final providerName = currentOrder.provider!.firstname +
+                      " " +
+                      currentOrder.provider!.lastname;
+                  final orderCreatedDate =
+                      currentOrder.order!.order_created_date!.substring(0, 24);
+
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundImage: AssetImage('assets/images/user.png'),
                     ),
                     trailing: Icon(Icons.keyboard_arrow_right),
                     title: Text(
-                      order.id,
+                      providerName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -48,7 +59,7 @@ class ActiveOrders extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Category Type'),
+                          Text(currentOrder.provider.category),
                           Row(
                             children: [
                               Icon(
@@ -56,7 +67,7 @@ class ActiveOrders extends StatelessWidget {
                                 color: Colors.grey,
                                 size: 16,
                               ),
-                              Text('+251911111111'),
+                              Text(currentOrder.provider.phone),
                             ],
                           ),
                           Row(
@@ -66,7 +77,7 @@ class ActiveOrders extends StatelessWidget {
                                 color: Colors.grey,
                                 size: 16,
                               ),
-                              Text('Sat, August 12, 2021 3:54 A.M'),
+                              Text(orderCreatedDate),
                             ],
                           ),
                         ],
@@ -76,7 +87,8 @@ class ActiveOrders extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         RouteGenerator.orderDetailScreenName,
-                        arguments: ScreenArguments({"orderId": order.id}),
+                        arguments:
+                            ScreenArguments({"order": currentOrder.order}),
                       );
                     },
                   );

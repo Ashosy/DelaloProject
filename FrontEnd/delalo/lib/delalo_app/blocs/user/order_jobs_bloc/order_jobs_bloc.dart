@@ -1,7 +1,6 @@
 import 'package:delalo/delalo_app/blocs/blocs.dart';
 import 'package:delalo/delalo_app/models/models.dart';
 import 'package:delalo/delalo_app/repository/repository.dart';
-import 'package:delalo/delalo_app/screens/OrderJobScreens/activeJob.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
@@ -38,7 +37,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
             await orderRepository.updateJobStatus(event.order_id, "declined");
 
         if (resStatus == 201) {
-          print("job declined");
           yield DeclineJobSuccess();
         } else {
           yield DeclineJobFailure();
@@ -46,7 +44,23 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
         // yield ActiveJobSuccess(job);
       } catch (_) {
-        yield ActiveJobFailure();
+        yield DeclineJobFailure();
+      }
+    }
+    if (event is DeclineOrder) {
+      yield Loading();
+      try {
+        final resStatus = await orderRepository.deleteOrder(event.order_id);
+
+        if (resStatus == 200) {
+          yield DeclineOrderSuccess();
+        } else {
+          yield DeclineOrderFailure();
+        }
+
+        // yield ActiveJobSuccess(job);
+      } catch (_) {
+        yield DeclineJobFailure();
       }
     }
 
@@ -55,16 +69,20 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       try {
         final activeJob = await orderRepository.getActiveJob(event.provider_id);
 
-        final pendingJobs =
-            await orderRepository.getPendingJobs(event.provider_id);
-
         if (activeJob is OrderDetails) {
-          yield ActiveJobSuccess(activeJob, pendingJobs.length);
-        } else if (pendingJobs.length > 0 &&
-            pendingJobs[0] != "No Pending Jobs") {
-          yield PendingJobsLoadSuccess(pendingJobs);
+          yield ActiveJobSuccess(activeJob);
         } else {
-          yield PendingJobsLoadFailure();
+          try {
+            final pendingJobs =
+                await orderRepository.getPendingJobs(event.provider_id);
+            if (pendingJobs[0] == "No Pending Jobs") {
+              yield PendingJobsEmpltyFailure(message: "No Pending Jobs");
+            } else {
+              yield PendingJobsLoadSuccess(pendingJobs);
+            }
+          } catch (err) {
+            yield PendingJobsLoadFailure();
+          }
         }
 
         // yield ActiveJobSuccess(job);
@@ -75,11 +93,63 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     if (event is CompleteJobsLoad) {
       yield Loading();
       try {
-        final jobs = await orderRepository.getCompletedJobs(event.provider_id);
-
-        yield CompletedJobsLoadSuccess(jobs);
-      } catch (_) {
+        final completedJobs =
+            await orderRepository.getCompletedJobs(event.provider_id);
+        if (completedJobs[0] == "No History yet") {
+          yield CompletedJobsEmpltyFailure(message: "No Hisotry Yet");
+        } else {
+          yield CompletedJobsLoadSuccess(completedJobs);
+        }
+      } catch (err) {
+        print("s$err");
         yield CompletedJobsLoadFailure();
+      }
+    }
+    if (event is PendingOrdersLoad) {
+      yield Loading();
+      try {
+        final pendingOrders =
+            await orderRepository.getPendingOrders(event.seeker_id);
+        if (pendingOrders[0] == "No Pending Orders") {
+          yield PendingOrdersEmpltyFailure(message: "No Pending Orders");
+        } else {
+          yield PendingOrdersLoadSuccess(pendingOrders);
+        }
+      } catch (err) {
+        print("s$err");
+        yield PendingOrdersLoadFailure();
+      }
+    }
+
+    if (event is DeclinedOrdersLoad) {
+      yield Loading();
+      try {
+        final declinedOrders =
+            await orderRepository.getDeclinedOrders(event.seeker_id);
+        if (declinedOrders[0] == "No Pending Orders") {
+          yield DeclinedOrdersEmpltyFailure(message: "No Pending Orders");
+        } else {
+          yield DeclinedOrdersLoadSuccess(declinedOrders);
+        }
+      } catch (err) {
+        print("s$err");
+        yield DeclinedOrdersLoadFailure();
+      }
+    }
+
+    if (event is ActiveOrdersLoad) {
+      yield Loading();
+      try {
+        final activeOrders =
+            await orderRepository.getActiveOrders(event.seeker_id);
+        if (activeOrders[0] == "No Active Orders") {
+          yield ActiveOrdersEmpltyFailure(message: "No Active Orders");
+        } else {
+          yield ActiveOrdersLoadSuccess(activeOrders);
+        }
+      } catch (err) {
+        print("s$err");
+        yield ActiveOrdersLoadFailure();
       }
     }
 
@@ -114,24 +184,24 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       }
     }
 
-    if (event is OrderUpdate) {
-      try {
-        await orderRepository.updateOrder(event.order);
-        final orders = await orderRepository.getOrders();
-        yield OrdersLoadSuccess(orders);
-      } catch (_) {
-        yield OrderOperationFailure();
-      }
-    }
+    // if (event is OrderUpdate) {
+    //   try {
+    //     await orderRepository.updateOrder(event.order_id);
+    //     final orders = await orderRepository.getOrders();
+    //     yield OrdersLoadSuccess(orders);
+    //   } catch (_) {
+    //     yield OrderOperationFailure();
+    //   }
+    // }
 
-    if (event is OrderDelete) {
-      try {
-        await orderRepository.deleteOrder(event.order);
-        final orders = await orderRepository.getOrders();
-        yield OrdersLoadSuccess(orders);
-      } catch (_) {
-        yield OrderOperationFailure();
-      }
-    }
+    // if (event is OrderDelete) {
+    //   try {
+    //     await orderRepository.deleteOrder(event.order_id);
+    //     final orders = await orderRepository.getOrders();
+    //     yield OrdersLoadSuccess(orders);
+    //   } catch (_) {
+    //     yield OrderOperationFailure();
+    //   }
+    // }
   }
 }

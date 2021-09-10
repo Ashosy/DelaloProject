@@ -1,4 +1,5 @@
 import 'package:delalo/delalo_app/blocs/blocs.dart';
+import 'package:delalo/delalo_app/blocs/navigation_drawer/navigation.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
 import 'package:delalo/delalo_app/repository/repository.dart';
 import 'package:delalo/delalo_app/screens/OrderJobScreens/activeJob.dart';
@@ -11,44 +12,37 @@ import 'package:delalo/delalo_app/screens/OrderJobScreens/widgets/rowContent.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
-class ProviderJob extends StatefulWidget {
+class ProviderJob extends StatelessWidget {
   ProviderJob({Key? key}) : super(key: key);
 
-  @override
-  _ProviderJobState createState() => _ProviderJobState();
-}
-
-class _ProviderJobState extends State<ProviderJob> {
   @override
   Widget build(BuildContext context) {
     final String provider_id = "61332f352eb4f64398fa7678";
     final orderBloc = BlocProvider.of<OrderBloc>(context);
     orderBloc.add(ProviderJobStatus(provider_id));
-
     return Scaffold(
       body: Center(
-        child: BlocConsumer<OrderBloc, OrderState>(
-          listener: (ctx, orderState) {},
-          // buildWhen: (previous, orderState) {
-          //   return previous == orderState;
-          // },
+        child: BlocBuilder<OrderBloc, OrderState>(
           builder: (_, orderState) {
+            print(orderState);
             if (orderState is Loading) {
               return CircularProgressIndicator();
             }
 
             if (orderState is PendingJobsLoadFailure) {
-              return Center(child: Text("No Pending Jobs."));
+              return Center(child: Text(orderState.failureMessage));
             }
 
-            if (orderState is OrderOperationFailure ||
-                orderState is ActiveJobFailure) {
-              return Text("Sorry loading failed");
+            if (orderState is PendingJobsEmpltyFailure) {
+              return Center(child: Text(orderState.message));
+            }
+
+            if (orderState is ActiveJobFailure) {
+              return Text(orderState.failureMessage);
             }
 
             if (orderState is PendingJobsLoadSuccess) {
               final pendingJobs = orderState.pendingJobs;
-
               return ListView.builder(
                 itemCount: pendingJobs.length,
                 itemBuilder: (context, index) {
@@ -69,7 +63,7 @@ class _ProviderJobState extends State<ProviderJob> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(job.provider!.category),
+                          Text(job.provider.category),
                         ],
                       ),
                     ),
@@ -135,7 +129,6 @@ class _ProviderJobState extends State<ProviderJob> {
 
             if (orderState is ActiveJobSuccess) {
               final activeJob = orderState.activeJob;
-              final pendingJobsLength = orderState.pendingOrdersLength;
               final userName =
                   activeJob.user!.firstname + " " + activeJob.user!.lastname;
               final orderCreatedDate =
@@ -145,20 +138,6 @@ class _ProviderJobState extends State<ProviderJob> {
                 decoration: BoxDecoration(color: Colors.grey[100]),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        (() {
-                          if (pendingJobsLength == 1) {
-                            return 'You have $pendingJobsLength other request waiting.\nFinish the task at hand to accept another one';
-                          }
-
-                          return 'You have $pendingJobsLength other requests waiting.\nFinish the task at hand to accept another one';
-                        })(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ),
                     Container(
                       color: Colors.grey[100],
                       child: Stack(

@@ -5,6 +5,13 @@ abstract class OrderEvent extends Equatable {
   const OrderEvent();
 }
 
+class OrdersLoad extends OrderEvent {
+  const OrdersLoad();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AcceptJob extends OrderEvent {
   final String order_id;
   const AcceptJob(this.order_id);
@@ -21,8 +28,9 @@ class DeclineJob extends OrderEvent {
   List<Object> get props => [];
 }
 
-class OrdersLoad extends OrderEvent {
-  const OrdersLoad();
+class DeclineOrder extends OrderEvent {
+  final String order_id;
+  const DeclineOrder(this.order_id);
 
   @override
   List<Object> get props => [];
@@ -31,6 +39,38 @@ class OrdersLoad extends OrderEvent {
 class CompleteJobsLoad extends OrderEvent {
   final String provider_id;
   const CompleteJobsLoad(this.provider_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class ActiveOrdersLoad extends OrderEvent {
+  final String seeker_id;
+  const ActiveOrdersLoad(this.seeker_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class PendingOrdersLoad extends OrderEvent {
+  final String seeker_id;
+  const PendingOrdersLoad(this.seeker_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeclinedOrdersLoad extends OrderEvent {
+  final String seeker_id;
+  const DeclinedOrdersLoad(this.seeker_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompleteOrdersLoad extends OrderEvent {
+  final String seeker_id;
+  const CompleteOrdersLoad(this.seeker_id);
 
   @override
   List<Object> get props => [];

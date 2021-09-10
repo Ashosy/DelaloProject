@@ -24,7 +24,6 @@ class ActiveJob extends StatelessWidget {
 
             if (orderState is ActiveJobSuccess) {
               final activeJob = orderState.activeJob;
-              final pendingJobsLength = orderState.pendingOrdersLength;
               final userName =
                   activeJob.user!.firstname + " " + activeJob.user!.lastname;
               final orderCreatedDate =
@@ -34,20 +33,6 @@ class ActiveJob extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.grey[100]),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        (() {
-                          if (pendingJobsLength == 1) {
-                            return 'You have $pendingJobsLength other request waiting.\nFinish the task at hand to accept another one';
-                          }
-
-                          return 'You have $pendingJobsLength other requests waiting.\nFinish the task at hand to accept another one';
-                        })(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ),
                     Container(
                       color: Colors.grey[100],
                       child: Stack(

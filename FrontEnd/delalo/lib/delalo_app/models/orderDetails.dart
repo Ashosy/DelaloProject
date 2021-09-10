@@ -18,10 +18,11 @@ class OrderDetails extends Equatable {
   List<Object?> get props => [order, provider, user];
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) {
+    print("orderDetail$json\n\n");
     return OrderDetails(
-      order: Order.fromJson(json['Order']),
-      provider: User.fromJson(json['Provider']),
       user: User.fromJson(json['User']),
+      provider: User.fromJson(json['Provider']),
+      order: Order.fromJson(json['Order']),
     );
   }
 }
