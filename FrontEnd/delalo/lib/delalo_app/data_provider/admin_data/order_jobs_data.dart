@@ -13,8 +13,7 @@ class OrderDataProvider {
   }
 
   OrderDataProvider({required this.httpClient});
-
-  Future<List<OrderDetails>> getOrders() async {
+ Future<List<OrderDetails>> getOrders() async {
     final response = await httpClient.get(
       Uri.parse('http://127.0.0.1:3000/orderAllCompleted'),
       headers: <String, String>{
