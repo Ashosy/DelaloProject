@@ -76,9 +76,9 @@ class AccountPage extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Account Details",
@@ -94,10 +94,10 @@ class AccountPage extends StatelessWidget {
                   height: 8,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(children: [

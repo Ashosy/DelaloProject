@@ -1,4 +1,6 @@
 const models = require("../models/user_model");
+const categoryModels = require("../models/category_model");
+const orderModel = require("../models/order_model");
 
 const postProvider = (req, res) => {
   const providersList = new models({
@@ -35,8 +37,12 @@ const postProvider = (req, res) => {
 const getProvider = (req, res) => {
   models
     .find()
-    .then((results) => {
-      res.send(results);
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No providers found" });
+      } else {
+        res.send(result);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -47,17 +53,80 @@ const getProviderById = (req, res) => {
   models
     .findById(req.params.id)
     .then((result) => {
-      res.send(result);
+      if (!result) {
+        res.send({ message: "No provider with this Id found" });
+      } else {
+        res.send(result);
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
+const updateProviderById = (req, res) => {
+  models.findById(req.params.id).then((result) => {
+    result.jobs_done += 1;
+    rating = req.body.average_rating;
+    review_count = orderModel.findById(result.id);
+  });
+};
 
-// const getTopProviders = (req, res) => {
-//     models
-//         .average_rating
-// }
+const getTopProviders = (req, res) => {
+  models
+    .find()
+    .where("average_rating")
+    .gte(3)
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No top providers found" });
+      } else {
+        res.send(result);
+      }
+    })
+    .catch((err) => {
+      res.send({ message: err.message });
+    });
+};
 
-module.exports = { postProvider, getProvider, getProviderById };
+const getProvidersByCategory = (req, res) => {
+  models
+    .find()
+    .where("category")
+    .equals(req.params.category_name)
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No providers within this category" });
+      } else {
+        res.send(result);
+      }
+    })
+    .catch((err) => {
+      res.send({ message: err.message });
+    });
+};
+
+const getTopProvidersByCategory = (req, res) => {
+  models
+    .find()
+    .where({ category: req.params.category_name })
+    .where("average_rating")
+    .gte(3)
+    .then((result) => {
+      if (result.length == 0) {
+        res.send({ message: "No top providers within this category" });
+      } else {
+        res.send(result);
+      }
+    });
+};
+
+module.exports = {
+  postProvider,
+  getProvider,
+  getProviderById,
+  updateProviderById,
+  getTopProviders,
+  getProvidersByCategory,
+  getTopProvidersByCategory,
+};
