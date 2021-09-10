@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:delalo/delalo_app/blocs/auth_bloc/login_bloc/login_bloc.dart';
 import 'package:delalo/delalo_app/blocs/blocs.dart';
+import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/provider_profile_bloc.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/login_data.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/singupUser_data.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
+import 'package:delalo/delalo_app/data_provider/user_data/single_provider_page_data.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/login_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupProvider_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupUser_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
+import 'package:delalo/delalo_app/repository/user_repository/single_provider_page_repository.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +34,9 @@ class MyApp extends StatelessWidget {
   final signupUserRepository = SignupUserRepository(
       dataProvider: SignupUserDataProvider(httpClient: httpClient));
   final signupProviderRepository = SignupProviderRepository(
-      dataProvider: SignupProviderDataProvider(httpClient: httpClient));    
+      dataProvider: SignupProviderDataProvider(httpClient: httpClient)); 
+  final providerProfileRepository = ProviderProfileRepository(
+      dataProvider: ProviderProfileDataProvider(httpClient: httpClient));        
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +55,10 @@ class MyApp extends StatelessWidget {
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
             create: (context) =>
-                SignupProviderBloc(signupProviderRepository: signupProviderRepository))
+                SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
+        BlocProvider(
+            create: (context) =>
+                ProviderProfileBloc(providerProfileRepository: providerProfileRepository)..add(LoadProviderInfo(providerId: "613a6d0efa94bb01f0afbfa5")))                
       ],
       child: MaterialApp(
         home: Scaffold(

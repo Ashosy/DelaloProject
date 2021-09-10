@@ -63,9 +63,10 @@ const getProviderById = (req, res) => {
   models
     .findById(req.params.id)
     .then((result) => {
-      res.send(result);
+      res.status(200).send(result);
     })
     .catch((err) => {
+      res.send(err);
       console.log(err);
     });
 };

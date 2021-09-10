@@ -42,17 +42,10 @@ class LoginDataProvider {
           }));
       if (response.statusCode == 200) {
         var toStore = UserStore.fromJson(jsonDecode(response.body));
-        print(toStore.role);
         await SESSION.setString("email", login.email);
         await SESSION.setString("role", toStore.role);
         await SESSION.setString("token", toStore.token);
         await SESSION.setString('id', toStore.id);
-
-        // this is for debugging
-        print(SESSION.getString('email'));
-        print(SESSION.getString('token'));
-        print(SESSION.getString('role'));
-        print(SESSION.getString('id'));
 
         return;
       } else if (response.statusCode == 400) {
@@ -61,9 +54,9 @@ class LoginDataProvider {
         throw LoginFailedException(
             errorText: "Connection error. Please try again");
       }
-    } on TypeError catch (e) {
+    } catch (e) {
       throw LoginFailedException(
-          errorText: "Can not connect to internet ${e.runtimeType} add ${e}");
+          errorText: "Connection error. Please try again!");
     }
   }
 }

@@ -25,15 +25,15 @@ class User extends Equatable {
   final String password;
   final String email;
   final String role;
-  final String? phone;
-  final String? image;
-  final String? address;
-  final String? description;
-  final String? category;
-  final int? jobs_done;
-  final double? per_hour_wage;
-  final String? recommendation;
-  final double? average_rating;
+  final String phone;
+  final String image;
+  final String address;
+  final String description;
+  final String category;
+  final int jobs_done;
+  final int per_hour_wage;
+  final String recommendation;
+  final int average_rating;
   @override
   List<Object?> get props => [
         id,
