@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
           drawer: NavigationDrawer(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.singleProviderPageName,
+        initialRoute: RouteGenerator.loginScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
