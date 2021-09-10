@@ -107,14 +107,7 @@ class _AdminOrdersJobsState extends State<AdminOrdersJobs> {
                     ],
                   ),
                 )
-                    // ListTile(
-                    //   leading: CircleAvatar(
-                    //     backgroundImage:
-                    //         NetworkImage('https://picsum.photos/250?image=9'),
-                    //   ),
-                    //   title: Text(seeker_user_name),
-                    //   subtitle: Text(order.order!.status),
-                    // ),
+                   
                     );
               });
         }
