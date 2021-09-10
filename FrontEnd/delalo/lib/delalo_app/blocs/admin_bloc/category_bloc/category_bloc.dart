@@ -1,7 +1,8 @@
 import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
 import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_state.dart';
-import 'package:delalo/delalo_app/repository/admin_repository/category_repository.dart';
+import 'package:delalo/delalo_app/repository/admin_repository/admin_category_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final AdminCategoryRepository categoryRepository;
@@ -31,5 +32,29 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         yield CategoryOperationFailed();
       }
     }
+    if (event is CategoryUpdate) {
+      try {
+        final category = event.categoryId;
+        await categoryRepository.updateCategory(category);
+        final newcategory =
+            await categoryRepository.getCategoriesFromCategory();
+        yield CategoryLoaded(newcategory);
+      } catch (_) {
+        yield CategoryOperationFailed();
+      }
+    }
+    if (event is CategoryDelete) {
+      try {
+        final categoryId = event.categoryId;
+        await categoryRepository.deleteCategory(categoryId);
+        print("it got here...1");
+        final newcategory =
+            await categoryRepository.getCategoriesFromCategory();
+        yield CategoryLoaded(newcategory);
+      } catch (_) {
+        yield CategoryOperationFailed();
+      }
+    }
   }
 }
+

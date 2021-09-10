@@ -4,7 +4,7 @@ import 'package:delalo/delalo_app/models/models.dart';
 import 'package:delalo/delalo_app/models/order_jobs.dart';
 import 'package:http/http.dart' as http;
 
-class OrderDataProvider {
+class AdminOrderDataProvider {
   final _baseUrl = "localhost:3000";
   final http.Client httpClient;
 
@@ -12,11 +12,10 @@ class OrderDataProvider {
     return Uri.http(_baseUrl, path);
   }
 
-  OrderDataProvider({required this.httpClient});
-
-  Future<List<Order>> getOrders() async {
+  AdminOrderDataProvider({required this.httpClient});
+ Future<List<OrderDetails>> getOrders() async {
     final response = await httpClient.get(
-      Uri.parse('http://127.0.0.1:3000/order'),
+      Uri.parse('http://127.0.0.1:3000/orderAllCompleted'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -26,12 +25,13 @@ class OrderDataProvider {
     print(response.body);
 
     if (response.statusCode == 200) {
-      Iterable orders = jsonDecode(response.body);
+      Iterable orders = jsonDecode(response.body) ;
       print("Inside orders data");
-      // print(orders);
-      List<Order> mappedOrders =
-          List<Order>.from(orders.map((order) => Order.fromJson(order)))
+      print(orders);
+      List<OrderDetails> mappedOrders =
+          List<OrderDetails>.from(orders.map((order) => OrderDetails.fromJson(order)))
               .toList();
+
       print("maped orders");
       print(mappedOrders);
       return mappedOrders;
