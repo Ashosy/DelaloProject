@@ -17,6 +17,7 @@ import 'package:delalo/delalo_app/repository/auth_repository/signupUser_reposito
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/single_provider_page_repository.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
+import 'package:/delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,9 +47,9 @@ class MyApp extends StatelessWidget {
   final signupUserRepository = SignupUserRepository(
       dataProvider: SignupUserDataProvider(httpClient: httpClient));
   final signupProviderRepository = SignupProviderRepository(
-      dataProvider: SignupProviderDataProvider(httpClient: httpClient)); 
+      dataProvider: SignupProviderDataProvider(httpClient: httpClient));
   final providerProfileRepository = ProviderProfileRepository(
-      dataProvider: ProviderProfileDataProvider(httpClient: httpClient));        
+      dataProvider: ProviderProfileDataProvider(httpClient: httpClient));
 
   final categoryRepository = AdminCategoryRepository(
       categoryDataProvider: AdminCategoryDataProvider(
@@ -59,14 +60,14 @@ class MyApp extends StatelessWidget {
     httpClient: http.Client(),
   ));
   final adminOrdersRepository = AdminOrderRepository(
-     orderdataProvider:   AdminOrderDataProvider(
-   httpClient: http.Client(),
+      orderdataProvider: AdminOrderDataProvider(
+    httpClient: http.Client(),
   ));
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-         BlocProvider(
+        BlocProvider(
             create: (context) =>
                 CategoryBloc(categoryRepository: categoryRepository)
                   ..add(
@@ -84,7 +85,6 @@ class MyApp extends StatelessWidget {
                   ..add(
                     AdminOrdersLoad(),
                   )),
-        
         BlocProvider(
           create: (context) => OrderBloc(orderRepository: orderRepository)
             ..add(
@@ -97,15 +97,19 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
-            create: (context) =>
-                SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
+            create: (context) => SignupProviderBloc(
+                signupProviderRepository: signupProviderRepository)),
         BlocProvider(
-            create: (context) =>
-                ProviderProfileBloc(providerProfileRepository: providerProfileRepository)..add(LoadProviderInfo(providerId: "613a6d0efa94bb01f0afbfa5", seekerId: "6118e035e030821c38a75f24"))),
+            create: (context) => ProviderProfileBloc(
+                providerProfileRepository: providerProfileRepository)
+              ..add(LoadProviderInfo(
+                  providerId: "613a6d0efa94bb01f0afbfa5",
+                  seekerId: "6118e035e030821c38a75f24"))),
         BlocProvider(
-            create: (context) =>
-                ReviewsOfProviderBloc(providerProfileRepository: providerProfileRepository)..add(LoadReviewsOfProvider(providerId: "613a6d0efa94bb01f0afbfa5")))        
-
+            create: (context) => ReviewsOfProviderBloc(
+                providerProfileRepository: providerProfileRepository)
+              ..add(LoadReviewsOfProvider(
+                  providerId: "613a6d0efa94bb01f0afbfa5")))
       ],
       child: MaterialApp(
         home: Scaffold(
