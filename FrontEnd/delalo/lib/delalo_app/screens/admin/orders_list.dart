@@ -15,15 +15,15 @@ class _AdminOrdersJobsState extends State<AdminOrdersJobs> {
   var color_swap_white = Colors.white;
   @override
   Widget build(BuildContext context) {
-    final ordersBloc = BlocProvider.of<OrderBloc>(context);
+    final ordersBloc = BlocProvider.of<AdminOrderBloc>(context);
     return Scaffold(body: Center(
-      child: BlocBuilder<OrderBloc, OrderState>(builder: (_, orderState) {
+      child: BlocBuilder<AdminOrderBloc, AdminOrderState>(builder: (_, orderState) {
         print('orders state $orderState');
-        if (orderState is OrderLoading) {
+        if (orderState is AdminOrderLoading) {
           return CircularProgressIndicator();
-        } else if (orderState is OrderOperationFailure) {
+        } else if (orderState is AdminOrderOperationFailure) {
           return Text("Loading failed");
-        } else if (orderState is OrdersLoadSuccess) {
+        } else if (orderState is AdminOrdersLoadSuccess) {
           final orders = orderState.orders;
           print("orders Ui");
           print(orders.length);

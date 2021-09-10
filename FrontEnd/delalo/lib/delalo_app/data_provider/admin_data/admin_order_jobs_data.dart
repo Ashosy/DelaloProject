@@ -4,7 +4,7 @@ import 'package:delalo/delalo_app/models/models.dart';
 import 'package:delalo/delalo_app/models/order_jobs.dart';
 import 'package:http/http.dart' as http;
 
-class OrderDataProvider {
+class AdminOrderDataProvider {
   final _baseUrl = "localhost:3000";
   final http.Client httpClient;
 
@@ -12,7 +12,7 @@ class OrderDataProvider {
     return Uri.http(_baseUrl, path);
   }
 
-  OrderDataProvider({required this.httpClient});
+  AdminOrderDataProvider({required this.httpClient});
  Future<List<OrderDetails>> getOrders() async {
     final response = await httpClient.get(
       Uri.parse('http://127.0.0.1:3000/orderAllCompleted'),

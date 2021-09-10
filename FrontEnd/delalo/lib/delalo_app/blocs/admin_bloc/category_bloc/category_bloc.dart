@@ -1,6 +1,6 @@
 import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
 import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_state.dart';
-import 'package:delalo/delalo_app/repository/admin_repository/category_repository.dart';
+import 'package:delalo/delalo_app/repository/admin_repository/admin_category_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
