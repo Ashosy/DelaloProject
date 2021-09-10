@@ -6,18 +6,21 @@ import 'package:flutter/material.dart';
 class Category {
   const Category(
       {required this.id,
-      required this.image,
+      required this.name,
+      this.image,
       required this.numOfProviders,
       required this.description});
+  final String name;
   final String id;
-  final String image;
+  final String? image;
   final int numOfProviders;
   final String description;
 
 
-  List<Object> get props => [id, image, numOfProviders, description];
+  List<Object?> get props => [name,id, image, numOfProviders, description];
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
+        name:json['name'],
         id: json['_id'],
         image: json['image'],
         numOfProviders: json['numOfProviders'],
