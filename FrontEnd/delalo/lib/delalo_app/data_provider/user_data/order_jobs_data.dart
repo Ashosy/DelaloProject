@@ -145,6 +145,7 @@ class OrderDataProvider {
   }
 
   Future<List<dynamic>> getPendingJobs(String provider_id) async {
+    print("here");
     final response = await httpClient.get(
         generateUri('pendingJobs/${provider_id}'),
         headers: <String, String>{
@@ -153,6 +154,7 @@ class OrderDataProvider {
           'Content-Type': 'application/json; charset=UTF-8',
         });
 
+    print(response.body);
     if (response.statusCode == 200) {
       Iterable jobs = jsonDecode(response.body);
 
@@ -177,15 +179,26 @@ class OrderDataProvider {
     }
   }
 
-  Future<List<OrderDetails>> getCompletedJobs(User provider) async {
-    final response = await httpClient
-        .get(Uri(path: '$_baseUrl/completedJobs/${provider.id}'));
+  Future<List<dynamic>> getCompletedJobs(String provider_id) async {
+    final response = await httpClient.get(
+        generateUri('completedJobs/${provider_id}'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+
+    print(response.body);
 
     if (response.statusCode == 200) {
-      final jobs = jsonDecode(response.body) as List;
-      return jobs.map((job) => OrderDetails.fromJson(job)).toList();
+      Iterable jobs = jsonDecode(response.body);
+
+      List<OrderDetails> mappedJobs =
+          List<OrderDetails>.from(jobs.map((job) => OrderDetails.fromJson(job)))
+              .toList();
+      return mappedJobs;
     } else {
-      throw Exception('Failed to load completed jobs');
+      return ["No History yet"];
     }
   }
 }

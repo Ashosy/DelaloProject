@@ -46,7 +46,7 @@ class OrderRepository {
     return await dataProvider.getDeclinedJobs(provider);
   }
 
-  Future<List<OrderDetails>> getCompletedJobs(User provider) async {
-    return await dataProvider.getCompletedJobs(provider);
+  Future<List<dynamic>> getCompletedJobs(String provider_id) async {
+    return await dataProvider.getCompletedJobs(provider_id);
   }
 }

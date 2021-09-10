@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   static final httpClient = http.Client();
   final orderRepository = OrderRepository(
       dataProvider: OrderDataProvider(
-    httpClient: httpClient,
+    httpClient: http.Client(),
   ));
 
   final loginRepository =

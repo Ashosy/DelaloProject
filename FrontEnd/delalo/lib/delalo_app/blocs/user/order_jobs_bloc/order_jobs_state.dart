@@ -68,6 +68,17 @@ class PendingJobsLoadSuccess extends OrderState {
 
 class PendingJobsLoadFailure extends OrderState {}
 
+class CompletedJobsLoadSuccess extends OrderState {
+  final List<dynamic> completedJobs;
+
+  CompletedJobsLoadSuccess([this.completedJobs = const []]);
+
+  @override
+  List<Object> get props => [completedJobs];
+}
+
+class CompletedJobsLoadFailure extends OrderState {}
+
 class OrderLoadSuccess extends OrderState {
   final Order order;
 

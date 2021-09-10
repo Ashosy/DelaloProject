@@ -41,7 +41,8 @@ class _ProviderJobState extends State<ProviderJob> {
               return Center(child: Text("No Pending Jobs."));
             }
 
-            if (orderState is OrderOperationFailure) {
+            if (orderState is OrderOperationFailure ||
+                orderState is ActiveJobFailure) {
               return Text("Sorry loading failed");
             }
 

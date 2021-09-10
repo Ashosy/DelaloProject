@@ -68,8 +68,18 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         }
 
         // yield ActiveJobSuccess(job);
-      } catch (_) {
+      } catch (err) {
         yield ActiveJobFailure();
+      }
+    }
+    if (event is CompleteJobsLoad) {
+      yield Loading();
+      try {
+        final jobs = await orderRepository.getCompletedJobs(event.provider_id);
+
+        yield CompletedJobsLoadSuccess(jobs);
+      } catch (_) {
+        yield CompletedJobsLoadFailure();
       }
     }
 
