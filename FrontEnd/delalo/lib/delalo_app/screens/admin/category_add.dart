@@ -1,6 +1,9 @@
-
-
+import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_bloc.dart';
+import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
+import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_state.dart';
+import 'package:delalo/delalo_app/models/category.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminAddUpdateCategory extends StatefulWidget {
   static const routeName = '/updateAdd';
@@ -17,58 +20,102 @@ class _AdminAddUpdateCategoryState extends State<AdminAddUpdateCategory> {
   // final categoryBloc = BlocProvider.of<CategoryBloc>(context);
 
   final _formKey = GlobalKey<FormState>();
-
+  late String name;
+  late String description;
   final Map<String, dynamic> _category = {};
+
   @override
   Widget build(BuildContext context) {
+    final categoryBloc = BlocProvider.of<CategoryBloc>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: Text("Delalo"),
       ),
-      body: Center(
-        
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 60),
-          child: Form(
-            
-            key: _formKey,
-            child:Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-
-              children: [
-                Center(
-                  child: Text("Add Category",),
-                ),
-                TextFormField(
-                  
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.category), 
-                      labelText: "Category Name"
-                    ),
-                ),
-                SizedBox(height: 20,),
-                TextFormField(
-                  decoration: InputDecoration( 
-                    icon: Icon(Icons.image),
-                    labelText: "Category Image"
-                  ),
-                ),
-                SizedBox(height: 20,),
-                 TextFormField(
-                  decoration: InputDecoration( 
-                    icon: Icon(Icons.description),
-                    labelText: "Category Description"
-                  ),
-                )
-
-              ],)
-            
-             ),
-        ),
-      ),
+      body: 
+      BlocConsumer<CategoryBloc, CategoryState>(
+        listener: (context, state) {
+          // TO DO: implement listener
+        },
+        builder: (context, state) {
+          return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
       
+                      children: [
+                        Center(
+                          child: Text(
+                            "Add Category",
+                          ),
+                        ),
+                        TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter Category Name';
+                            }
+                            return null;
+                          },
+                          onSaved: (val) {
+                            name = val!;
+                          },
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.category), labelText: "Category Name"),
+                        ),
+                        // SizedBox(height: 20,),
+                        // TextFormField(
+                        //   decoration: InputDecoration(
+                        //     icon: Icon(Icons.image),
+                        //     labelText: "Category Image"
+                        //   ),
+                        // ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          onSaved: (val) {
+                            description = val!;
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter Category Description';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.description),
+                              labelText: "Category Description"),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            final form = _formKey.currentState;
+                            if (form!.validate()) {
+                            final category = Category(
+                            
+                            name: this.name,
+                            image: 'category',
+                            numOfProviders: 0,
+                            description: this.description);
+                        categoryBloc.add(AddCategory(category));
+                                            
+                            }
+                          },
+                          label: Text("Save"),
+                          backgroundColor: Colors.purple,
+                          icon: Icon(Icons.save),
+                        )
+                      ],
+                    )),
+              ),
+            );
+        },
+      ),
     );
-
   }
 }

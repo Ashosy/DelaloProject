@@ -4,10 +4,6 @@ import 'dart:io';
 import 'package:delalo/delalo_app/models/category.dart';
 
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:http/http.dart' as http;
 
 class AdminCategoryDataProvider {
   final _baseUrl = "127.0.0.1:3000";
@@ -73,8 +69,9 @@ class AdminCategoryDataProvider {
             categories.map((category) => Category.fromJson(category))).toList();
 
         print(categories.runtimeType);
-        print(categoriesmaped.runtimeType);
-        print("this is in data providerin category");
+       
+        print("this is in data provider for category mapped");
+         print(categoriesmaped);
         return categoriesmaped;
         //  categories
         //     .map((category) => Category.fromJson(category))
