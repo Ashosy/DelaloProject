@@ -57,7 +57,7 @@ class AdminCategoryDataProvider {
   Future<List<Category>> getCategoriesFromCategory() async {
     try {
       final response = await httpClient.get(
-          Uri.parse("http://127.0.0.1:3000/category"),
+          Uri.parse("http://localhost:3000/category"),
           headers: <String, String>{
             'Accept': 'application/json',
             'Access-Control-Allow-Origin': '*',
@@ -71,10 +71,10 @@ class AdminCategoryDataProvider {
             "this is status ${response.statusCode} on category data provider ${response.body}");
         List<Category> categoriesmaped = List<Category>.from(
             categories.map((category) => Category.fromJson(category))).toList();
-       
+
         print(categories.runtimeType);
         print(categoriesmaped.runtimeType);
-         print("this is in data providerin category");
+        print("this is in data providerin category");
         return categoriesmaped;
         //  categories
         //     .map((category) => Category.fromJson(category))
@@ -91,15 +91,18 @@ class AdminCategoryDataProvider {
 
   Future<void> deleteCategory(String id) async {
     try {
-      final http.Response response = await httpClient.delete(
-          Uri.https("$_baseUrl", 'category/:$id'),
+      print("new debug...1");
+      final response = await httpClient.delete(
+          Uri.parse("http://localhost:3000/category/$id"),
           headers: <String, String>{
             'Accept': 'application/json',
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json; charset=UTF-8',
           });
       print("this is in data provider");
-      if (response.statusCode != 204) {
+      print(response.statusCode);
+      if (response.statusCode != 200) {
+        print("new debug...2");
         throw Exception("Error deleting Category");
       }
     } on SocketException catch (e) {
@@ -111,8 +114,8 @@ class AdminCategoryDataProvider {
 
   Future<void> updateCategory(Category category) async {
     try {
-      final http.Response response = await httpClient.put(
-        Uri.https(_baseUrl, 'category/:${category.id}'),
+      final response = await httpClient.put(
+        Uri.parse("http://localhost:3000/category/$category.id"),
         headers: <String, String>{
           'Accept': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -127,7 +130,8 @@ class AdminCategoryDataProvider {
         }),
       );
       print("this is in data provider");
-      if (response.statusCode != 204) {
+      print(response.statusCode);
+      if (response.statusCode != 200) {
         throw Exception('Error Updating category');
       }
     } on SocketException catch (e) {
