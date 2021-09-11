@@ -25,10 +25,21 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-  final Map argObj;
-  bool _isButtonDisabled = false;
+  final _formKey = GlobalKey<FormState>();
 
+  final Map argObj;
+  bool _isWorking = false;
+  String unqiueCode = '';
   final _isHours = true;
+  int savedTime = 3;
+  int myDuration = 0;
+  Icon myIcon = Icon(
+    Icons.play_circle_filled,
+    color: Colors.green,
+    size: 50.0,
+  );
+  final uniqueCodeController = TextEditingController();
+  _OrderDetailsScreenState({required this.argObj});
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countUp,
@@ -58,72 +69,36 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     await _stopWatchTimer.dispose();
   }
 
-  _OrderDetailsScreenState({required this.argObj});
+  // Widget ratingDialog(BuildContext context, String order_id){
+  //   int rating;
+  //   String comment;
 
-  Future _asyncInputDialog(BuildContext context) async {
-    String unqiueCode = '';
-    return showDialog(
-      context: context,
-      barrierDismissible:
-          false, // dialog is dismissible with a tap on the barrier
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Please enter unique code'),
-          content: new Row(
-            children: [
-              new Expanded(
-                  child: new TextField(
-                keyboardType: TextInputType.number,
-                cursorColor: Colors.purple,
-                autofocus: true,
-                decoration: new InputDecoration(
-                    // errorText: 'Please try again',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple, width: 2.0),
-                    ),
-                    // errorStyle: TextStyle(color: Colors.red),
-                    labelStyle: TextStyle(color: Colors.purple),
-                    labelText: 'Unique Code',
-                    hintText: '4-digit code'),
-                onChanged: (value) {
-                  unqiueCode = value;
-                },
-              ))
-            ],
-          ),
-          actions: [
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.purple[700],
-                    textStyle:
-                        const TextStyle(fontSize: 20, color: Colors.white)),
-                onPressed: () {
-                  print(unqiueCode);
-                  Navigator.of(context).pop(unqiueCode);
-                },
-                child: const Text('Submit'),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //   return Container(
 
-  final _rating_dialog = RatingDialog(
-    // your app's name?
-    title: 'Rate your Service',
-    // encourage your user to leave a high rating?
+  //     child: BlocBuilder<ReviewBloc, ReviewState>(builder: (_, reviewState) {
+  //   if (reviewState is ReviewLoading) {
+  //     return RatingDialog(
+  //       // your app's name?
+  //       title: 'Rate your Service',
+  //       // encourage your user to leave a high rating?
 
-    // your app's logo?
-    image: const FlutterLogo(size: 100),
-    submitButton: 'Submit',
-    onCancelled: () => print('cancelled'),
-    onSubmitted: (response) {
-      print('rating: ${response.rating}, comment: ${response.comment}');
-    },
-  );
+  //       // your app's logo?
+  //       image: Image(image: AssetImage('assets/images/logo.png')),
+  //       submitButton: 'Submit',
+  //       onCancelled: () => print('cancelled'),
+  //       onSubmitted: (response) {
+  //         rating= response.rating;
+  //         comment=response.comment;
+  //         order_id= order_id;
+
+  //   final reviewBloc = BlocProvider.of<ReviewBloc>(context);
+  //   reviewBloc.add(AddReview(rating, comment, order_id));
+
+  //       },
+  //     );
+  //   }
+  //   return Container();
+  // }));
 
   late OrderDetails order;
 
@@ -137,219 +112,276 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       appBar: AppBar(
         title: Center(child: Text("Details")),
       ),
-      body: Center(
-        child: BlocBuilder<OrderBloc, OrderState>(
-          builder: (_, orderState) {
-            print(orderState);
-            if (orderState is Loading) {
-              return CircularProgressIndicator();
-            }
+      body: SingleChildScrollView(
+        child: Center(
+          child: BlocConsumer<OrderBloc, OrderState>(
+            listener: (ctx, orderState) {
+              if (orderState is CompletedUniqueCodeFailure ||
+                  orderState is CompletedUniqueCodeSuccess) {
+                // Navigator.of(context).pushNamed(TodoListScreen.routeName);
+              }
+            },
+            builder: (_, orderState) {
+              print(orderState);
+              if (orderState is Loading) {
+                return CircularProgressIndicator();
+              }
 
-            if (orderState is ActiveOrderDetailFailure) {
-              return Text("Loading Failed");
-            }
+              if (orderState is ActiveOrderDetailFailure) {
+                return Text("Loading Failed");
+              }
 
-            if (orderState is ActiveOrderDetailSuccess) {
-              final specOrder = orderState.activeOrderDetail;
-              final providerName = specOrder.provider!.firstname +
-                  " " +
-                  specOrder.provider!.lastname;
-              final orderCreatedDate =
-                  specOrder.order!.order_created_date!.substring(0, 24);
+              if (orderState is ActiveOrderDetailSuccess) {
+                final specOrder = orderState.activeOrderDetail;
+                final providerName = specOrder.provider!.firstname +
+                    " " +
+                    specOrder.provider!.lastname;
+                final orderCreatedDate =
+                    specOrder.order!.order_created_date!.substring(0, 24);
 
-              final perHourWage =
-                  '${specOrder.provider!.per_hour_wage!.toStringAsFixed(2)} ETB/hr';
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: BlocBuilder<OrderBloc, OrderState>(
-                    builder: (_, orderState) {
-                      if (orderState is Loading) {
-                        return CircularProgressIndicator();
-                      }
+                final perHourWage =
+                    '${specOrder.provider!.per_hour_wage!.toStringAsFixed(2)} ETB/hr';
 
-                      // () async {
-                      //                 _stopWatchTimer.onExecute
-                      //                     .add(StopWatchExecute.start);
-                      //               },
+                final correctUniqueCode = specOrder.order!.unique_code;
 
-                      //  onPressed: () async {
-                      //                 _stopWatchTimer.onExecute
-                      //                     .add(StopWatchExecute.stop);
-                      //               },
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: BlocBuilder<OrderBloc, OrderState>(
+                      builder: (_, orderState) {
+                        if (orderState is Loading) {
+                          return CircularProgressIndicator();
+                        }
 
-                      return Column(children: [
-                        Text(specOrder.order!.id),
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isButtonDisabled = !_isButtonDisabled;
-                              });
-                            },
-                            child: GradientProgressIndicator(
-                              radius: 120,
-                              duration: 3,
-                              strokeWidth: 12,
-                              gradientStops: const [
-                                0.1,
-                                0.9,
-                              ],
-                              gradientColors: const [
-                                Colors.white,
-                                Colors.purple,
-                              ],
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 0),
-                                    child: StreamBuilder<int>(
-                                      stream: _stopWatchTimer.rawTime,
-                                      initialData:
-                                          _stopWatchTimer.rawTime.value,
-                                      builder: (context, snap) {
-                                        final value = snap.data!;
-                                        final displayTime =
-                                            StopWatchTimer.getDisplayTime(value,
-                                                hours: _isHours);
-                                        return Column(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.all(8),
-                                              child: Text(
-                                                displayTime,
-                                                style: const TextStyle(
-                                                    fontSize: 40,
-                                                    fontFamily: 'Helvetica',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                        return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(specOrder.order!.id),
+                              GestureDetector(
+                                  onTap: () async {
+                                    if (_isWorking) {
+                                      orderBloc.add(
+                                        PauseWorking(specOrder.order!.id),
+                                      );
+                                      myDuration = 0;
+                                      myIcon = Icon(
+                                        Icons.play_circle_filled,
+                                        color: Colors.green,
+                                        size: 50.0,
+                                      );
+                                      _stopWatchTimer.onExecute
+                                          .add(StopWatchExecute.stop);
+                                    } else {
+                                      orderBloc.add(
+                                        StartWorking(specOrder.order!.id),
+                                      );
+                                      _stopWatchTimer.onExecute
+                                          .add(StopWatchExecute.start);
+                                      myDuration = 3;
+                                      myIcon = Icon(
+                                        Icons.pause_circle_filled,
+                                        color: Colors.red,
+                                        size: 50.0,
+                                      );
+                                    }
+
+                                    setState(() {
+                                      _isWorking = !_isWorking;
+                                    });
+                                  },
+                                  child: GradientProgressIndicator(
+                                    radius: 120,
+                                    duration: myDuration,
+                                    strokeWidth: 12,
+                                    gradientStops: const [
+                                      0.1,
+                                      0.9,
+                                    ],
+                                    gradientColors: const [
+                                      Colors.white,
+                                      Colors.purple,
+                                    ],
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 0),
+                                          child: StreamBuilder<int>(
+                                            stream: _stopWatchTimer.rawTime,
+                                            initialData:
+                                                _stopWatchTimer.rawTime.value,
+                                            builder: (context, snap) {
+                                              final value = snap.data!;
+                                              final displayTime =
+                                                  StopWatchTimer.getDisplayTime(
+                                                      value,
+                                                      hours: _isHours);
+                                              return Column(
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    child: Text(
+                                                      displayTime,
+                                                      style: const TextStyle(
+                                                          fontSize: 35,
+                                                          fontFamily:
+                                                              'Helvetica',
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        myIcon
+                                      ],
+                                    ),
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  width: 200,
+                                  child: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      children: [
+                                        TextFormField(
+                                          validator: (value) {
+                                            if ((value) !=
+                                                correctUniqueCode.toString()) {
+                                              return 'Incorrect try again';
+                                            } else if (value == '') {
+                                              return '';
+                                            }
+                                            return null;
+                                          },
+                                          keyboardType: TextInputType.number,
+                                          cursorColor: Colors.purple,
+                                          decoration: new InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.purple,
+                                                    width: 2.0),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(8),
-                                              child: Text(
-                                                value.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontFamily: 'Helvetica',
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                              errorStyle:
+                                                  TextStyle(color: Colors.red),
+                                              labelStyle: TextStyle(
+                                                  color: Colors.purple),
+                                              labelText: 'Unique Code',
+                                              hintText: 'Enter code'),
+                                          onChanged: (value) {
+                                            unqiueCode = value;
+                                          },
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton(
+                                              onPressed: _isWorking
+                                                  ? null
+                                                  : () {
+                                                      final form =
+                                                          _formKey.currentState;
+                                                      if (form!.validate()) {
+                                                        orderBloc.add(
+                                                            CompleteCode(
+                                                                specOrderId));
+                                                      }
+                                                    },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text("Complete job"),
                                               ),
-                                            ),
-                                          ],
-                                        );
-                                      },
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.purple[800],
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white))),
+                                        ),
+                                      ],
                                     ),
                                   ),
-
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '2:17:30',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  // Icon(
-                                  //   Icons.play_circle_filled,
-                                  //   color: Colors.green,
-                                  //   size: 50.0,
-                                  // ),
-
-                                  Icon(
-                                    Icons.pause_circle_filled,
-                                    color: Colors.red,
-                                    size: 50.0,
-                                  ),
-                                ],
+                                ),
                               ),
-                            )),
-                        Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(
-                                onPressed: _isButtonDisabled ? () {} : null,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Complete job"),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.purple[800],
-                                    textStyle: const TextStyle(
-                                        fontSize: 20, color: Colors.white))),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            margin: EdgeInsets.only(top: 10),
-                            child: Column(
-                              children: [
-                                Text(
-                                  providerName,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Divider(
-                                  height: 10,
-                                  thickness: 1,
-                                  indent: 15,
-                                  endIndent: 15,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: Column(
                                     children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          RowTitle(title: 'Service'),
-                                          RowTitle(title: 'Phone Number'),
-                                          RowTitle(title: 'Rate'),
-                                          RowTitle(title: 'Order Created'),
-                                        ],
+                                      Text(
+                                        providerName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
                                       ),
-                                      Expanded(
-                                        child: SizedBox(),
+                                      Divider(
+                                        height: 10,
+                                        thickness: 1,
+                                        indent: 15,
+                                        endIndent: 15,
                                       ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          RowContent(
-                                              content:
-                                                  specOrder.provider!.category),
-                                          RowContent(
-                                              content:
-                                                  specOrder.provider!.phone),
-                                          RowContent(content: perHourWage),
-                                          RowContent(content: orderCreatedDate),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                RowTitle(title: 'Service'),
+                                                RowTitle(title: 'Phone Number'),
+                                                RowTitle(title: 'Rate'),
+                                                RowTitle(
+                                                    title: 'Order Created'),
+                                              ],
+                                            ),
+                                            Expanded(
+                                              child: SizedBox(),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                RowContent(
+                                                    content: specOrder
+                                                        .provider!.category),
+                                                RowContent(
+                                                    content: specOrder
+                                                        .provider!.phone),
+                                                RowContent(
+                                                    content: perHourWage),
+                                                RowContent(
+                                                    content: orderCreatedDate),
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ]);
-                    },
+                                ),
+                              )
+                            ]);
+                      },
+                    ),
                   ),
-                ),
-              );
-            }
-            return Container();
-          },
+                );
+              }
+
+              return Container();
+            },
+          ),
         ),
       ),
     );

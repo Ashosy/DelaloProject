@@ -12,6 +12,49 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   @override
   Stream<OrderState> mapEventToState(OrderEvent event) async* {
+    if (event is StartWorking) {
+      yield Loading();
+      try {
+        await orderRepository.updateOrder(event.order_id, "started");
+        yield StartedWorkingSuccess();
+      } catch (_) {
+        yield StartedWorkingFailure();
+      }
+    }
+    if (event is PauseWorking) {
+      yield Loading();
+      try {
+        await orderRepository.updateOrder(event.order_id, "paused");
+        yield PausedWorkingSuccess();
+      } catch (_) {
+        yield PausedWorkingFailure();
+      }
+    }
+
+    if (event is CompleteCode) {
+      try {
+        print("trying");
+        dynamic res =
+            await orderRepository.updateOrder(event.order_id, "finished");
+        print("ssss$res");
+        yield CompletedUniqueCodeSuccess();
+      } catch (err) {
+        print(err);
+        yield CompletedUniqueCodeFailure();
+      }
+    }
+
+    // if (event is CompleteReview) {
+    //   try {
+    //     dynamic currentOrder =
+    //         await orderRepository.(event.order_id, "finished");
+
+    //     yield CompleteReviewSuccess();
+    //   } catch (_) {
+    //     yield CompleteReviewFailure();
+    //   }
+    // }
+
     if (event is AcceptJob) {
       yield Loading();
       try {

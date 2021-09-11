@@ -5,6 +5,40 @@ abstract class OrderEvent extends Equatable {
   const OrderEvent();
 }
 
+class StartWorking extends OrderEvent {
+  final String order_id;
+  const StartWorking(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class PauseWorking extends OrderEvent {
+  final String order_id;
+  const PauseWorking(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompleteCode extends OrderEvent {
+  final String order_id;
+
+  const CompleteCode(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompleteReview extends OrderEvent {
+  final String order_id;
+
+  const CompleteReview(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
 class OrdersLoad extends OrderEvent {
   const OrdersLoad();
 

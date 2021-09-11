@@ -83,7 +83,7 @@ class OrderDataProvider {
     return response.statusCode;
   }
 
-  Future<void> updateOrder(String order_id) async {
+  Future<void> updateOrder(String order_id, String progress) async {
     final response = await httpClient.put(
       generateUri('order/${order_id}'),
       headers: <String, String>{
@@ -92,7 +92,7 @@ class OrderDataProvider {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'progress': "order.progress",
+        'progress': progress,
       }),
     );
 

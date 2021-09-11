@@ -17,29 +17,57 @@ class JobStatusChanged extends OrderState {
   List<Object> get props => [];
 }
 
-class Working extends OrderState {
-  Working();
+class StartedWorkingSuccess extends OrderState {
+  StartedWorkingSuccess();
 
   @override
   List<Object> get props => [];
 }
 
-class Paused extends OrderState {
-  Paused();
+class StartedWorkingFailure extends OrderState {
+  StartedWorkingFailure();
 
   @override
   List<Object> get props => [];
 }
 
-class CompletedUniqueCode extends OrderState {
-  CompletedUniqueCode();
+class PausedWorkingSuccess extends OrderState {
+  PausedWorkingSuccess();
 
   @override
   List<Object> get props => [];
 }
 
-class CompleteReview extends OrderState {
-  CompleteReview();
+class PausedWorkingFailure extends OrderState {
+  PausedWorkingFailure();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompletedUniqueCodeSuccess extends OrderState {
+  CompletedUniqueCodeSuccess();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompletedUniqueCodeFailure extends OrderState {
+  CompletedUniqueCodeFailure();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompleteReviewSuccess extends OrderState {
+  CompleteReviewSuccess();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompleteReviewFailure extends OrderState {
+  CompleteReviewFailure();
 
   @override
   List<Object> get props => [];

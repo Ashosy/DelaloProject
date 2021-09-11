@@ -99,11 +99,11 @@ class HistoryJobs extends StatelessWidget {
                                     '$orderCreatedDate -\n $orderCompletedDate. '),
                               ],
                             ),
-                            StarRating(
-                              size: 15,
-                              value: job.review.rating,
-                              onChanged: null,
-                            ),
+                            // StarRating(
+                            //   size: 15,
+                            //   value: job.review.rating,
+                            //   onChanged: null,
+                            // ),
                             Text(job.review.comment)
                           ],
                         ),

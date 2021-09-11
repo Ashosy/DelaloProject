@@ -5,8 +5,8 @@ class ReviewRepository {
   final ReviewDataProvider reviewDataProvider;
   ReviewRepository({required this.reviewDataProvider});
 
-  Future<Review> addReview(Review review) async {
-    return await reviewDataProvider.addReview(review);
+  Future<Review> addReview(int rating, String comment, String order_id) async {
+    return await reviewDataProvider.addReview(rating, comment, order_id);
   }
 
   Future<List<Review>> getReview() async {

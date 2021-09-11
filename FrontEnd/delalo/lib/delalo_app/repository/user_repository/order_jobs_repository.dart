@@ -22,8 +22,8 @@ class OrderRepository {
     return await dataProvider.deleteOrder(order_id);
   }
 
-  Future<dynamic> updateOrder(String order_id) async {
-    return await dataProvider.updateOrder(order_id);
+  Future<dynamic> updateOrder(String order_id, String progress) async {
+    return await dataProvider.updateOrder(order_id, progress);
   }
 
   Future<List<OrderDetails>> getAllJobs(User provider) async {
