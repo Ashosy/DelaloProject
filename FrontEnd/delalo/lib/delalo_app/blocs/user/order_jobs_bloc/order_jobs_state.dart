@@ -87,6 +87,17 @@ class DeclineOrderFailure extends OrderState {
   List<Object> get props => [];
 }
 
+class ActiveOrderDetailSuccess extends OrderState {
+  final OrderDetails activeOrderDetail;
+
+  ActiveOrderDetailSuccess(this.activeOrderDetail);
+
+  @override
+  List<Object> get props => [activeOrderDetail];
+}
+
+class ActiveOrderDetailFailure extends OrderState {}
+
 class ActiveJobSuccess extends OrderState {
   final OrderDetails activeJob;
 

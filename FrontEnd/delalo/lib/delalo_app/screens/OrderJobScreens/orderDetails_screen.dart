@@ -129,196 +129,227 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final specOrder = argObj['orderObj'];
+    final specOrderId = argObj['orderId'];
+
+    final orderBloc = BlocProvider.of<OrderBloc>(context);
+    orderBloc.add(ActiveOrderDetailsLoad(specOrderId));
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Details")),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: BlocBuilder<OrderBloc, OrderState>(
-            builder: (_, orderState) {
-              if (orderState is Loading) {
-                return CircularProgressIndicator();
-              }
+      body: Center(
+        child: BlocBuilder<OrderBloc, OrderState>(
+          builder: (_, orderState) {
+            print(orderState);
+            if (orderState is Loading) {
+              return CircularProgressIndicator();
+            }
 
-              // () async {
-              //                 _stopWatchTimer.onExecute
-              //                     .add(StopWatchExecute.start);
-              //               },
+            if (orderState is ActiveOrderDetailFailure) {
+              return Text("Loading Failed");
+            }
 
-              //  onPressed: () async {
-              //                 _stopWatchTimer.onExecute
-              //                     .add(StopWatchExecute.stop);
-              //               },
+            if (orderState is ActiveOrderDetailSuccess) {
+              final specOrder = orderState.activeOrderDetail;
+              final providerName = specOrder.provider!.firstname +
+                  " " +
+                  specOrder.provider!.lastname;
+              final orderCreatedDate =
+                  specOrder.order!.order_created_date!.substring(0, 24);
 
-              return Column(children: [
-                Text(specOrder.order!.id),
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isButtonDisabled = !_isButtonDisabled;
-                      });
-                    },
-                    child: GradientProgressIndicator(
-                      radius: 120,
-                      duration: 3,
-                      strokeWidth: 12,
-                      gradientStops: const [
-                        0.1,
-                        0.9,
-                      ],
-                      gradientColors: const [
-                        Colors.white,
-                        Colors.purple,
-                      ],
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 0),
-                            child: StreamBuilder<int>(
-                              stream: _stopWatchTimer.rawTime,
-                              initialData: _stopWatchTimer.rawTime.value,
-                              builder: (context, snap) {
-                                final value = snap.data!;
-                                final displayTime =
-                                    StopWatchTimer.getDisplayTime(value,
-                                        hours: _isHours);
-                                return Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Text(
-                                        displayTime,
-                                        style: const TextStyle(
-                                            fontSize: 40,
-                                            fontFamily: 'Helvetica',
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Text(
-                                        value.toString(),
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontFamily: 'Helvetica',
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
+              final perHourWage =
+                  '${specOrder.provider!.per_hour_wage!.toStringAsFixed(2)} ETB/hr';
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: BlocBuilder<OrderBloc, OrderState>(
+                    builder: (_, orderState) {
+                      if (orderState is Loading) {
+                        return CircularProgressIndicator();
+                      }
 
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              '2:17:30',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          // Icon(
-                          //   Icons.play_circle_filled,
-                          //   color: Colors.green,
-                          //   size: 50.0,
-                          // ),
+                      // () async {
+                      //                 _stopWatchTimer.onExecute
+                      //                     .add(StopWatchExecute.start);
+                      //               },
 
-                          Icon(
-                            Icons.pause_circle_filled,
-                            color: Colors.red,
-                            size: 50.0,
-                          ),
-                        ],
-                      ),
-                    )),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                        onPressed: _isButtonDisabled ? () {} : null,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Complete job"),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.purple[800],
-                            textStyle: const TextStyle(
-                                fontSize: 20, color: Colors.white))),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Column(
-                      children: [
-                        Text(
-                          'User Name',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Divider(
-                          height: 10,
-                          thickness: 1,
-                          indent: 15,
-                          endIndent: 15,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                      //  onPressed: () async {
+                      //                 _stopWatchTimer.onExecute
+                      //                     .add(StopWatchExecute.stop);
+                      //               },
+
+                      return Column(children: [
+                        Text(specOrder.order!.id),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isButtonDisabled = !_isButtonDisabled;
+                              });
+                            },
+                            child: GradientProgressIndicator(
+                              radius: 120,
+                              duration: 3,
+                              strokeWidth: 12,
+                              gradientStops: const [
+                                0.1,
+                                0.9,
+                              ],
+                              gradientColors: const [
+                                Colors.white,
+                                Colors.purple,
+                              ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  RowTitle(title: 'Service'),
-                                  RowTitle(title: 'Phone Number'),
-                                  RowTitle(title: 'Address'),
-                                  RowTitle(title: 'Order Created'),
-                                  RowTitle(title: 'Unique Code'),
-                                ],
-                              ),
-                              Expanded(
-                                child: SizedBox(),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  RowContent(content: 'Delivery'),
-                                  RowContent(content: '+251943567890'),
-                                  RowContent(content: 'Addis Ababa'),
-                                  RowContent(content: '06/08/21 3:58 A.M'),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 0),
+                                    child: StreamBuilder<int>(
+                                      stream: _stopWatchTimer.rawTime,
+                                      initialData:
+                                          _stopWatchTimer.rawTime.value,
+                                      builder: (context, snap) {
+                                        final value = snap.data!;
+                                        final displayTime =
+                                            StopWatchTimer.getDisplayTime(value,
+                                                hours: _isHours);
+                                        return Column(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Text(
+                                                displayTime,
+                                                style: const TextStyle(
+                                                    fontSize: 40,
+                                                    fontFamily: 'Helvetica',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Text(
+                                                value.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: 'Helvetica',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      '3456',
+                                      '2:17:30',
                                       style: TextStyle(
-                                          fontSize: 25,
+                                          color: Colors.black,
+                                          fontSize: 32,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
+                                  // Icon(
+                                  //   Icons.play_circle_filled,
+                                  //   color: Colors.green,
+                                  //   size: 50.0,
+                                  // ),
+
+                                  Icon(
+                                    Icons.pause_circle_filled,
+                                    color: Colors.red,
+                                    size: 50.0,
+                                  ),
                                 ],
-                              )
-                            ],
+                              ),
+                            )),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: ElevatedButton(
+                                onPressed: _isButtonDisabled ? () {} : null,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Complete job"),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.purple[800],
+                                    textStyle: const TextStyle(
+                                        fontSize: 20, color: Colors.white))),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            child: Column(
+                              children: [
+                                Text(
+                                  providerName,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Divider(
+                                  height: 10,
+                                  thickness: 1,
+                                  indent: 15,
+                                  endIndent: 15,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          RowTitle(title: 'Service'),
+                                          RowTitle(title: 'Phone Number'),
+                                          RowTitle(title: 'Rate'),
+                                          RowTitle(title: 'Order Created'),
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: SizedBox(),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          RowContent(
+                                              content:
+                                                  specOrder.provider!.category),
+                                          RowContent(
+                                              content:
+                                                  specOrder.provider!.phone),
+                                          RowContent(content: perHourWage),
+                                          RowContent(content: orderCreatedDate),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
-                      ],
-                    ),
+                      ]);
+                    },
                   ),
-                )
-              ]);
-            },
-          ),
+                ),
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );

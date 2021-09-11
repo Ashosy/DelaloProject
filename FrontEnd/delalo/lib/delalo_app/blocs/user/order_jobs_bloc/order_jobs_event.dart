@@ -60,6 +60,14 @@ class PendingOrdersLoad extends OrderEvent {
   List<Object> get props => [];
 }
 
+class ActiveOrderDetailsLoad extends OrderEvent {
+  final String order_id;
+  const ActiveOrderDetailsLoad(this.order_id);
+
+  @override
+  List<Object> get props => [];
+}
+
 class DeclinedOrdersLoad extends OrderEvent {
   final String seeker_id;
   const DeclinedOrdersLoad(this.seeker_id);

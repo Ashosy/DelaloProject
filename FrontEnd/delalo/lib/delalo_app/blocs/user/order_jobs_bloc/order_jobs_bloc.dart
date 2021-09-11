@@ -168,6 +168,20 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       }
     }
 
+    if (event is ActiveOrderDetailsLoad) {
+      yield Loading();
+
+      try {
+        final activeOrderDetail =
+            await orderRepository.getSingleOrder(event.order_id);
+
+        yield ActiveOrderDetailSuccess(activeOrderDetail);
+      } catch (err) {
+        print("s$err");
+        yield ActiveOrderDetailFailure();
+      }
+    }
+
     if (event is OrdersLoad) {
       yield Loading();
       try {

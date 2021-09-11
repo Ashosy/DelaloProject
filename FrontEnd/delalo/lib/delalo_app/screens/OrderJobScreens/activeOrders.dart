@@ -87,7 +87,8 @@ class ActiveOrders extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         RouteGenerator.orderDetailScreenName,
-                        arguments: ScreenArguments({'orderObj': currentOrder}),
+                        arguments:
+                            ScreenArguments({'orderId': currentOrder.order.id}),
                       );
                     },
                   );

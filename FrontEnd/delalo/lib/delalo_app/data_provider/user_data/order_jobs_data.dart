@@ -304,4 +304,27 @@ class OrderDataProvider {
       return ["No History yet"];
     }
   }
+
+  Future<dynamic> getSingleOrder(String order_id) async {
+    try {
+      final response = await httpClient.get(
+          generateUri('singleorder/${order_id}'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+      if (response.statusCode == 200) {
+        final order = jsonDecode(response.body);
+
+        dynamic mappedDetail = OrderDetails.fromJson(order[0]);
+
+        return mappedDetail;
+      } else {
+        throw Exception('Failed to load order by order Id');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

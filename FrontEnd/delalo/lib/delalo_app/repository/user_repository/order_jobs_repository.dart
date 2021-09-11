@@ -65,4 +65,8 @@ class OrderRepository {
   Future<List<dynamic>> getCompletedOrders(String seeker_id) async {
     return await dataProvider.getCompletedOrders(seeker_id);
   }
+
+  Future<dynamic> getSingleOrder(String order_id) async {
+    return await dataProvider.getSingleOrder(order_id);
+  }
 }
