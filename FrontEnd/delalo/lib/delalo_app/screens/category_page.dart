@@ -26,6 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
     // final categoryBloc = BlocProvider.of<CategoryBloc>(context);
      final searchBloc=BlocProvider.of<SearchBloc>(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
@@ -56,29 +57,80 @@ class _CategoryPageState extends State<CategoryPage> {
           if (CategoryState is CategoriesLoadSuccess) {
             final categories = CategoryState.categories;
 
-            return ListView.builder(
-                itemCount: categories.length,
-                itemBuilder: (_, index) {
-                  final category = categories[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Card(
-                      color: Colors.purple[50],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      shadowColor: Colors.black,
-                      child: ListTile(
-                        title: Text(category.description),
-                        subtitle: Text(
-                            'Number of providers: ${category.numOfProviders}'),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                        ),
-                      ),
-                    ),
-                  );
-                });
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                  itemCount: categories.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 8.0 / 8.0,
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (_, index) {
+                    
+                    final category = categories[index];
+                    return Expanded(
+          
+                      child: Card(
+                          color: Colors.grey[100],
+                          semanticContainer: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                    child: Container(
+                                        child: Center(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 20),
+                                    child: Column(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(category.image),
+                                          radius: 28,
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Text(
+                                          category.name,
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Text(
+                                          category.description,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.people),
+                                             Text(
+                                              category.numOfProviders.toString()+" providers available",
+                                              style: TextStyle(fontSize: 10),
+                                        ),
+                                          ],
+                                          
+                                          )
+                                       
+                                      ],
+                                    ),
+                                  ),
+                                )))
+                              ]
+                              )
+                          ),
+                    );
+                  }),
+            );
           }
 
           return Container();
