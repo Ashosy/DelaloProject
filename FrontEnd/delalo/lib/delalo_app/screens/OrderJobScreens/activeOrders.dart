@@ -12,9 +12,9 @@ class ActiveOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String seeker_id = "61332f352eb4f64398fa7678";
+    final String seeker_id = "61332f182eb4f64398fa7676";
     final orderBloc = BlocProvider.of<OrderBloc>(context);
-    orderBloc.add(DeclinedOrdersLoad(seeker_id));
+    orderBloc.add(ActiveOrdersLoad(seeker_id));
 
     return Scaffold(
       body: Center(
@@ -87,8 +87,7 @@ class ActiveOrders extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         RouteGenerator.orderDetailScreenName,
-                        arguments:
-                            ScreenArguments({"order": currentOrder.order}),
+                        arguments: ScreenArguments({'orderObj': currentOrder}),
                       );
                     },
                   );

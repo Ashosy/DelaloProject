@@ -129,6 +129,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final specOrder = argObj['orderObj'];
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Details")),
@@ -153,6 +154,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               //               },
 
               return Column(children: [
+                Text(specOrder.order!.id),
                 GestureDetector(
                     onTap: () {
                       setState(() {

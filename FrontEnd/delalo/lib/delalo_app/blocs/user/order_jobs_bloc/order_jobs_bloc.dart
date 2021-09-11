@@ -48,11 +48,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       }
     }
     if (event is DeclineOrder) {
-      print("declining");
       yield Loading();
       try {
         final resStatus = await orderRepository.deleteOrder(event.order_id);
-        print(resStatus);
+
         if (resStatus == 200) {
           yield DeclineOrderSuccess();
         } else {
