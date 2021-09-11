@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +50,7 @@ class User extends Equatable {
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
-    print("factory...provider");
-    var us = User(
+    return User(
         id: json['_id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
@@ -69,8 +67,6 @@ class User extends Equatable {
         recommendation: json['recommendation'],
         average_rating: json['average_rating']?.toDouble(),
       );
-    print(us);
-    return us;
   }
   @override
   String toString() =>

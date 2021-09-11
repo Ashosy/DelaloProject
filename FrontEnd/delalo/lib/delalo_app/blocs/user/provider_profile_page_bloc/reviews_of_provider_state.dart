@@ -13,4 +13,8 @@ class ReviewsOfProviderLoadSuccess extends ReveiwsOfProviderState {
   ReviewsOfProviderLoadSuccess(this.orderDetailsOfProvider);
 }
 
-class ReviewsOfProviderLoadFailure extends ReveiwsOfProviderState {}
+class ReviewsOfProviderLoadFailure extends ReveiwsOfProviderState {
+  final error;
+
+  ReviewsOfProviderLoadFailure({required this.error});
+}

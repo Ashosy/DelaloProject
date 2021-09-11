@@ -1,6 +1,8 @@
 import 'package:delalo/delalo_app/blocs/user/user_bloc/bloc.dart';
 import 'package:delalo/delalo_app/exports.dart';
 import 'package:flutter/material.dart';
+import 'bottom_nav.dart';
+import 'navigation_drawer/navigation_drawer.dart';
 import 'user_account_page.dart';
 import 'package:delalo/sub.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,8 @@ class UserEditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawer(),
+      bottomNavigationBar: BottomNav(),
         appBar: AppBar(
           title: Text("Edit Profile"),
         ),

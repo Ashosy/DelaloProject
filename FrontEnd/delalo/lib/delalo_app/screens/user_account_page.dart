@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:delalo/sub.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bottom_nav.dart';
+import 'navigation_drawer/navigation_drawer.dart';
+
 // const appName = "Account Page";
 const infostyle =
     TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold);
@@ -17,6 +20,8 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawer(),
+      bottomNavigationBar: BottomNav(),
         appBar: AppBar(
           title: Text("Profile Page"),
         ),

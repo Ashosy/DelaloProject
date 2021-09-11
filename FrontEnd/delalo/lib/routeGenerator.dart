@@ -1,13 +1,15 @@
 import 'package:delalo/delalo_app/screens/category_page.dart';
+import 'package:delalo/delalo_app/screens/home_page.dart';
 import 'package:delalo/delalo_app/screens/provider_list_page.dart';
 import 'package:delalo/delalo_app/screens/signupProviderScreen.dart';
+import 'package:delalo/delalo_app/screens/singleProviderPage.dart';
 import 'package:flutter/material.dart';
 import 'delalo_app/screens/admin/adminScreens.dart';
 import 'delalo_app/screens/admin/category_list.dart';
 import 'delalo_app/screens/allScreens.dart';
 
 class RouteGenerator {
-  static const String welcomeScreenName = "/";
+  static const String welcomeScreenName = "/welcome";
   static const String getStartedScreenName = "/getStartedScreen";
   static const String signupChoiceName = "/signUpChoiceScreen";
   static const String singleProviderPageName = "/singleProviderPage";
@@ -17,11 +19,11 @@ class RouteGenerator {
   static const String ordersScreenName = "/orderScreen";
   static const String jobsScreenName = "/jobScreen";
   static const String orderDetailScreenName = "/orderDetails";
-  static const String categoryListPage= "/cateogry";
-  static const String providerListPage= "/providerlist";
+  static const String categoryListPage = "/cateogry";
+  static const String providerListPage = "/providerlist";
   static const String adminScreenName = "/adminscreen";
   static const String adminCategoryListName = "/admincategorylist";
-  
+  static const String homePageName = "/homePage";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -45,8 +47,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => JobsScreen());
       case categoryListPage:
         return MaterialPageRoute(builder: (_) => CategoryPage());
+      case singleProviderPageName:
+        return MaterialPageRoute(builder: (_) => ProviderProfile());
+      case homePageName:
+        return MaterialPageRoute(builder: (_) => HomePage());
       case providerListPage:
-        final args= settings.arguments as ScreenArguments;
+        final args = settings.arguments as ScreenArguments;
         return MaterialPageRoute(builder: (context) {
           return ProviderListPage(argObj: args.argObj);
         });

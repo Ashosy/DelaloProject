@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class CategoryDataProvider {
   final http.Client httpClient;
-  final _baseurl= '10.5.222.117:3000';
+  final _baseurl= '10.0.2.2:3000';
   // final _baseurl= 'localhost:3000';
   CategoryDataProvider({required this.httpClient});
 

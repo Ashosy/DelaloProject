@@ -122,7 +122,7 @@ class MyApp extends StatelessWidget {
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
             create: (context) =>
-                SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
+                SignupProviderBloc(signupProviderRepository: signupProviderRepository)..add(LoadProviderSignup())),
         BlocProvider(
                 create: (context) =>
                     CategoryBloc(categoryRepository: categoryRepository)
@@ -142,15 +142,10 @@ class MyApp extends StatelessWidget {
            
         BlocProvider(
             create: (context) => ProviderProfileBloc(
-                providerProfileRepository: providerProfileRepository)
-              ..add(LoadProviderInfo(
-                  providerId: "613a6d0efa94bb01f0afbfa5",
-                  seekerId: "6118e035e030821c38a75f24"))),
+                providerProfileRepository: providerProfileRepository)),
         BlocProvider(
             create: (context) => ReviewsOfProviderBloc(
-                providerProfileRepository: providerProfileRepository)
-              ..add(LoadReviewsOfProvider(
-                  providerId: "613a6d0efa94bb01f0afbfa5")))
+                providerProfileRepository: providerProfileRepository))
       ],
       child: MaterialApp(
         home: Scaffold(
@@ -158,7 +153,7 @@ class MyApp extends StatelessWidget {
           bottomNavigationBar: BottomNav(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.adminScreenName,
+        initialRoute: RouteGenerator.homePageName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

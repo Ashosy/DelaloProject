@@ -31,3 +31,5 @@ class SignupProviderFormSubmitted extends SignupProviderEvent {
       required this.recommendation,
       required this.perHourWage});
 }
+
+class LoadProviderSignup extends SignupProviderEvent {}

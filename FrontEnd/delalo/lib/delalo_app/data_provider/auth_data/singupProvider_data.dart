@@ -21,19 +21,6 @@ class SignupProviderDataProvider {
 
   Future<void> signupProvider(SignupProvider signup) async {
     final URL = Uri.http(_baseUrl, "/provider");
-    print(signup.email);
-    print(signup.password);
-    print(signup.firstname);
-    print(signup.lastname);
-    print(signup.address);
-    print(signup.phone);
-    print(signup.image);
-    print(signup.role);
-    print(signup.category);
-    print(signup.description);
-    print(signup.perHourWage);
-    print(signup.recommendation);
-    print(URL);
 
     try {
       final response = await httpClient.post(URL,
@@ -66,16 +53,8 @@ class SignupProviderDataProvider {
         await SESSION.setString("role", signedUpProvider.role);
         await SESSION.setString("token", signedUpProvider.token);
 
-        // this is for debugging
-        print(SESSION.getString('email'));
-        print(SESSION.getString('token'));
-        print(SESSION.getString('role'));
-        print(SESSION.getString('id'));
-
         return;
       } else if (response.statusCode == 400) {
-        print(response.statusCode);
-        print(response.body);
         throw SignupProviderFailedException(errorText: response.body);
       } else {
         throw SignupProviderFailedException(
@@ -84,6 +63,32 @@ class SignupProviderDataProvider {
     } catch (e) {
       throw SignupProviderFailedException(
           errorText: "Connection error. Please try again!");
+    }
+  }
+
+  Future<List<String>> getCategoriesList() async {
+    final URL = Uri.http(_baseUrl, "/category");
+
+    try {
+      final response = await httpClient.get(URL, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final Iterable categories = jsonDecode(response.body);
+        List<String> mappedCategoriesNames = List<String>.from(categories
+                .map((category) => Category.fromJson(category).name.toString()))
+            .toList();
+        return mappedCategoriesNames;
+      } else if (response.statusCode == 400) {
+        throw SignupProviderFailedException(errorText: response.body);
+      } else {
+        throw SignupProviderFailedException(
+            errorText: "Connection error. Please try again!");
+      }
+    } catch (e) {
+      throw SignupProviderFailedException(
+      errorText: "Connection error. Please try again! ee");
     }
   }
 }

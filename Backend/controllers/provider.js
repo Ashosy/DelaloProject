@@ -187,7 +187,7 @@ const getTopProviders = (req, res) => {
 };
 
 const getProvidersByCategory = (req, res) => {
-  const category= req.params.category.toLowerCase();
+  const category= req.params.category;
   models
     .find({category:category,role:"provider"})
     .then((result) => {
