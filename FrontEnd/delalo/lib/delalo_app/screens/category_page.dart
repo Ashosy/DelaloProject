@@ -1,6 +1,8 @@
 import 'package:delalo/delalo_app/blocs/search_bloc/search_bloc.dart';
 import 'package:delalo/delalo_app/blocs/search_bloc/search_event.dart';
 import 'package:delalo/delalo_app/blocs/search_bloc/search_state.dart';
+import 'package:delalo/delalo_app/screens/bottom_nav.dart';
+import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 import 'package:delalo/delalo_app/screens/provider_list_page.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,8 @@ class _CategoryPageState extends State<CategoryPage> {
     // final categoryBloc = BlocProvider.of<CategoryBloc>(context);
      final searchBloc=BlocProvider.of<SearchBloc>(context);
     return Scaffold(
+      drawer: NavigationDrawer(),
+      bottomNavigationBar: BottomNav(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: <Widget>[

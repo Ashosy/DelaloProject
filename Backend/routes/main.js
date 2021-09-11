@@ -17,14 +17,10 @@ const {
   postProvider,
   getProvider,
   getProviderById,
-  searchProviders,
   getProvidersByCategory,
   getTopProviders,
   getTopProvidersByCategory,
   updateProviderById,
-  getProvidersByCategory,
-  getTopProviders,
-  getTopProvidersByCategory,
 } = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
 const {
