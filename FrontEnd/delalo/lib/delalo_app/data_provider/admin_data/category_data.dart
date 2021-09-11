@@ -35,7 +35,7 @@ class AdminCategoryDataProvider {
                 'numOfProviders': category.numOfProviders,
                 'description': category.description
               }));
-      print("this is in data provider");
+     
 
       if (response.statusCode == 201) {
         print(response.statusCode);
@@ -44,10 +44,10 @@ class AdminCategoryDataProvider {
         throw Exception("Error");
       }
     } on SocketException catch (e) {
-      print('maybe this got here');
+      
       throw e;
     } on HttpException catch (e) {
-      print('or here');
+     
       throw e;
     }
   }
@@ -66,15 +66,11 @@ class AdminCategoryDataProvider {
 
       if (response.statusCode == 200) {
         Iterable categories = jsonDecode(response.body);
-        print(
-            "this is status ${response.statusCode} on category data provider ${response.body}");
+      
         List<Category> categoriesmaped = List<Category>.from(
             categories.map((category) => Category.fromJson(category))).toList();
 
-        print(categories.runtimeType);
-
-        print("this is in data provider for category mapped");
-        print(categoriesmaped);
+        
         return categoriesmaped;
         //  categories
         //     .map((category) => Category.fromJson(category))
@@ -91,7 +87,7 @@ class AdminCategoryDataProvider {
 
   Future<void> deleteCategory(String id) async {
     try {
-      print("new debug...1");
+     
       final response = await httpClient.delete(
           Uri.parse("http://localhost:3000/category/$id"),
           headers: <String, String>{
@@ -99,8 +95,7 @@ class AdminCategoryDataProvider {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json; charset=UTF-8',
           });
-      print("this is in data provider");
-      print(response.statusCode);
+     
       if (response.statusCode != 200) {
         print("new debug...2");
         throw Exception("Error deleting Category");
@@ -129,8 +124,7 @@ class AdminCategoryDataProvider {
           'description': category.description
         }),
       );
-      print("this is in data provider");
-      print(response.statusCode);
+      
       if (response.statusCode != 200) {
         throw Exception('Error Updating category');
       }

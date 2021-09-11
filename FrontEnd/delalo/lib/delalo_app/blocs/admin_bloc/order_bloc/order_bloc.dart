@@ -16,8 +16,7 @@ class AdminOrderBloc extends Bloc<AdminOrderEvent, AdminOrderState> {
       yield AdminOrderLoading();
       try {
         final orders = await adminOrderRepository.getOrders();
-        print("inside orders bloc");
-        print(orders);
+        
         yield AdminOrdersLoadSuccess(orders);
       } catch (_) {
         yield AdminOrderOperationFailure();

@@ -21,13 +21,13 @@ class AdminProviderDataProvider {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json; charset=UTF-8',
           });
-      print(response.statusCode);
+     
       if (response.statusCode == 200) {
         Iterable providers = jsonDecode(response.body);
-        print(providers);
+     
         List<User> providersmaped = List<User>.from(
             providers.map((provider) => User.fromJson(provider))).toList();
-        print("hello");
+       
         return providersmaped;
       } else {
         throw Exception("Error");

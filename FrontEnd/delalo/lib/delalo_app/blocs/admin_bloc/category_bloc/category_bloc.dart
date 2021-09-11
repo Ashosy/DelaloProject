@@ -13,7 +13,7 @@ class AdminCategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {
     // TO DO: implement mapEventToState
     if (event is LoadAllCategories) {
-      print('load all categories called');
+     
       yield CategoryLoading();
       try {
         final categories = await categoryRepository.getCategoriesFromCategory();
@@ -24,11 +24,11 @@ class AdminCategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
     if (event is AddCategory) {
       try {
-        print('adding category');
+      
         final category = event.category;
-        print('debug...1');
+       
         await categoryRepository.createCategory(category);
-        print('debug...2');
+        
         yield CategoryNavigate();
       } catch (_) {
         yield CategoryOperationFailed();
@@ -37,9 +37,9 @@ class AdminCategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event is CategoryUpdate) {
       try {
         final categoryToUpdate = event.category;
-        print('started updating ${categoryToUpdate}');
+       
         await categoryRepository.updateCategory(categoryToUpdate);
-        print('finished updating');
+        
         final newcategory =
             await categoryRepository.getCategoriesFromCategory();
         yield CategoryLoaded(newcategory);
@@ -51,7 +51,7 @@ class AdminCategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       try {
         final categoryId = event.categoryId;
         await categoryRepository.deleteCategory(categoryId);
-        print("it got here...1");
+      
         final newcategory =
             await categoryRepository.getCategoriesFromCategory();
         yield CategoryLoaded(newcategory);
