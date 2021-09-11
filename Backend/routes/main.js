@@ -27,6 +27,7 @@ const {
   orderPost,
   ordergetAll,
   ordergetById,
+  ordergetByOrderId,
   orderDelete,
   orderUpdate,
   ordergetAllCompleted,
@@ -55,6 +56,7 @@ const {
   getReviews,
   getReviewById,
   addReview,
+  getReviewsOfProvider
 } = require("../controllers/review"); // // IMPORT REVIEW FUNCTIONS HERE
 
 const router = express.Router();
@@ -96,6 +98,7 @@ router.get("/order/:providerId/:seekerId", getOrderByIds);
 router.get("/orderAllCompleted",ordergetAllCompleted);
 router.post("/order", orderPost);
 router.get("/order/:id", ordergetById);
+router.get("/singleorder/:id",ordergetByOrderId);
 router.delete("/order/:id", orderDelete);
 router.put("/order/:id", orderUpdate);
 router.get("/activeOrder/:id", getActiveOrder);

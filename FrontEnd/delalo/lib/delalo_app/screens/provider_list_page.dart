@@ -3,7 +3,6 @@ import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_event.d
 import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_state.dart';
 import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/provider_profile_bloc.dart';
 import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/reviews_of_provider_bloc.dart';
-import 'package:delalo/delalo_app/screens/singleProviderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -78,10 +77,10 @@ class _ProviderListPageState extends State<ProviderListPage> {
                             BlocProvider.of<ReviewsOfProviderBloc>(context).add(
                                 LoadReviewsOfProvider(providerId: provider.id));
                             // Navigator.of(context).pushNamed(RouteGenerator.signupProviderScreenName);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProviderProfile()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => ProviderProfile()));
                           },
                           child: Card(
                               color: Colors.grey[100],

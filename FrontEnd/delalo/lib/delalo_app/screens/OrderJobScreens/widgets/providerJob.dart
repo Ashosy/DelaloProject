@@ -1,15 +1,25 @@
 import 'package:delalo/delalo_app/blocs/blocs.dart';
+import 'package:delalo/delalo_app/blocs/navigation_drawer/navigation.dart';
+import 'package:delalo/delalo_app/data_provider/data_provider.dart';
+import 'package:delalo/delalo_app/repository/repository.dart';
+import 'package:delalo/delalo_app/screens/OrderJobScreens/activeJob.dart';
+import 'package:delalo/delalo_app/screens/OrderJobScreens/pendingJobs.dart';
+import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:delalo/delalo_app/screens/OrderJobScreens/widgets/rowTitle.dart';
 import 'package:delalo/delalo_app/screens/OrderJobScreens/widgets/rowContent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 
-class ActiveJob extends StatelessWidget {
-  ActiveJob({Key? key}) : super(key: key);
+class ProviderJob extends StatelessWidget {
+  ProviderJob({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String provider_id = "61332f352eb4f64398fa7678";
+    final orderBloc = BlocProvider.of<OrderBloc>(context);
+    orderBloc.add(ProviderJobStatus(provider_id));
     return Scaffold(
       body: Center(
         child: BlocBuilder<OrderBloc, OrderState>(
@@ -18,8 +28,102 @@ class ActiveJob extends StatelessWidget {
               return CircularProgressIndicator();
             }
 
-            if (orderState is OrderOperationFailure) {
-              return Text("Sorry loading failed");
+            if (orderState is PendingJobsLoadFailure) {
+              return Center(child: Text(orderState.failureMessage));
+            }
+
+            if (orderState is PendingJobsEmpltyFailure) {
+              return Center(child: Text(orderState.message));
+            }
+
+            if (orderState is ActiveJobFailure) {
+              return Text(orderState.failureMessage);
+            }
+
+            if (orderState is PendingJobsLoadSuccess) {
+              final pendingJobs = orderState.pendingJobs;
+              return ListView.builder(
+                itemCount: pendingJobs.length,
+                itemBuilder: (context, index) {
+                  final job = pendingJobs[index];
+                  final userName =
+                      job.user!.firstname + " " + job.user!.lastname;
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage('assets/images/user.png'),
+                    ),
+                    title: Text(
+                      userName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(job.provider.category),
+                        ],
+                      ),
+                    ),
+                    trailing: Container(
+                      margin: EdgeInsets.all(0),
+                      width: 120,
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              orderBloc.add(
+                                AcceptJob(job.order.id),
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                ), // icon
+                                Text(
+                                  'Accept',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  ),
+                                ), // text
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              orderBloc.add(
+                                DeclineJob(job.order.id),
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.remove_circle,
+                                  color: Colors.red,
+                                ), // icon
+                                Text(
+                                  'Decline',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ), // text
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
             }
 
             if (orderState is ActiveJobSuccess) {
@@ -133,7 +237,7 @@ class ActiveJob extends StatelessWidget {
                                             activeJob.order!.unique_code
                                                 .toString(),
                                             style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 25,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
@@ -151,6 +255,7 @@ class ActiveJob extends StatelessWidget {
                 ),
               );
             }
+
             return Container();
           },
         ),

@@ -2,7 +2,6 @@ import 'package:delalo/delalo_app/screens/category_page.dart';
 import 'package:delalo/delalo_app/screens/home_page.dart';
 import 'package:delalo/delalo_app/screens/provider_list_page.dart';
 import 'package:delalo/delalo_app/screens/signupProviderScreen.dart';
-import 'package:delalo/delalo_app/screens/singleProviderPage.dart';
 import 'package:flutter/material.dart';
 import 'delalo_app/screens/admin/adminScreens.dart';
 import 'delalo_app/screens/admin/category_list.dart';
@@ -48,7 +47,7 @@ class RouteGenerator {
       case categoryListPage:
         return MaterialPageRoute(builder: (_) => CategoryPage());
       case singleProviderPageName:
-        return MaterialPageRoute(builder: (_) => ProviderProfile());
+        // return MaterialPageRoute(builder: (_) => ProviderProfile());
       case homePageName:
         return MaterialPageRoute(builder: (_) => HomePage());
       case providerListPage:

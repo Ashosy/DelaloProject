@@ -14,7 +14,7 @@ class Order extends Equatable {
   final int? unique_code;
   final String seeker_id;
   final String provider_id;
-  final int? final_payment;
+  final double? final_payment;
 
   Order({
     required this.id,
@@ -46,20 +46,23 @@ class Order extends Equatable {
         final_payment
       ];
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
-      id: json['_id'],
-      status: json['status'],
-      progress: json['progress'],
-      order_created_date: json['order_created_date'],
-      order_completed_date: json['order_completed_date'],
-      is_completed: json['is_completed'],
-      start_time: json['start_time'],
-      saved_time: json['saved_time'],
-      unique_code: json['unique_code'],
-      seeker_id: json['seeker_id'],
-      provider_id: json['provider_id'],
-      final_payment: json['final_payment']);
+  factory Order.fromJson(Map<String, dynamic> json) {
+    print("factory...order");
 
+    return Order(
+        id: json['_id'],
+        status: json['status'],
+        progress: json['progress'],
+        order_created_date: json['order_created_date'],
+        order_completed_date: json['order_completed_date'],
+        is_completed: json['is_completed'],
+        start_time: json['start_time']?.toDouble(),
+        saved_time: json['saved_time']?.toDouble(),
+        unique_code: json['unique_code'],
+        seeker_id: json['seeker_id'],
+        provider_id: json['provider_id'],
+        final_payment: json['final_payment']?.toDouble());
+  }
   @override
   String toString() =>
       'Order { id: $id, status: $status, seekerID: $seeker_id, providerID: $provider_id }';

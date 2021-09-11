@@ -18,35 +18,55 @@ class OrderRepository {
     return await dataProvider.getOrderById(seeker_id);
   }
 
-  Future<void> deleteOrder(Order order) async {
-    return await dataProvider.deleteOrder(order);
+  Future<dynamic> deleteOrder(String order_id) async {
+    return await dataProvider.deleteOrder(order_id);
   }
 
-  Future<void> updateOrder(Order order) async {
-    return await dataProvider.updateOrder(order);
+  Future<dynamic> updateOrder(String order_id, String progress) async {
+    return await dataProvider.updateOrder(order_id, progress);
   }
 
   Future<List<OrderDetails>> getAllJobs(User provider) async {
     return await dataProvider.getAllJobs(provider);
   }
 
-  Future<void> updateJobStatus(Order order, User provider) async {
-    return await dataProvider.updateJobStatus(order, provider);
+  Future<dynamic> updateJobStatus(String order_id, String status) async {
+    return await dataProvider.updateJobStatus(order_id, status);
   }
 
-  Future<Order> getActiveJob(User provider) async {
-    return await dataProvider.getActiveJob(provider);
+  Future<dynamic> getActiveJob(String provider_id) async {
+    return await dataProvider.getActiveJob(provider_id);
   }
 
-  Future<List<OrderDetails>> getPendingJobs(User provider) async {
-    return await dataProvider.getPendingJobs(provider);
+  Future<List<dynamic>> getPendingJobs(String provider_id) async {
+    return await dataProvider.getPendingJobs(provider_id);
   }
 
-  Future<List<OrderDetails>> getDeclinedJobs(User provider) async {
-    return await dataProvider.getDeclinedJobs(provider);
+  Future<List<dynamic>> getDeclinedJobs(String provider_id) async {
+    return await dataProvider.getDeclinedJobs(provider_id);
   }
 
-  Future<List<OrderDetails>> getCompletedJobs(User provider) async {
-    return await dataProvider.getCompletedJobs(provider);
+  Future<List<dynamic>> getCompletedJobs(String provider_id) async {
+    return await dataProvider.getCompletedJobs(provider_id);
+  }
+
+  Future<dynamic> getActiveOrders(String seeker_id) async {
+    return await dataProvider.getActiveOrders(seeker_id);
+  }
+
+  Future<List<dynamic>> getPendingOrders(String seeker_id) async {
+    return await dataProvider.getPendingOrders(seeker_id);
+  }
+
+  Future<List<dynamic>> getDeclinedOrders(String seeker_id) async {
+    return await dataProvider.getDeclinedOrders(seeker_id);
+  }
+
+  Future<List<dynamic>> getCompletedOrders(String seeker_id) async {
+    return await dataProvider.getCompletedOrders(seeker_id);
+  }
+
+  Future<dynamic> getSingleOrder(String order_id) async {
+    return await dataProvider.getSingleOrder(order_id);
   }
 }

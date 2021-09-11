@@ -18,6 +18,8 @@ class Review extends Equatable {
   List<Object?> get props => [id, rating, order_id, comment];
 
   factory Review.fromJson(Map<String, dynamic> json) {
+    print('factory....review');
+
     return Review(
         id: json['_id'],
         rating: json['rating'],

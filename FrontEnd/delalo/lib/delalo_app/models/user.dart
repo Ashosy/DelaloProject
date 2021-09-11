@@ -63,7 +63,7 @@ class User extends Equatable {
         category: json['category'],
         jobs_done: json['jobs_done'],
         image: json['image'],
-        per_hour_wage: json['per_hour_wage'],
+        per_hour_wage: json['per_hour_wage']?.toDouble(),
         recommendation: json['recommendation'],
         average_rating: json['average_rating']?.toDouble(),
       );

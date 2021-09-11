@@ -4,23 +4,26 @@ import 'package:delalo/delalo_app/models/review.dart';
 import 'package:http/http.dart' as http;
 
 class ReviewDataProvider {
-  final _baseUrl = "http://localhost:3000/review";
+  final _baseUrl = "10.5.228.139:3000";
   final http.Client httpClient;
+
+  Uri generateUri(path) {
+    return Uri.http(_baseUrl, path);
+  }
 
   ReviewDataProvider({required this.httpClient});
 
-  Future<Review> addReview(Review review) async {
-    final response = await httpClient.post(Uri.parse(_baseUrl),
+  Future<Review> addReview(int rating, String comment, String order_id) async {
+    final response = await httpClient.post(generateUri('review'),
         headers: <String, String>{
           'Accept': 'application/json',
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'id': review.id,
-          'rating': review.rating,
-          'comment': review.comment,
-          'order_id': review.order_id
+          'rating': rating,
+          'comment': comment,
+          'order_id': order_id
         }));
 
     if (response.statusCode == 200) {

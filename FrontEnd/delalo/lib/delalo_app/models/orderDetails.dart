@@ -20,10 +20,9 @@ class OrderDetails extends Equatable {
   factory OrderDetails.fromJson(Map<String, dynamic> json) {
     print("factory...main");
     return OrderDetails(
-      // review: Review.fromJson(json['Review']),
-      provider: User.fromJson(json['Provider']),
-      user: User.fromJson(json['User']),
-      order: Order.fromJson(json['Order'])
-    );
+        // review: Review.fromJson(json['Review']),
+        provider: User.fromJson(json['Provider']),
+        user: User.fromJson(json['User']),
+        order: Order.fromJson(json['Order']));
   }
 }

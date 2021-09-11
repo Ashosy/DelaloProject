@@ -1,6 +1,3 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-
 class UserOnly {
   const UserOnly({
     required this.id,
@@ -10,6 +7,7 @@ class UserOnly {
     required this.email,
     required this.role,
     required this.phone,
+    required this.image,
     required this.address,
   });
   final String id;
@@ -19,13 +17,13 @@ class UserOnly {
   final String email;
   final String role;
   final String phone;
+  final String image;
   final String address;
 
   @override
   List<Object> get props =>
       [id, firstname, lastname, password, email, role, phone, address];
 
-  @override
   factory UserOnly.fromJson(Map<String, dynamic> json) {
     return UserOnly(
       id: json['_id'],
@@ -35,6 +33,7 @@ class UserOnly {
       email: json['email'],
       role: json['role'],
       phone: json['phone'],
+      image: json['image'],
       address: json['address'],
     );
   }

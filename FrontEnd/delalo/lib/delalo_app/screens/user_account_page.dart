@@ -230,7 +230,7 @@ class AccountPage extends StatelessWidget {
             );
           }
           return Container();
-          ;
+          
         }));
   }
 }

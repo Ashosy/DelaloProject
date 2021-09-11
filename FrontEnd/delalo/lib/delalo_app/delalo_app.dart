@@ -7,6 +7,7 @@ import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/reviews_
 import 'package:delalo/delalo_app/data_provider/auth_data/login_data.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/singupUser_data.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
+import 'package:delalo/delalo_app/data_provider/user_data/review_data.dart';
 import 'package:delalo/delalo_app/data_provider/user_data/single_provider_page_data.dart';
 import 'package:delalo/delalo_app/repository/admin_repository/admin_category_repository.dart';
 import 'package:delalo/delalo_app/repository/admin_repository/admin_order_jobs_repository.dart';
@@ -15,6 +16,7 @@ import 'package:delalo/delalo_app/repository/auth_repository/login_repository.da
 import 'package:delalo/delalo_app/repository/auth_repository/signupProvider_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupUser_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
+import 'package:delalo/delalo_app/repository/user_repository/review_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/provider_list_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/search_repository.dart';
 import 'package:delalo/delalo_app/screens/bottom_nav.dart';
@@ -55,15 +57,18 @@ class MyApp extends StatelessWidget {
   static final httpClient = http.Client();
   final orderRepository = OrderRepository(
       dataProvider: OrderDataProvider(
-    httpClient: httpClient,
+    httpClient: http.Client(),
   ));
-
+  final reviiewRepository = ReviewRepository(
+      reviewDataProvider: ReviewDataProvider(
+    httpClient: http.Client(),
+  ));
   final loginRepository =
       LoginRepository(dataProvider: LoginDataProvider(httpClient: httpClient));
   final signupUserRepository = SignupUserRepository(
       dataProvider: SignupUserDataProvider(httpClient: httpClient));
   final signupProviderRepository = SignupProviderRepository(
-      dataProvider: SignupProviderDataProvider(httpClient: httpClient));    
+      dataProvider: SignupProviderDataProvider(httpClient: httpClient));   
   final CategoryRepository categoryRepository = CategoryRepository(
   dataProvider: CategoryDataProvider(
     httpClient: http.Client(),
@@ -116,13 +121,19 @@ class MyApp extends StatelessWidget {
             ),
         ),
         BlocProvider(
+          create: (context) => ReviewBloc(reviewRepository: reviiewRepository)
+            ..add(
+              ReviewLoad(),
+            ),
+        ),
+        BlocProvider(
             create: (context) => LoginBloc(loginRepository: loginRepository)),
         BlocProvider(
             create: (context) =>
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
-            create: (context) =>
-                SignupProviderBloc(signupProviderRepository: signupProviderRepository)..add(LoadProviderSignup())),
+            create: (context) => SignupProviderBloc(
+                signupProviderRepository: signupProviderRepository)),
         BlocProvider(
                 create: (context) =>
                     CategoryBloc(categoryRepository: categoryRepository)
