@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:delalo/delalo_app/models/models.dart';
+import 'package:delalo/delalo_app/models/orderDetailsReview.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -67,7 +68,7 @@ class OrderDataProvider {
   }
 
   Future<dynamic> deleteOrder(String order_id) async {
-    final response = await httpClient.get(
+    final response = await httpClient.delete(
       generateUri('order/${order_id}'),
       headers: <String, String>{
         'Accept': 'application/json',
@@ -165,10 +166,9 @@ class OrderDataProvider {
 
       if (response.statusCode == 200) {
         Iterable jobs = jsonDecode(response.body);
-
         List<OrderDetails> mappedJobs = List<OrderDetails>.from(
             jobs.map((job) => OrderDetails.fromJson(job))).toList();
-        print("m$mappedJobs");
+
         return mappedJobs;
       } else {
         return ["No Pending Jobs"];
@@ -202,9 +202,8 @@ class OrderDataProvider {
     if (response.statusCode == 200) {
       Iterable jobs = jsonDecode(response.body);
 
-      List<OrderDetails> mappedJobs =
-          List<OrderDetails>.from(jobs.map((job) => OrderDetails.fromJson(job)))
-              .toList();
+      List<OrderDetailsReview> mappedJobs = List<OrderDetailsReview>.from(
+          jobs.map((job) => OrderDetailsReview.fromJson(job))).toList();
       return mappedJobs;
     } else {
       return ["No History yet"];
@@ -298,8 +297,8 @@ class OrderDataProvider {
     if (response.statusCode == 200) {
       Iterable orders = jsonDecode(response.body);
 
-      List<OrderDetails> mappedOrders = List<OrderDetails>.from(
-          orders.map((order) => OrderDetails.fromJson(order))).toList();
+      List<OrderDetailsReview> mappedOrders = List<OrderDetailsReview>.from(
+          orders.map((order) => OrderDetailsReview.fromJson(order))).toList();
       return mappedOrders;
     } else {
       return ["No History yet"];

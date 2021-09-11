@@ -48,10 +48,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       }
     }
     if (event is DeclineOrder) {
+      print("declining");
       yield Loading();
       try {
         final resStatus = await orderRepository.deleteOrder(event.order_id);
-
+        print(resStatus);
         if (resStatus == 200) {
           yield DeclineOrderSuccess();
         } else {
@@ -90,6 +91,21 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         yield ActiveJobFailure();
       }
     }
+    if (event is CompleteOrdersLoad) {
+      yield Loading();
+      try {
+        final completedOrders =
+            await orderRepository.getCompletedOrders(event.seeker_id);
+        if (completedOrders[0] == "No History yet") {
+          yield CompletedOrdersEmpltyFailure(message: "No Hisotry Yet");
+        } else {
+          yield CompletedOrdersLoadSuccess(completedOrders);
+        }
+      } catch (err) {
+        print("s$err");
+        yield CompletedOrdersLoadFailure();
+      }
+    }
     if (event is CompleteJobsLoad) {
       yield Loading();
       try {
@@ -126,8 +142,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       try {
         final declinedOrders =
             await orderRepository.getDeclinedOrders(event.seeker_id);
-        if (declinedOrders[0] == "No Pending Orders") {
-          yield DeclinedOrdersEmpltyFailure(message: "No Pending Orders");
+        if (declinedOrders[0] == "No Declined Orders") {
+          yield DeclinedOrdersEmpltyFailure(message: "No Declined Orders");
         } else {
           yield DeclinedOrdersLoadSuccess(declinedOrders);
         }

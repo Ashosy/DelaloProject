@@ -8,7 +8,7 @@ class DeclinedOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String seeker_id = "61332f352eb4f64398fa7678";
+    final String seeker_id = "61332f182eb4f64398fa7676";
     final orderBloc = BlocProvider.of<OrderBloc>(context);
     orderBloc.add(DeclinedOrdersLoad(seeker_id));
     return Scaffold(
@@ -65,8 +65,9 @@ class DeclinedOrders extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Icon(
-                            Icons.arrow_right,
+                            Icons.arrow_forward,
                             color: Colors.teal,
+                            size: 30,
                           ), // icon
                           Text(
                             'Hire Someone Else',

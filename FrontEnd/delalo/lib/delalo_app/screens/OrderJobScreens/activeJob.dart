@@ -133,7 +133,7 @@ class ActiveJob extends StatelessWidget {
                                             activeJob.order!.unique_code
                                                 .toString(),
                                             style: TextStyle(
-                                                fontSize: 25,
+                                                fontSize: 20,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),

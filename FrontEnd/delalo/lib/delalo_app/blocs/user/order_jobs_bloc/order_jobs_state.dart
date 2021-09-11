@@ -17,6 +17,34 @@ class JobStatusChanged extends OrderState {
   List<Object> get props => [];
 }
 
+class Working extends OrderState {
+  Working();
+
+  @override
+  List<Object> get props => [];
+}
+
+class Paused extends OrderState {
+  Paused();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompletedUniqueCode extends OrderState {
+  CompletedUniqueCode();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CompleteReview extends OrderState {
+  CompleteReview();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AcceptJobSuccess extends OrderState {
   AcceptJobSuccess();
 

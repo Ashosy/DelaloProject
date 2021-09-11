@@ -24,7 +24,6 @@ class ProviderJob extends StatelessWidget {
       body: Center(
         child: BlocBuilder<OrderBloc, OrderState>(
           builder: (_, orderState) {
-            print(orderState);
             if (orderState is Loading) {
               return CircularProgressIndicator();
             }

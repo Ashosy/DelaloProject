@@ -59,7 +59,7 @@ class HistoryJobs extends StatelessWidget {
                         ],
                       ),
                       title: Text(
-                        job.order.final_payment,
+                        "${job.order.final_payment.toStringAsFixed(2)} ETB",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -100,6 +100,7 @@ class HistoryJobs extends StatelessWidget {
                               ],
                             ),
                             StarRating(
+                              size: 15,
                               value: job.review.rating,
                               onChanged: null,
                             ),

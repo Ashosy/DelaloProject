@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class Order {
+class Order extends Equatable {
   final String id;
   final String? status;
   final String? progress;
@@ -31,9 +31,24 @@ class Order {
     required this.provider_id,
   });
 
+  @override
+  List<Object?> get props => [
+        id,
+        status,
+        progress,
+        order_created_date,
+        order_completed_date,
+        start_time,
+        saved_time,
+        unique_code,
+        seeker_id,
+        provider_id,
+        final_payment
+      ];
+
   factory Order.fromJson(Map<String, dynamic> json) {
-    print("order$json");
-    // print(double.parse(json['saved_time']).runtimeType);
+    print("factory...order");
+
     return Order(
         id: json['_id'],
         status: json['status'],
@@ -41,12 +56,12 @@ class Order {
         order_created_date: json['order_created_date'],
         order_completed_date: json['order_completed_date'],
         is_completed: json['is_completed'],
-        start_time: json['start_time'],
-        saved_time: json['saved_time'],
+        start_time: json['start_time']?.toDouble(),
+        saved_time: json['saved_time']?.toDouble(),
         unique_code: json['unique_code'],
         seeker_id: json['seeker_id'],
         provider_id: json['provider_id'],
-        final_payment: json['final_payment']);
+        final_payment: json['final_payment']?.toDouble());
   }
   @override
   String toString() =>

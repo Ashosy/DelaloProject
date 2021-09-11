@@ -31,7 +31,7 @@ class User extends Equatable {
   final String? description;
   final String? category;
   final int? jobs_done;
-  final int? per_hour_wage;
+  final double? per_hour_wage;
   final String? recommendation;
   final double? average_rating;
   @override
@@ -55,7 +55,8 @@ class User extends Equatable {
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+    print("factory...provider");
+    var us = User(
         id: json['_id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
@@ -67,10 +68,12 @@ class User extends Equatable {
         category: json['category'],
         jobs_done: json['jobs_done'],
         image: json['image'],
-        per_hour_wage: json['per_hour_wage'],
+        per_hour_wage: json['per_hour_wage']?.toDouble(),
         recommendation: json['recommendation'],
-        average_rating: json['average_rating'],
+        average_rating: json['average_rating']?.toDouble(),
         password: json['password']);
+
+    return us;
   }
   @override
   String toString() =>

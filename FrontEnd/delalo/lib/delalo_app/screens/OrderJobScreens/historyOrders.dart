@@ -8,9 +8,10 @@ class HistoryOrders extends StatelessWidget {
   HistoryOrders({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
-    final String seeker_id = "61332f352eb4f64398fa7678";
+    final String seeker_id = "611e45f2517e71323071fa50";
     final orderBloc = BlocProvider.of<OrderBloc>(context);
     orderBloc.add(CompleteOrdersLoad(seeker_id));
+
     return Scaffold(
       body: Center(
         child: BlocBuilder<OrderBloc, OrderState>(
@@ -59,7 +60,7 @@ class HistoryOrders extends StatelessWidget {
                         ],
                       ),
                       title: Text(
-                        job.order.final_payment,
+                        "${job.order.final_payment.toStringAsFixed(2)} ETB",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

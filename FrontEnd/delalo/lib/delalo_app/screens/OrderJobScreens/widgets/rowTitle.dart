@@ -14,7 +14,7 @@ class RowTitle extends StatelessWidget {
         title,
         style: TextStyle(
           color: Colors.grey,
-          fontSize: 15,
+          fontSize: 12,
         ),
       ),
     );

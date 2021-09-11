@@ -19,7 +19,7 @@ class RowContent extends StatelessWidget {
           return '-';
         })(),
         style: TextStyle(
-          fontSize: 15,
+          fontSize: 12,
         ),
       ),
     );

@@ -19,7 +19,11 @@ class OrderRepository {
   }
 
   Future<dynamic> deleteOrder(String order_id) async {
-    return await dataProvider.deleteOrder(order_id);
+    print("here");
+    print(order_id);
+    dynamic res = await dataProvider.deleteOrder(order_id);
+    print("res$res");
+    return res;
   }
 
   Future<dynamic> updateOrder(String order_id) async {
