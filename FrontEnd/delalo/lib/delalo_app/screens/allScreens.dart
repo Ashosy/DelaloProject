@@ -1,4 +1,4 @@
-export 'singleProviderPage.dart';
+export 'singleProviderPage2.dart';
 export 'loginScreen.dart';
 export 'signupChoiceScreen.dart';
 export 'signupUserScreen.dart';
