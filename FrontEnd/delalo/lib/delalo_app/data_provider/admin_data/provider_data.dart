@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
  
  
 class AdminProviderDataProvider {
-  final _baseurl = 'http://127.0.0.1:3000';
+  final _baseurl = 'http://localhost:3000';
   final http.Client httpClient;
   AdminProviderDataProvider({required this.httpClient})
      ;
@@ -15,7 +15,7 @@ class AdminProviderDataProvider {
     try {
       final response =
           await httpClient.get(
-            Uri.parse("http://127.0.0.1:3000/provider"),
+            Uri.parse("http://localhost:3000/provider"),
           headers: <String, String>{
             'Accept': 'application/json',
             'Access-Control-Allow-Origin': '*',

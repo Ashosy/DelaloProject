@@ -61,7 +61,15 @@ class _AdminOrdersJobsState extends State<AdminOrdersJobs> {
                                   SizedBox(height: 5,),
                                  Row(children: [
                                   Text('Category: '),
-                                  Text('${order.provider!.category}'),
+                                 
+                                  Text('${order.order!.order_completed_date}'),
+
+
+                                 ],),SizedBox(height: 5,),
+                                 Row(children: [
+                                  Text('Date: '),
+                                  // Text('${order.provider!.category}'),
+                                  Text('${order.order!.order_completed_date}'),
 
 
                                  ],)
@@ -91,8 +99,17 @@ class _AdminOrdersJobsState extends State<AdminOrdersJobs> {
                                  SizedBox(height: 5,),
                                  Row(
                                   children: [
-                                Text("Seeker Name "),
-                                Text(" ${seeker_user_name}"),
+                                Text("Unique Code "),
+                                Text(" ${order.order!.unique_code}"),
+
+                                  ],
+                                  
+                                ),
+                                SizedBox(height: 5,),
+                                 Row(
+                                  children: [
+                                Text("Saved Time"),
+                                Text(" ${order.order!.saved_time}"),
 
                                   ],
                                   

@@ -3,6 +3,7 @@ import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.
 import 'package:delalo/delalo_app/blocs/admin_bloc/category_bloc/category_state.dart';
 import 'package:delalo/delalo_app/models/category.dart';
 import 'package:delalo/delalo_app/screens/admin/category_list.dart';
+import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,14 +37,21 @@ class _AdminAddUpdateCategoryState extends State<AdminAddUpdateCategory> {
       body: BlocConsumer<AdminCategoryBloc, CategoryState>(
         listener: (_, state) {
           // TO DO: implement listener
-          if (state is CategoryLoading) {
-            CircularProgressIndicator();
-          } else if (state is CategoryOperationFailed) {
-            Text("Loading failed");
-          } else if (state is CategoryLoaded) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminCategoryList()));
-            // Navigator.of(context).pushNamed(AdminCategoryList.routeName);
+          // if (state is CategoryLoading) {
+          //   CircularProgressIndicator();
+          // } else if (state is CategoryOperationFailed) {
+          //   Text("Loading failed");
+          // } else if (state is CategoryLoaded) {
+          //   Navigator.push(context,
+          //       MaterialPageRoute(builder: (context) => AdminCategoryList()));
+          //   // Navigator.of(context).pushNamed(AdminCategoryList.routeName);
+          // }
+
+          if (state is CategoryNavigate) {
+            print('new debug...4');
+            BlocProvider.of<AdminCategoryBloc>(context)
+                .add(LoadAllCategories());
+            Navigator.pushNamed(context, RouteGenerator.adminScreenName);
           }
         },
         builder: (context, state) {

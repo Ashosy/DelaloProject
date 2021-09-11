@@ -1,13 +1,14 @@
 import 'package:delalo/delalo_app/data_provider/admin_data/category_data.dart';
 import 'package:delalo/delalo_app/models/category.dart';
+import 'package:matcher/src/interfaces.dart';
 
 class AdminCategoryRepository {
   final AdminCategoryDataProvider categoryDataProvider;
 
   AdminCategoryRepository({required this.categoryDataProvider});
 
-  Future<Category> createCategory(Category category) async {
-    return await categoryDataProvider.createCategory(category);
+  Future<void> createCategory(Category category) async {
+    await categoryDataProvider.createCategory(category);
   }
 
   Future<List<Category>> getCategoriesFromCategory() async {

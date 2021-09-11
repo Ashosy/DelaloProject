@@ -159,7 +159,7 @@ class _AdminCategoryListState extends State<AdminCategoryList> {
                                                 image: category.image,
                                                 description:description);
                                             categoryBloc.add(
-                                                AddCategory(newCategory));
+                                                CategoryUpdate(newCategory));
                                             Navigator.pop(context, 'OK');
                                           },
                                           child: const Text(
