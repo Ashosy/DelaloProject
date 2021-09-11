@@ -19,10 +19,10 @@ class AdminCategoryDataProvider {
   // final response =  httpClient.post(Uri.parse("http://127.0.0.1:3000/category");
   // print("this is status ${response.statusCode} on category data provider ${response.body}");
 
-  Future<Category> createCategory(Category category) async {
+  Future<void> createCategory(Category category) async {
     try {
       final response =
-          await httpClient.post(Uri.parse("http://127.0.0.1:3000/category"),
+          await httpClient.post(Uri.parse("http://localhost:3000/category"),
               headers: <String, String>{
                 'Accept': 'application/json',
                 'Access-Control-Allow-Origin': '*',
@@ -37,14 +37,17 @@ class AdminCategoryDataProvider {
               }));
       print("this is in data provider");
 
-      if (response.statusCode == 200) {
-        return Category.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 201) {
+        print(response.statusCode);
+        return;
       } else {
         throw Exception("Error");
       }
     } on SocketException catch (e) {
+      print('maybe this got here');
       throw e;
     } on HttpException catch (e) {
+      print('or here');
       throw e;
     }
   }
@@ -69,9 +72,9 @@ class AdminCategoryDataProvider {
             categories.map((category) => Category.fromJson(category))).toList();
 
         print(categories.runtimeType);
-       
+
         print("this is in data provider for category mapped");
-         print(categoriesmaped);
+        print(categoriesmaped);
         return categoriesmaped;
         //  categories
         //     .map((category) => Category.fromJson(category))
@@ -112,7 +115,7 @@ class AdminCategoryDataProvider {
   Future<void> updateCategory(Category category) async {
     try {
       final response = await httpClient.put(
-        Uri.parse("http://localhost:3000/category/$category.id"),
+        Uri.parse("http://localhost:3000/category/${category.id}"),
         headers: <String, String>{
           'Accept': 'application/json',
           'Access-Control-Allow-Origin': '*',
