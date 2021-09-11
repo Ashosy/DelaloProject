@@ -11,29 +11,31 @@ class User extends Equatable {
       required this.email,
       required this.role,
       required this.phone,
-      required this.image,
       required this.address,
-      required this.description,
-      required this.category,
-      required this.jobs_done,
-      required this.recommendation,
-      required this.average_rating,
-      required this.per_hour_wage});
+      this.image,
+      this.description,
+      this.category,
+      this.jobs_done,
+      this.recommendation,
+      this.average_rating,
+      this.per_hour_wage});
+
   final String id;
   final String firstname;
   final String lastname;
   final String password;
   final String email;
   final String role;
-  final String? phone;
+  final String phone;
   final String? image;
-  final String? address;
+  final String address;
   final String? description;
   final String? category;
   final int? jobs_done;
-  final double? per_hour_wage;
+  final int? per_hour_wage;
   final String? recommendation;
-  final double? average_rating;
+  final int? average_rating;
+  
   @override
   List<Object?> get props => [
         id,
