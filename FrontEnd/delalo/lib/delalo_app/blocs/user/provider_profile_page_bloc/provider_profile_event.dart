@@ -9,3 +9,9 @@ class LoadProviderInfo extends ProviderProfileEvent {
 
   LoadProviderInfo({required this.providerId, required this.seekerId});
 }
+
+class HireButtonPressed extends ProviderProfileEvent {
+  final providerId;
+
+  HireButtonPressed({required this.providerId});
+}

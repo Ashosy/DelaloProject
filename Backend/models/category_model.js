@@ -4,6 +4,7 @@ const schema = mongoose.Schema;
 
 const categorySchema = new schema(
   {
+    __v: { type: Number, select: false},
     name: {
       type: String,
       required: true,

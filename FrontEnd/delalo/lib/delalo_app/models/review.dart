@@ -10,7 +10,7 @@ class Review extends Equatable {
       required this.order_id,
       required this.id});
   final String id;
-  final double rating;
+  final int rating;
   final String? comment;
   final String order_id;
 
@@ -20,7 +20,7 @@ class Review extends Equatable {
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
         id: json['_id'],
-        rating: json['rating'].toDouble(),
+        rating: json['rating'],
         comment: json['comment'],
         order_id: json['order_id']);
   }

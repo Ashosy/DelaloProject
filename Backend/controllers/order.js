@@ -921,7 +921,7 @@ const getOrderByIds = function(req, res){
     const seekerId = req.params.seekerId;// s_id to the requested id
     const providerId = req.params.providerId;
 
-    Order.findOne({seeker_id: seekerId, provider_id: providerId})
+    Order.findOne({seeker_id: seekerId, provider_id: providerId, status: 'pending'})
     .then((order)=>{
         if(!order){
             res.status(200).json({order: ""});
@@ -930,9 +930,6 @@ const getOrderByIds = function(req, res){
         {res.status(200).json({order: order});}
        
     }).catch((err) => {
-        // res.json(
-        //     {order: ''}
-        // );
         res.json(
             {order: err}
         );

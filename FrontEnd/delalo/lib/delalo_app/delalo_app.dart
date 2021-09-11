@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
             create: (context) =>
-                SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
+                SignupProviderBloc(signupProviderRepository: signupProviderRepository)..add(LoadProviderSignup())),
         BlocProvider(
             create: (context) =>
                 ProviderProfileBloc(providerProfileRepository: providerProfileRepository)..add(LoadProviderInfo(providerId: "613a6d0efa94bb01f0afbfa5", seekerId: "6118e035e030821c38a75f24"))),
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
           drawer: NavigationDrawer(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.loginScreenName,
+        initialRoute: RouteGenerator.singleProviderPageName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

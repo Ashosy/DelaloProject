@@ -18,11 +18,11 @@ class ReviewsOfProviderBloc
       yield ReviewsOfProviderInfoLoading();
       await Future.delayed(Duration(milliseconds: 500));
       try {
-        final orders_with_reviews_loaded =
-            await providerProfileRepository.getReviewsOfProvider(event.providerId);
+        final orders_with_reviews_loaded = await providerProfileRepository
+            .getReviewsOfProvider(event.providerId);
         yield ReviewsOfProviderLoadSuccess(orders_with_reviews_loaded);
       } catch (e) {
-        yield ReviewsOfProviderLoadFailure();
+        yield ReviewsOfProviderLoadFailure(error: e.toString());
       }
     }
   }
