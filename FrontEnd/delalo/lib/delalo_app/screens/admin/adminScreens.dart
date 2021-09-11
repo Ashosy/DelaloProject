@@ -19,15 +19,25 @@ class _AdminScreenState extends State<AdminScreen> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(title: Text("Delalo",
+        appBar: AppBar(
+          actions: [
+            Icon(Icons.search)
+          ],
+          
+          title: Text("Delalo",
         textAlign: TextAlign.center,
         ),centerTitle: true,
         backgroundColor: Colors.purple,
+        
         bottom: TabBar(tabs: [
          Tab(text: 'Category'),
          Tab(text: 'Providers'),
          Tab(text: 'Order')
-        ],),),
+        ],
+        ),
+        
+        ),
+        drawer: Drawer(),
        
         body: TabBarView(
           children: [
@@ -40,5 +50,3 @@ class _AdminScreenState extends State<AdminScreen> {
     );
   }
 }
-
- 

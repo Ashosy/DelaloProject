@@ -3,7 +3,10 @@ const mongoose_fuzzy_searching = require("custom-mongoose-fuzzy-searching");
 const schema = mongoose.Schema;
 const userSchema = new schema(
   {
-    __v: { type: Number, select: false},
+    __v:{
+      type: String,
+      select: false
+    },
     firstname: {
       type: String,
       required: true,
@@ -22,7 +25,7 @@ const userSchema = new schema(
     },
     role: {
       type: String,
-      required: false,
+      required: true,
     },
     phone: {
       type: String,
@@ -60,9 +63,15 @@ const userSchema = new schema(
       type: Number,
       required: false,
     },
+    __v: {
+      type: String,
+      select: false,
+    },
   },
   { collection: "user" }
 );
 
-userSchema.plugin(mongoose_fuzzy_searching,{fields:['firstname','lastname','address']})
+userSchema.plugin(mongoose_fuzzy_searching, {
+  fields: ["firstname", "lastname", "address"],
+});
 module.exports = mongoose.model("user", userSchema);

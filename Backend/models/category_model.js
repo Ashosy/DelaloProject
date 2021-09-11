@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongoose_fuzzy_searching = require("custom-mongoose-fuzzy-searching");
+const { string } = require("@hapi/joi");
 const schema = mongoose.Schema;
 
 const categorySchema = new schema(

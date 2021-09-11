@@ -12,7 +12,7 @@ Feature List:
 1. Users and Providers CRUD 
 2. Searching Category of Services
 3. CRUD on Orders from users
-4. CRUD on Reviews from users
+4. CRUD on Categories Reviews from users
 5. Authentication and authorization 
 
 Group members name

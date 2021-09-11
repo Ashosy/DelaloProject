@@ -7,12 +7,12 @@ import 'user.dart';
 
 @immutable
 class OrderDetails extends Equatable {
-  const OrderDetails({this.order, this.provider, this.user, this.review});
+  const OrderDetails({this.order, this.provider, this.user});
 
   final Order? order;
   final User? provider;
   final User? user;
-  final Review? review;
+  // final Review? review;
 
   @override
   List<Object?> get props => [order, provider, user];
@@ -20,7 +20,7 @@ class OrderDetails extends Equatable {
   factory OrderDetails.fromJson(Map<String, dynamic> json) {
     print("factory...main");
     return OrderDetails(
-      review: Review.fromJson(json['Review']),
+      // review: Review.fromJson(json['Review']),
       provider: User.fromJson(json['Provider']),
       user: User.fromJson(json['User']),
       order: Order.fromJson(json['Order'])

@@ -31,10 +31,13 @@ const ordergetAllCompleted = function(req, res){
             }
             else
            {  
+               console.log(orders);
             if(orders.length!=0){
                 let lst=[];
                  const toList= async()=>{
                     await asyncForEach(orders,async(order)=>{
+
+                        console.log("order");
                         const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
                                     if(err){
                                         return err
