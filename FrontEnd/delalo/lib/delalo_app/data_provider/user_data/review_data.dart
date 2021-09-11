@@ -53,8 +53,7 @@ class ReviewDataProvider {
       throw Exception("Error");
     }
   }
-
-  Future<void> deleteReview(String id) async {
+   Future<void> deleteReview(String id) async {
     final response = await httpClient.delete(
       Uri.parse('http://localhost:3000/review/$id'),
       headers: <String, String>{
@@ -66,9 +65,8 @@ class ReviewDataProvider {
 
     if (response.statusCode != 200) {
       throw Exception("Error");
-    }
+    } 
   }
-
   Future<void> updateReview(Review review) async {
     final response = await httpClient.put(Uri.parse(_baseUrl),
         headers: <String, String>{
@@ -83,8 +81,9 @@ class ReviewDataProvider {
           'order_id': review.order_id
         }));
 
-    if (response.statusCode != 200) {
-      throw Exception('Error Updating review');
-    }
+     if (response.statusCode != 200) {
+        throw Exception('Error Updating review');
+      }
   }
+
 }

@@ -1,7 +1,13 @@
 part of 'signupProvider_bloc.dart';
 
 @immutable
-abstract class SignupProviderState{}
+abstract class SignupProviderState {}
+
+class SingupProviderLoadSuccess extends SignupProviderState {
+  final categoryLst;
+
+  SingupProviderLoadSuccess({required this.categoryLst});
+}
 
 class SignupProviderInitial extends SignupProviderState {}
 

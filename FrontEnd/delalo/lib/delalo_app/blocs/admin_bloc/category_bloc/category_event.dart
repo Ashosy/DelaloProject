@@ -2,6 +2,8 @@ import 'package:delalo/delalo_app/models/category.dart';
 import 'package:equatable/equatable.dart';
 
 
+
+
 abstract class CategoryEvent extends Equatable {
   const CategoryEvent();
 }
@@ -25,3 +27,31 @@ class AddCategory extends CategoryEvent {
   @override
   String toString() => 'Added Category {category: $category}';
 }
+
+class CategoryUpdate extends CategoryEvent {
+  final  category;
+
+  const CategoryUpdate(this.category);
+
+  @override
+  // TO DO: implement props
+  List<Object?> get props => [category];
+
+  @override
+  String toString() => 'Updated Category {category: $category}';
+}
+
+class CategoryDelete extends CategoryEvent {
+  final categoryId;
+
+  CategoryDelete(this.categoryId);
+
+  @override
+  // TO DO: implement props
+  List<Object?> get props => [categoryId];
+
+  @override
+  String toString() => 'Delated Category {category: $categoryId}';
+}
+
+

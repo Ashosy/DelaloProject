@@ -26,30 +26,16 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
   late String description;
   late String recommendation;
   late String perHourWage;
+  late String address;
+
+  String category = '';
 
   final String role = "provider";
   final String image = "assets/images/user.png";
 
-  String address = "Addis Ababa";
-  String category = 'Electrician';
+  late String _selectedCategoryValue;
 
-  String _selectedValue = 'Addis Ababa';
-  String _selectedCategoryValue = 'Electrician';
-  List<String> _locations = [
-    'Addis Ababa',
-    'Bahirdar',
-    'Mekele',
-    'Hawassa',
-    'Adama'
-  ];
-
-  List<String> _categories = [
-    'Electrician',
-    'Construction',
-    'Painting',
-    'Chemist',
-    'Mechanic'
-  ];
+  late List<String> _categories;
 
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'password is required'),
@@ -90,6 +76,14 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
           }
         },
         builder: (context, state) {
+          if (state is SingupProviderLoadSuccess) {
+            this._categories = state.categoryLst;
+            this._selectedCategoryValue = state.categoryLst[0];
+          }
+          if (state is SignupProviderInitial) {
+            this._categories = ['maek', 'build', 'set', 'after'];
+            this._selectedCategoryValue = 'build';
+          }
           return SingleChildScrollView(
             child: Container(
               margin: EdgeInsets.only(top: 80),
@@ -302,16 +296,17 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
                             isExpanded: true,
                             onChanged: (input) {
                               this.category = input.toString();
-                              setState(() {
-                                _selectedCategoryValue = input.toString();
-                              });
+                              // setState(() {
+                              //   _selectedCategoryValue = input.toString();
+                              // });
                             },
                             onSaved: (input) {
-                              setState(() {
-                                _selectedCategoryValue = input.toString();
-                              });
+                              // setState(() {
+                              //   _selectedCategoryValue = input.toString();
+                              // });
                             },
                             items: _categories.map((String val) {
+                              print(val);
                               return DropdownMenuItem(
                                 value: val,
                                 child: Text(
@@ -326,7 +321,8 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
                         // address dropdown field=================================================================
                         Container(
                           padding: EdgeInsets.only(right: 20, left: 20),
-                          child: DropdownButtonFormField(
+                          child: TextFormField(
+                            // The validator receives the text that the user has entered.
                             decoration: InputDecoration(
                               icon: Icon(Icons.place),
                               labelText: "Address",
@@ -334,34 +330,53 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            value: _selectedValue,
-                            hint: Text(
-                              'choose one',
-                            ),
-                            isExpanded: true,
-                            onChanged: (input) {
-                              this.address = input.toString();
-                              setState(() {
-                                _selectedValue = input.toString();
-                              });
-                            },
-                            onSaved: (input) {
-                              setState(() {
-                                _selectedValue = input.toString();
-                              });
-                            },
                             validator: nameValidator,
-                            items: _locations.map((String val) {
-                              return DropdownMenuItem(
-                                value: val,
-                                child: Text(
-                                  val,
-                                ),
-                              );
-                            }).toList(),
+                            onChanged: (value) {
+                              this.address = value;
+                            },
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        // Container(
+                        //   padding: EdgeInsets.only(right: 20, left: 20),
+                        //   child: DropdownButtonFormField(
+                        //     decoration: InputDecoration(
+                        //       icon: Icon(Icons.place),
+                        //       labelText: "Address",
+                        //       border: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.circular(20),
+                        //       ),
+                        //     ),
+                        //     value: _selectedValue,
+                        //     hint: Text(
+                        //       'choose one',
+                        //     ),
+                        //     isExpanded: true,
+                        //     onChanged: (input) {
+                        //       this.address = input.toString();
+                        //       setState(() {
+                        //         _selectedValue = input.toString();
+                        //       });
+                        //     },
+                        //     onSaved: (input) {
+                        //       setState(() {
+                        //         _selectedValue = input.toString();
+                        //       });
+                        //     },
+                        //     validator: nameValidator,
+                        //     items: _locations.map((String val) {
+                        //       return DropdownMenuItem(
+                        //         value: val,
+                        //         child: Text(
+                        //           val,
+                        //         ),
+                        //       );
+                        //     }).toList(),
+                        //   ),
+                        // ),
+                        // SizedBox(height: 20),
 
                         // Description Field ===============================================================
                         Container(
@@ -449,7 +464,10 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
                               width: 10,
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(RouteGenerator.loginScreenName);
+                              },
                               child: Text(
                                 "Login",
                               ),

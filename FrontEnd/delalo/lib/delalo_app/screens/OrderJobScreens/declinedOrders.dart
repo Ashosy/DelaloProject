@@ -62,7 +62,7 @@ class DeclinedOrders extends StatelessWidget {
                         orderBloc.add(
                           DeclineOrder(currentOrder.order.id),
                         );
-                        Navigator.pushNamed(context, RouteGenerator.HomePage);
+                        Navigator.pushNamed(context, RouteGenerator.homePageName);
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -9,3 +9,4 @@ export 'auth/user_store.dart';
 export 'auth/exceptions.dart';
 export 'auth/signup_user.dart';
 export 'auth/signup_provider.dart';
+export 'user.dart';

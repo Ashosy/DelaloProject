@@ -3,6 +3,7 @@ import 'package:delalo/delalo_app/screens/allScreens.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../category_page.dart';
 import 'header.dart';
 
 
@@ -24,7 +25,7 @@ class NavigationDrawer extends StatelessWidget {
             BlocConsumer<NavDrawerBloc,NavDrawerState>(
               listener: (context,navState){
                 if(navState is Account){
-                  Navigator.of(context).pushNamed(RouteGenerator.singleProviderPageName);
+                 Navigator.push(context, new MaterialPageRoute(builder: (context) => new CategoryPage()));
                 }
                 // else if(navState is Orders){
                 //   Navigator.of(context).pushNamed(OrdersPage.routeName);

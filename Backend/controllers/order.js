@@ -31,10 +31,13 @@ const ordergetAllCompleted = function(req, res){
             }
             else
            {  
+               console.log(orders);
             if(orders.length!=0){
                 let lst=[];
                  const toList= async()=>{
                     await asyncForEach(orders,async(order)=>{
+
+                        console.log("order");
                         const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
                                     if(err){
                                         return err
@@ -845,6 +848,16 @@ const getPendingJobs = async(req,res)=>{
                         }
                     });
     
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
@@ -991,6 +1004,25 @@ const getCompletedJobs = async (req,res)=>{
     }
 };
 
+const getOrderByIds = function(req, res){
+    const seekerId = req.params.seekerId;// s_id to the requested id
+    const providerId = req.params.providerId;
+
+    Order.findOne({seeker_id: seekerId, provider_id: providerId, status: 'pending'})
+    .then((order)=>{
+        if(!order){
+            res.status(200).json({order: ""});
+        }
+        else
+        {res.status(200).json({order: order});}
+       
+    }).catch((err) => {
+        res.json(
+            {order: err}
+        );
+    });
+};
+
 module.exports={orderPost,
                 ordergetAll, 
                 ordergetById, 
@@ -1007,6 +1039,7 @@ module.exports={orderPost,
                 getActiveJob,
                 getPendingJobs,
                 getDeclinedJobs,
-                getCompletedJobs
+                getCompletedJobs,
+                getOrderByIds
     
     }; //EXPORT YOUR FUNCTIONS HERE

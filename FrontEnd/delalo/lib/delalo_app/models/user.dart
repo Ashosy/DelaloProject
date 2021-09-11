@@ -1,3 +1,4 @@
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,9 @@ class User extends Equatable {
       required this.password,
       required this.email,
       required this.role,
-      this.phone,
+      required this.phone,
+      required this.address,
       this.image,
-      this.address,
       this.description,
       this.category,
       this.jobs_done,
@@ -25,41 +26,35 @@ class User extends Equatable {
   final String password;
   final String email;
   final String role;
-  final String? phone;
+  final String phone;
   final String? image;
-  final String? address;
+  final String address;
   final String? description;
   final String? category;
   final int? jobs_done;
-  final double? per_hour_wage;
+  final int? per_hour_wage;
   final String? recommendation;
   final double? average_rating;
+  
   @override
   List<Object?> get props => [
         id,
         firstname,
         lastname,
         password,
-        description,
         email,
         role,
         phone,
-        image,
         address,
-        description,
-        category,
-        jobs_done,
-        per_hour_wage,
-        recommendation,
-        average_rating
+        average_rating,
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
-    print("factory...provider");
-    var us = User(
+    return User(
         id: json['_id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
+        password: json['password'],
         email: json['email'],
         role: json['role'],
         phone: json['phone'],
@@ -71,11 +66,9 @@ class User extends Equatable {
         per_hour_wage: json['per_hour_wage']?.toDouble(),
         recommendation: json['recommendation'],
         average_rating: json['average_rating']?.toDouble(),
-        password: json['password']);
-
-    return us;
+      );
   }
   @override
   String toString() =>
-      'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address, description: $description, category: $category, jobs_done: $jobs_done, image: $image, per_hour_wage: $per_hour_wage, recommendation: $recommendation, average_rating: $average_rating,  password: $password,  }';
+      'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address , average_rating: $average_rating }';
 }

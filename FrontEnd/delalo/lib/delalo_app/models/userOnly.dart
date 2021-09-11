@@ -20,19 +20,24 @@ class UserOnly {
   final String image;
   final String address;
 
+  @override
+  List<Object> get props =>
+      [id, firstname, lastname, password, email, role, phone, address];
+
   factory UserOnly.fromJson(Map<String, dynamic> json) {
     return UserOnly(
-        id: json['_id'],
-        firstname: json['firstname'],
-        lastname: json['lastname'],
-        email: json['email'],
-        role: json['role'],
-        phone: json['phone'],
-        address: json['address'],
-        image: json['image'],
-        password: json['password']);
+      id: json['_id'],
+      firstname: json['firstname'],
+      lastname: json['lastname'],
+      password: json['password'],
+      email: json['email'],
+      role: json['role'],
+      phone: json['phone'],
+      image: json['image'],
+      address: json['address'],
+    );
   }
   @override
   String toString() =>
-      'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address, image: $image,  password: $password,  }';
+      'UserOnly {id: $id, firstname: $firstname, lastname: $lastname,  password: $password, email: $email,  role: $role, phone: $phone, address: $address}';
 }

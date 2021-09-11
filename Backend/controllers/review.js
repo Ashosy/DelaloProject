@@ -4,7 +4,7 @@ const getReviews = (req, res) => {
     Review
         .find()
         .then((reviews) => {
-            res.json(reviews);
+            res.status(200).json(reviews);
         })
         .catch((err) => {
             res.json(
@@ -18,7 +18,7 @@ const getReviewById = (req, res) => {
     Review
         .findById(req.params.id)
         .then((reviews) => {
-            res.json(reviews)
+            res.status(200).json(reviews)
         })
         .catch((err) => {
             res.json(
@@ -26,7 +26,6 @@ const getReviewById = (req, res) => {
             );
         });
 }
-
 
 
 const addReview = (req, res) => {
@@ -37,7 +36,7 @@ const addReview = (req, res) => {
     })
     .save()
     .then((review) => {
-        res.status(201).json({
+        res.status(200).json({
             body: review,
             message: `Inserted Review Successfully`
         });
