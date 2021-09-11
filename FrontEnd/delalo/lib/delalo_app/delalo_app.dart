@@ -9,6 +9,7 @@ import 'package:delalo/delalo_app/repository/auth_repository/signupUser_reposito
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/provider_list_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/search_repository.dart';
+import 'package:delalo/delalo_app/screens/bottom_nav.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:delalo/delalo_app/repository/user_repository/category_repository.dart';
 import 'blocs/auth_bloc/signupProvider_bloc/signupProvider_bloc.dart';
 import 'blocs/auth_bloc/signupUser_bloc/signupUser_bloc.dart';
+import 'blocs/bottom_nav_bloc/bottomNavigationBloc.dart';
 import 'blocs/provider_list_bloc/provider_list_bloc.dart';
 import 'blocs/provider_list_bloc/provider_list_event.dart';
 import 'blocs/search_bloc/search_bloc.dart';
@@ -27,6 +29,7 @@ import 'data_provider/user_data/search_data.dart';
 
 class MyApp extends StatelessWidget {
   final String category="gfd";
+    int currentIndex=0;
   static final httpClient = http.Client();
   final orderRepository = OrderRepository(
       dataProvider: OrderDataProvider(
@@ -76,16 +79,21 @@ class MyApp extends StatelessWidget {
         create: (context)=> SearchBloc(searchRepository: searchRepository)
         ),
          BlocProvider<ProviderListBloc>(
-          create: (cntx)=> ProviderListBloc(providerListRepository: providerListRepository)..add(ProviderListLoad(category: category))),
+          create: (context)=> ProviderListBloc(providerListRepository: providerListRepository)..add(ProviderListLoad(category: category))),
+          BlocProvider<BottomNavigationBloc>(
+          create: (cntx)=> BottomNavigationBloc(currentIndex),
+        )
       ],
       child: MaterialApp(
         home: Scaffold(
           drawer: NavigationDrawer(),
+          bottomNavigationBar: BottomNav(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.providerListPage,
+        // initialRoute: RouteGenerator.providerListPage,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }
 }
+ 

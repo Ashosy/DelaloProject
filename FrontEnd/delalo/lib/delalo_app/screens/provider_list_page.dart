@@ -2,26 +2,26 @@ import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_bloc.da
 import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 
 
 import 'navigation_drawer/navigation_drawer.dart';
 
 class ProviderListPage extends StatefulWidget {
-  const ProviderListPage({ Key? key }) : super(key: key);
   static const routeName='/providerlist';
-
   @override
   _ProviderListPageState createState() => _ProviderListPageState();
 }
 
 class _ProviderListPageState extends State<ProviderListPage> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         drawer: NavigationDrawer(),
         body: BlocBuilder<ProviderListBloc, ProviderListState>(
-        builder: (cntx, providerListState) {
+        builder: (context, providerListState) {
           print(providerListState);
           if (providerListState is ProviderListLoading) {
             return Text("Loading...");

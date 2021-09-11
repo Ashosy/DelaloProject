@@ -1,6 +1,7 @@
 import 'package:delalo/delalo_app/blocs/search_bloc/search_bloc.dart';
 import 'package:delalo/delalo_app/blocs/search_bloc/search_event.dart';
 import 'package:delalo/delalo_app/blocs/search_bloc/search_state.dart';
+import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 // import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,12 +67,10 @@ class _CategoryPageState extends State<CategoryPage> {
                     crossAxisCount: 2,
                   ),
                   itemBuilder: (_, index) {
-                    
                     final category = categories[index];
                     return Expanded(
-          
-                      child: Card(
-                          color: Colors.grey[100],
+                      child: Card(   
+                         color: Colors.grey[100],
                           semanticContainer: true,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -138,7 +137,14 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
     );
   }
+
 }
+
+// onTap:(){Navigator.pushNamed(
+//                           context, 
+//                           RouteGenerator.providerListPage,
+//                           arguments: ScreenArguments({"category":category.name})
+//                         );},
 
 
 class SearchCategory extends SearchDelegate<List>{
