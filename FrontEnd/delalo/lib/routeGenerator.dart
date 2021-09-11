@@ -1,5 +1,6 @@
 import 'package:delalo/delalo_app/screens/signupProviderScreen.dart';
 import 'package:flutter/material.dart';
+import 'delalo_app/screens/admin/adminScreens.dart';
 import 'delalo_app/screens/allScreens.dart';
 
 class RouteGenerator {
@@ -13,6 +14,8 @@ class RouteGenerator {
   static const String ordersScreenName = "/orderScreen";
   static const String jobsScreenName = "/jobScreen";
   static const String orderDetailScreenName = "/orderDetails";
+  static const String adminScreenName = "/adminscreen";
+  
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {

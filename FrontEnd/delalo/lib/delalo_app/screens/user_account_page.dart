@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:delalo/sub.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const appName = "Account Page";
+// const appName = "Account Page";
 const infostyle =
     TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold);
 const detailstyle = TextStyle(fontSize: 17);

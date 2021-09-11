@@ -3,21 +3,23 @@ import 'package:delalo/delalo_app/models/category.dart';
 
 class AdminCategoryRepository {
   final AdminCategoryDataProvider categoryDataProvider;
-  AdminCategoryRepository({required this.categoryDataProvider})
-      : assert(categoryDataProvider != null);
+
+  AdminCategoryRepository({required this.categoryDataProvider});
+
   Future<Category> createCategory(Category category) async {
     return await categoryDataProvider.createCategory(category);
   }
 
   Future<List<Category>> getCategoriesFromCategory() async {
+    print("This is on category repository file");
     return await categoryDataProvider.getCategoriesFromCategory();
   }
 
   Future<void> deleteCategory(String id) async {
-    return categoryDataProvider.deleteCategory(id);
+    await categoryDataProvider.deleteCategory(id);
   }
 
   Future<void> updateCategory(Category category) async {
-    return categoryDataProvider.updateCategory(category);
+     await categoryDataProvider.updateCategory(category);
   }
 }

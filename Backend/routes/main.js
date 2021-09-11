@@ -40,6 +40,10 @@ const {
   getPendingOrders,
   getDeclinedOrders,
   getCompletedOrders,
+<<<<<<< HEAD
+=======
+  getOrderByIds
+>>>>>>> 6fdc19f163d15d80d3ec4e02f335653b3e5a8a00
 } = require("../controllers/order"); // IMPORT ORDER FUNCTIONS HERE
 const {
   getCategories,
@@ -59,7 +63,11 @@ const {
 const router = express.Router();
 
 // user routes
+<<<<<<< HEAD
 router.get("/users", verify, getUsers);
+=======
+router.get("/users", getUsers);
+>>>>>>> 6fdc19f163d15d80d3ec4e02f335653b3e5a8a00
 router.get("/users/:id", getUserById);
 router.get("/users/byEmail/:email", getUserByEmail);
 router.delete("/users/:id", deleteUser);
@@ -89,7 +97,12 @@ router.get("/searchCategory", seachCategory);
 //order routes
 
 router.get("/allOrders/:id", ordergetAll);
+<<<<<<< HEAD
 router.get("/orderAllCompleted", ordergetAllCompleted);
+=======
+router.get("/order/:providerId/:seekerId", getOrderByIds);
+router.get("/orderAllCompleted",ordergetAllCompleted);
+>>>>>>> 6fdc19f163d15d80d3ec4e02f335653b3e5a8a00
 router.post("/order", orderPost);
 router.get("/order/:id", ordergetById);
 router.delete("/order/:id", orderDelete);

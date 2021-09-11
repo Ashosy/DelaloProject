@@ -25,3 +25,30 @@ class AddCategory extends CategoryEvent {
   @override
   String toString() => 'Added Category {category: $category}';
 }
+
+class CategoryUpdate extends CategoryEvent {
+  final  categoryId;
+
+  const CategoryUpdate(this.categoryId);
+
+  @override
+  // TO DO: implement props
+  List<Object?> get props => [categoryId];
+
+  @override
+  String toString() => 'Updated Category {category: $categoryId}';
+}
+
+class CategoryDelete extends CategoryEvent {
+  final categoryId;
+
+  CategoryDelete(this.categoryId);
+
+  @override
+  // TO DO: implement props
+  List<Object?> get props => [categoryId];
+
+  @override
+  String toString() => 'Delated Category {category: $categoryId}';
+}
+

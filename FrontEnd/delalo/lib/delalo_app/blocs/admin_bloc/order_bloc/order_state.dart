@@ -1,29 +1,28 @@
 import 'package:equatable/equatable.dart';
 
-
-class OrderState extends Equatable {
-  const OrderState();
+class AdminOrderState extends Equatable {
+  const AdminOrderState();
 
   @override
   List<Object> get props => [];
 }
-class OrderLoading extends OrderState {}
+class AdminOrderLoading extends AdminOrderState {}
 
-class OrderLoadSuccess extends OrderState {
+class AdminOrderLoadSuccess extends AdminOrderState {
   final List<dynamic> orders;
 
-  OrderLoadSuccess([this.orders = const[]]);
+  AdminOrderLoadSuccess([this.orders = const[]]);
 
   @override
   List<Object> get props => [orders];
 }
 
-class OrdersLoadSuccess extends OrderState {
+class AdminOrdersLoadSuccess extends AdminOrderState {
   final List<dynamic> orders;
 
-  OrdersLoadSuccess([this.orders = const []]);
+  AdminOrdersLoadSuccess([this.orders = const []]);
 
   @override
   List<Object> get props => [orders];
 }
-class OrderOperationFailure extends OrderState {}
+class AdminOrderOperationFailure extends AdminOrderState {}

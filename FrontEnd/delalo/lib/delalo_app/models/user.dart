@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 
 @immutable
 class User extends Equatable {
-  const User({
-    required this.id,
-    required this.firstname,
-    required this.lastname,
-    required this.password,
-    required this.email,
-    required this.role,
-    required this.phone,
-    required this.address,
-    required this.average_rating,
-  });
+  const User(
+      {required this.id,
+      required this.firstname,
+      required this.lastname,
+      required this.password,
+      required this.email,
+      required this.role,
+      required this.phone,
+      this.image,
+      required this.address,
+      this.description,
+      this.category,
+      this.jobs_done,
+      this.recommendation,
+      this.average_rating,
+      this.per_hour_wage});
   final String id;
   final String firstname;
   final String lastname;
@@ -22,7 +27,13 @@ class User extends Equatable {
   final String role;
   final String phone;
   final String address;
-  final int average_rating;
+  final int? average_rating;
+  final int? jobs_done;
+  final String? category;
+  final String? description;
+  final String? image;
+  final int? per_hour_wage;
+  final String? recommendation;
 
   @override
   List<Object?> get props => [
@@ -37,7 +48,9 @@ class User extends Equatable {
         average_rating,
       ];
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json) {
+    print("factory...provider");
+    var us = User(
         id: json['_id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
@@ -46,9 +59,17 @@ class User extends Equatable {
         role: json['role'],
         phone: json['phone'],
         address: json['address'],
-        average_rating: json['average_rating'],
+        description: json['description'],
+        category: json['category'],
+        jobs_done: json['jobs_done'],
+        image: json['image'],
+        per_hour_wage: json['per_hour_wage']?.toDouble(),
+        recommendation: json['recommendation'],
+        average_rating: json['average_rating']?.toDouble(),
       );
-
+    print(us);
+    return us;
+  }
   @override
   String toString() =>
       'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address , average_rating: $average_rating }';
