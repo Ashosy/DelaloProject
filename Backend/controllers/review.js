@@ -13,6 +13,7 @@ const getReviews = (req, res) => {
         });
 }
 
+
 const getReviewById = (req, res) => {
     Review
         .findById(req.params.id)
@@ -51,6 +52,7 @@ const addReview = (req, res) => {
 
 
 
+
 // const deleteReview = (req, res) => {
 //     Review
 //         .findByIdAndDelete(req.params.id)
@@ -70,4 +72,4 @@ const addReview = (req, res) => {
 
 
 
-module.exports={ getReviews, getReviewById, addReview }; //EXPORT YOUR FUNCTIONS HERE
+module.exports={ getReviews, getReviewById, addReview}; //EXPORT YOUR FUNCTIONS HERE

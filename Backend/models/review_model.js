@@ -4,6 +4,10 @@ const schema = mongoose.Schema;
 
 const reviewSchema = new schema(
   {
+    __v:{
+      type: String,
+      select: false
+    },
     rating: {
       type: Number,
       required: true,
@@ -11,11 +15,11 @@ const reviewSchema = new schema(
 
     comment: {
       type: String,
-      required: true,
+      required: false,
     },
 
     order_id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },

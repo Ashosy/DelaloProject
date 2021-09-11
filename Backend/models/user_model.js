@@ -3,6 +3,10 @@ const mongoose_fuzzy_searching = require("custom-mongoose-fuzzy-searching");
 const schema = mongoose.Schema;
 const userSchema = new schema(
   {
+    __v:{
+      type: String,
+      select: false
+    },
     firstname: {
       type: String,
       required: true,

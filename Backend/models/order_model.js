@@ -4,6 +4,10 @@ const schema = mongoose.Schema;
 
 const orderSchema = new schema(
   {
+    __v:{
+      type: String,
+      select: false
+    },
     status: {
       type: String,
       required: true,

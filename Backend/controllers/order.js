@@ -1,6 +1,7 @@
 const mongoose  = require("mongoose");
 const Order = require("../models/order_model");
 const User= require("../models/user_model");
+const Review= require("../models/review_model");
 
 let objectId= mongoose.Types.ObjectId;
 
@@ -54,10 +55,21 @@ const ordergetAllCompleted = function(req, res){
                             }
                         });
                         
+                        const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+        
                         lst.push({
                                 "User":JSON.parse(JSON.stringify(findUser))[0],
                                 "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                                 "Order":order,
+                                "Review":JSON.parse(JSON.stringify(findReview))[0]
                             });
     
                     // console.log(lst)
@@ -117,10 +129,21 @@ const ordergetAll = function(req, res){
                             }
                         });
                         
+                        const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+        
                         lst.push({
                                 "User":JSON.parse(JSON.stringify(findUser))[0],
                                 "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                                 "Order":order,
+                                "Review":JSON.parse(JSON.stringify(findReview))[0]
                             });
     
                     // console.log(lst)
@@ -165,6 +188,79 @@ const ordergetById = function(req, res){
         );
     });
 };
+
+const ordergetByOrderId = function(req, res){// s_id to the requested id
+    Order.find({_id:req.params.id})
+        .then((orders)=>{
+            if(!orders){ 
+                res.status(404)
+                .json({message: `Couldn't find order!`});
+            }
+            else
+           {  
+            if(orders.length!=0){
+                let lst=[];
+                 const toList= async()=>{
+                    await asyncForEach(orders,async(order)=>{
+                        const findUser = await User.find({_id:order.seeker_id},(err,userObj)=>{
+                                    if(err){
+                                        return err
+                                    }else if (userObj){
+                                        return userObj
+                                    }else{
+                                        return null
+                                    }
+                                });
+        
+                        const findProvider= await User.find({_id:order.provider_id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+                        
+                        const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                            if(err){
+                                return err
+                            }else if (userObj){
+                                return userObj
+                            }else{
+                                return null
+                            }
+                        });
+        
+                        lst.push({
+                                "User":JSON.parse(JSON.stringify(findUser))[0],
+                                "Provider":JSON.parse(JSON.stringify(findProvider))[0],
+                                "Order":order,
+                                "Review":JSON.parse(JSON.stringify(findReview))[0]
+                            });
+    
+                    // console.log(lst)
+                });
+    
+                res.status(200).send(lst);
+            };
+    
+            toList();
+        
+            }
+            else{
+                res.status(400).send("No order to show");
+           }
+            
+           }
+        })
+        .catch((err) => {
+            res.json(
+                {message: err.message}
+            );
+        });
+};
+
 
 
 //post order
@@ -224,10 +320,21 @@ const getActiveOrder= async function(req,res){
                         }
                     });
     
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -275,12 +382,22 @@ const getPendingOrders= async function(req,res){
                         }
                     });
     
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
-    
                     // console.log(lst)
                 });
     
@@ -326,10 +443,21 @@ const getDeclinedOrders= async function(req,res){
                         }
                     });
     
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -377,10 +505,22 @@ const getCompletedOrders= async function(req,res){
                         }
                     });
     
+                    
+                    const findReview= await Review.find({order_id:order._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":order,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -503,7 +643,7 @@ const orderDelete = function(req, res){
                 .send({message: `Couldn't Find id ${req.params.id}`});
             }
             else
-            {res.send(result);}
+            {res.status(200).send(result);}
             // console.log(`${req.params.id} deleted`);
         })
         .catch((err)=>{
@@ -541,11 +681,21 @@ const getAllJobs = async (req,res) =>{
                         return null
                     }
                 });
-                console.log(findUser);
+                const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                    if(err){
+                        return err
+                    }else if (userObj){
+                        return userObj
+                    }else{
+                        return null
+                    }
+                });
+                // console.log(findUser);
                 lst.push({
                         "User":JSON.parse(JSON.stringify(findUser))[0],
                         "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                         "Order":job,
+                        "Review":JSON.parse(JSON.stringify(findReview))[0]
                     });
 
                 // console.log(lst)
@@ -622,11 +772,21 @@ const getActiveJob = async (req,res)=>{
                             return null
                         }
                     });
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
     
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -673,11 +833,23 @@ const getPendingJobs = async(req,res)=>{
                             return null
                         }
                     });
+                
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return {rating: 0,
+                                    }
+                        }
+                    });
     
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -724,10 +896,21 @@ const getDeclinedJobs = async (req,res)=>{
                         }
                     });
     
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -774,10 +957,21 @@ const getCompletedJobs = async (req,res)=>{
                         }
                     });
     
+                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
+                        if(err){
+                            return err
+                        }else if (userObj){
+                            return userObj
+                        }else{
+                            return null
+                        }
+                    });
+    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
                             "Order":job,
+                            "Review":JSON.parse(JSON.stringify(findReview))[0]
                         });
     
                     // console.log(lst)
@@ -800,6 +994,7 @@ const getCompletedJobs = async (req,res)=>{
 module.exports={orderPost,
                 ordergetAll, 
                 ordergetById, 
+                ordergetByOrderId,
                 orderDelete,
                 orderUpdate,
                 ordergetAllCompleted,
