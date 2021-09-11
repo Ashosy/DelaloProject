@@ -13,6 +13,7 @@ class JobsScreen extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.purple,
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.work), text: 'Jobs'),

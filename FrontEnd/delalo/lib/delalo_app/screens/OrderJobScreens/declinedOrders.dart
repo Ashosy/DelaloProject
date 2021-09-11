@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../routeGenerator.dart';
+
 class DeclinedOrders extends StatelessWidget {
   DeclinedOrders({Key? key}) : super(key: key);
 
@@ -60,6 +62,7 @@ class DeclinedOrders extends StatelessWidget {
                         orderBloc.add(
                           DeclineOrder(currentOrder.order.id),
                         );
+                        Navigator.pushNamed(context, RouteGenerator.HomePage);
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

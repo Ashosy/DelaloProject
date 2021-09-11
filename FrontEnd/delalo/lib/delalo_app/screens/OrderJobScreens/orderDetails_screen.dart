@@ -110,6 +110,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     orderBloc.add(ActiveOrderDetailsLoad(specOrderId));
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.purple,
         title: Center(child: Text("Details")),
       ),
       body: SingleChildScrollView(
@@ -118,11 +119,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             listener: (ctx, orderState) {
               if (orderState is CompletedUniqueCodeFailure ||
                   orderState is CompletedUniqueCodeSuccess) {
-                // Navigator.of(context).pushNamed(TodoListScreen.routeName);
+                Navigator.pushNamed(context, RouteGenerator.ordersScreenName);
               }
             },
             builder: (_, orderState) {
-              print(orderState);
               if (orderState is Loading) {
                 return CircularProgressIndicator();
               }

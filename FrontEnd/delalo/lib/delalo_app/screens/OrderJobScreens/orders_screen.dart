@@ -15,6 +15,7 @@ class OrdersScreen extends StatelessWidget {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.purple,
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.assignment_turned_in), text: 'Active'),
