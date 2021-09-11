@@ -7,6 +7,7 @@ import 'package:delalo/delalo_app/repository/auth_repository/login_repository.da
 import 'package:delalo/delalo_app/repository/auth_repository/signupProvider_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupUser_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
+import 'package:delalo/delalo_app/repository/user_repository/provider_list_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/search_repository.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 import 'package:delalo/routeGenerator.dart';
@@ -16,12 +17,16 @@ import 'package:http/http.dart' as http;
 import 'package:delalo/delalo_app/repository/user_repository/category_repository.dart';
 import 'blocs/auth_bloc/signupProvider_bloc/signupProvider_bloc.dart';
 import 'blocs/auth_bloc/signupUser_bloc/signupUser_bloc.dart';
+import 'blocs/provider_list_bloc/provider_list_bloc.dart';
+import 'blocs/provider_list_bloc/provider_list_event.dart';
 import 'blocs/search_bloc/search_bloc.dart';
 import 'data_provider/auth_data/singupProvider_data.dart';
 import 'data_provider/user_data/category_data.dart';
+import 'data_provider/user_data/provider_list_data.dart';
 import 'data_provider/user_data/search_data.dart';
 
 class MyApp extends StatelessWidget {
+  final String category="gfd";
   static final httpClient = http.Client();
   final orderRepository = OrderRepository(
       dataProvider: OrderDataProvider(
@@ -40,6 +45,7 @@ class MyApp extends StatelessWidget {
     ),
   );
   final searchRepository= SearchCategoryRepository(searchCategoryDataProvider: SearchCategoryDataProvider(httpClient: http.Client()) );
+  final providerListRepository = ProviderListRepository(providerListDataProvider: ProviderListDataProvider(httpClient: http.Client()));
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -68,14 +74,16 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<SearchBloc>(
         create: (context)=> SearchBloc(searchRepository: searchRepository)
-        )
+        ),
+         BlocProvider<ProviderListBloc>(
+          create: (cntx)=> ProviderListBloc(providerListRepository: providerListRepository)..add(ProviderListLoad(category: category))),
       ],
       child: MaterialApp(
         home: Scaffold(
           drawer: NavigationDrawer(),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.categoryListPage,
+        initialRoute: RouteGenerator.providerListPage,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
