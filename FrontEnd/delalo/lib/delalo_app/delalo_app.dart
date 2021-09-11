@@ -1,4 +1,4 @@
-import 'dart:io';
+
 
 import 'package:delalo/delalo_app/blocs/auth_bloc/login_bloc/login_bloc.dart';
 import 'package:delalo/delalo_app/blocs/blocs.dart';
@@ -15,6 +15,9 @@ import 'package:delalo/delalo_app/repository/auth_repository/login_repository.da
 import 'package:delalo/delalo_app/repository/auth_repository/signupProvider_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupUser_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
+import 'package:delalo/delalo_app/repository/user_repository/provider_list_repository.dart';
+import 'package:delalo/delalo_app/repository/user_repository/search_repository.dart';
+import 'package:delalo/delalo_app/screens/bottom_nav.dart';
 import 'package:delalo/delalo_app/repository/user_repository/single_provider_page_repository.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 // import 'package:/delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
@@ -22,6 +25,13 @@ import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:delalo/delalo_app/repository/user_repository/category_repository.dart';
+import 'blocs/auth_bloc/signupProvider_bloc/signupProvider_bloc.dart';
+import 'blocs/auth_bloc/signupUser_bloc/signupUser_bloc.dart';
+import 'blocs/bottom_nav_bloc/bottomNavigationBloc.dart';
+import 'blocs/provider_list_bloc/provider_list_bloc.dart';
+import 'blocs/provider_list_bloc/provider_list_event.dart';
+import 'blocs/search_bloc/search_bloc.dart';
 
 import 'blocs/admin_bloc/category_bloc/category_bloc.dart';
 import 'blocs/admin_bloc/category_bloc/category_event.dart';
@@ -35,8 +45,13 @@ import 'data_provider/admin_data/admin_order_jobs_data.dart';
 import 'data_provider/admin_data/category_data.dart';
 import 'data_provider/admin_data/provider_data.dart';
 import 'data_provider/auth_data/singupProvider_data.dart';
+import 'data_provider/user_data/category_data.dart';
+import 'data_provider/user_data/provider_list_data.dart';
+import 'data_provider/user_data/search_data.dart';
 
 class MyApp extends StatelessWidget {
+  final String category="gfd";
+    int currentIndex=0;
   static final httpClient = http.Client();
   final orderRepository = OrderRepository(
       dataProvider: OrderDataProvider(
@@ -48,11 +63,19 @@ class MyApp extends StatelessWidget {
   final signupUserRepository = SignupUserRepository(
       dataProvider: SignupUserDataProvider(httpClient: httpClient));
   final signupProviderRepository = SignupProviderRepository(
-      dataProvider: SignupProviderDataProvider(httpClient: httpClient));
+      dataProvider: SignupProviderDataProvider(httpClient: httpClient));    
+  final CategoryRepository categoryRepository = CategoryRepository(
+  dataProvider: CategoryDataProvider(
+    httpClient: http.Client(),
+    ),
+  );
+  final searchRepository= SearchCategoryRepository(searchCategoryDataProvider: SearchCategoryDataProvider(httpClient: http.Client()) );
+  final providerListRepository = ProviderListRepository(providerListDataProvider: ProviderListDataProvider(httpClient: http.Client()));
+      
   final providerProfileRepository = ProviderProfileRepository(
       dataProvider: ProviderProfileDataProvider(httpClient: httpClient));
 
-  final categoryRepository = AdminCategoryRepository(
+  final adminCategoryRepository = AdminCategoryRepository(
       categoryDataProvider: AdminCategoryDataProvider(
     httpClient: http.Client(),
   ));
@@ -70,7 +93,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (context) =>
-                AdminCategoryBloc(categoryRepository: categoryRepository)
+                AdminCategoryBloc(categoryRepository: adminCategoryRepository)
                   ..add(
                     LoadAllCategories(),
                   )),
@@ -98,8 +121,25 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
-            create: (context) => SignupProviderBloc(
-                signupProviderRepository: signupProviderRepository)),
+            create: (context) =>
+                SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
+        BlocProvider(
+                create: (context) =>
+                    CategoryBloc(categoryRepository: categoryRepository)
+                      ..add(
+                        CategoriesLoad(),
+                      ),
+
+        ),
+        BlocProvider<SearchBloc>(
+        create: (context)=> SearchBloc(searchRepository: searchRepository)
+        ),
+         BlocProvider<ProviderListBloc>(
+          create: (context)=> ProviderListBloc(providerListRepository: providerListRepository)..add(ProviderListLoad(category: category))),
+          BlocProvider<BottomNavigationBloc>(
+          create: (cntx)=> BottomNavigationBloc(currentIndex),
+        ),
+           
         BlocProvider(
             create: (context) => ProviderProfileBloc(
                 providerProfileRepository: providerProfileRepository)
@@ -115,6 +155,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         home: Scaffold(
           drawer: NavigationDrawer(),
+          bottomNavigationBar: BottomNav(),
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: RouteGenerator.adminScreenName,
@@ -123,3 +164,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+ 

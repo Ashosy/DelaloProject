@@ -17,6 +17,10 @@ const {
   postProvider,
   getProvider,
   getProviderById,
+  searchProviders,
+  getProvidersByCategory,
+  getTopProviders,
+  getTopProvidersByCategory,
   updateProviderById,
   getProvidersByCategory,
   getTopProviders,
@@ -74,6 +78,8 @@ router.post("/provider", postProvider);
 router.get("/provider", getProvider);
 router.get("/provider/top", getTopProviders);
 router.get("/provider/:id", getProviderById);
+router.get("/searchProviders",searchProviders);
+router.get("/providers/:category",getProvidersByCategory);
 router.patch("/provider/:id", updateProviderById);
 router.get("/provider/category/:category_name", getProvidersByCategory);
 router.get("/provider/top/category/:category_name", getTopProvidersByCategory);
@@ -85,7 +91,7 @@ router.get("/category/:id", getCategoryById);
 router.delete("/category/:id", deleteCategory);
 router.post("/category", addCategory);
 router.put("/category/:id", updateCategory);
-router.get("/searchCategory", seachCategory);
+router.get("/searchCategory/:query",seachCategory);
 
 //order routes
 

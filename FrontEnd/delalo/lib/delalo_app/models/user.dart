@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +13,8 @@ class User extends Equatable {
       required this.email,
       required this.role,
       required this.phone,
-      this.image,
       required this.address,
+      this.image,
       this.description,
       this.category,
       this.jobs_done,
@@ -26,15 +28,15 @@ class User extends Equatable {
   final String email;
   final String role;
   final String phone;
-  final String address;
-  final int? average_rating;
-  final int? jobs_done;
-  final String? category;
-  final String? description;
   final String? image;
+  final String address;
+  final String? description;
+  final String? category;
+  final int? jobs_done;
   final int? per_hour_wage;
   final String? recommendation;
-
+  final double? average_rating;
+  
   @override
   List<Object?> get props => [
         id,
@@ -63,7 +65,7 @@ class User extends Equatable {
         category: json['category'],
         jobs_done: json['jobs_done'],
         image: json['image'],
-        per_hour_wage: json['per_hour_wage']?.toDouble(),
+        per_hour_wage: json['per_hour_wage'],
         recommendation: json['recommendation'],
         average_rating: json['average_rating']?.toDouble(),
       );

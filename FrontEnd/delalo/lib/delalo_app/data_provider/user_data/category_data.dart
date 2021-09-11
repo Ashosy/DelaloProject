@@ -6,15 +6,21 @@ import 'package:http/http.dart' as http;
 
 class CategoryDataProvider {
   final http.Client httpClient;
-
+  final _baseurl= '10.5.222.117:3000';
+  // final _baseurl= 'localhost:3000';
   CategoryDataProvider({required this.httpClient});
 
   Future<List<Category>> getCategories() async {
+    
     try {
-      final response =
-          await http.get(Uri.parse('http://10.5.220.129:3000/category'));
+      // final response =
+      //     await http.get(Uri.parse('http://10.5.222.117:3000/category'));
+      print("object");
+      final response= await httpClient.get(Uri.http(_baseurl,"/category"));
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final categories = jsonDecode(response.body) as List;
+        print(categories);
         return categories
             .map((category) => Category.fromJson(category))
             .toList();

@@ -187,15 +187,15 @@ const getTopProviders = (req, res) => {
 };
 
 const getProvidersByCategory = (req, res) => {
+  const category= req.params.category.toLowerCase();
   models
-    .find()
-    .where("category")
-    .equals(req.params.category_name)
+    .find({category:category,role:"provider"})
     .then((result) => {
+  
       if (result.length == 0) {
         res.send({ message: "No providers within this category" });
       } else {
-        res.send(result);
+        res.status(200).json(result);
       }
     })
     .catch((err) => {
