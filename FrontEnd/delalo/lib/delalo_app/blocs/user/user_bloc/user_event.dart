@@ -1,28 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:delalo/delalo_app/models/models.dart';
-
+import 'package:delalo/delalo_app/models/user_only.dart';
+import 'package:delalo/delalo_app/blocs/user/user_bloc/user_bloc.dart';
 
 abstract class UserEvent extends Equatable {
   const UserEvent();
 }
 
 class UserLoad extends UserEvent {
-  const UserLoad();
+  final String email;
+  const UserLoad({required this.email});
 
   @override
   List<Object> get props => [];
 }
 
-  class UserUpdate extends UserEvent {
-  final User user;
+class UserUpdate extends UserEvent {
+  final Users userOnly;
 
-  const UserUpdate(this.user);
-
-  @override
-  List<Object> get props => [user];
+  const UserUpdate(this.userOnly);
 
   @override
-  String toString() => 'User Updated {user: $user}';
+  List<Object> get props => [userOnly];
+
+  @override
+  String toString() => 'User Updated {user: $userOnly}';
 }
 
 class UserDelete extends UserEvent {

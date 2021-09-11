@@ -59,9 +59,15 @@ const userSchema = new schema(
       type: Number,
       required: false,
     },
+    __v: {
+      type: String,
+      select: false,
+    },
   },
   { collection: "user" }
 );
 
-userSchema.plugin(mongoose_fuzzy_searching,{fields:['firstname','lastname','address']})
+userSchema.plugin(mongoose_fuzzy_searching, {
+  fields: ["firstname", "lastname", "address"],
+});
 module.exports = mongoose.model("user", userSchema);

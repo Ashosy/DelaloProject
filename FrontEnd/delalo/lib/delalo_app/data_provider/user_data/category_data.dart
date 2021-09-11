@@ -12,14 +12,8 @@ class CategoryDataProvider {
   Future<List<Category>> getCategories() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.5.244.116:3000/category'));
+          await http.get(Uri.parse('http://10.5.220.129:3000/category'));
       if (response.statusCode == 200) {
-        final categories = jsonDecode(response.body) as List;
-        return categories
-            .map((category) => Category.fromJson(category))
-            .toList();
-      } else if (response.statusCode != 200) {
-        print(response);
         final categories = jsonDecode(response.body) as List;
         return categories
             .map((category) => Category.fromJson(category))

@@ -1,8 +1,10 @@
+//category model
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class UserOnly {
-  const UserOnly({
+@immutable
+class Users extends Equatable {
+  const Users({
     required this.id,
     required this.firstname,
     required this.lastname,
@@ -12,6 +14,7 @@ class UserOnly {
     required this.phone,
     required this.address,
   });
+
   final String id;
   final String firstname;
   final String lastname;
@@ -21,13 +24,10 @@ class UserOnly {
   final String phone;
   final String address;
 
-  @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [id, firstname, lastname, password, email, role, phone, address];
-
-  @override
-  factory UserOnly.fromJson(Map<String, dynamic> json) {
-    return UserOnly(
+  factory Users.fromJson(Map<String, dynamic> json) {
+    return Users(
       id: json['_id'],
       firstname: json['firstname'],
       lastname: json['lastname'],
@@ -40,5 +40,5 @@ class UserOnly {
   }
   @override
   String toString() =>
-      'UserOnly {id: $id, firstname: $firstname, lastname: $lastname,  password: $password, email: $email,  role: $role, phone: $phone, address: $address}';
+      'Users {id: $id , firstname: $firstname, lastname: $lastname, password: $password, role: $role, phone:$phone, address: $address}';
 }
