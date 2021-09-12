@@ -16,4 +16,5 @@ class CategoryLoaded extends CategoryState {
   List<Object> get props => [catagories];
 }
 
+class CategoryNavigate extends CategoryState {}
 class CategoryOperationFailed extends CategoryState {}

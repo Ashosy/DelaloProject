@@ -321,7 +321,10 @@ class _SignupUserFormState extends State<SignupUserForm> {
                             Expanded(
                               flex: 0,
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      RouteGenerator.loginScreenName);
+                                },
                                 child: Text(
                                   "Login",
                                 ),

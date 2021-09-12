@@ -1,3 +1,4 @@
+import 'package:delalo/delalo_app/models/user_only.dart';
 import 'package:equatable/equatable.dart';
 import 'package:delalo/delalo_app/models/models.dart';
 
@@ -11,7 +12,7 @@ class UserState extends Equatable {
 class UserLoading extends UserState {}
 
 class UserLoadSuccess extends UserState {
-  final List<User> user;
+  final dynamic user;
 
   UserLoadSuccess([this.user = const []]);
 

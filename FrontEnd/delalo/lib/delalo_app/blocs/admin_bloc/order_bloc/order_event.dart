@@ -1,29 +1,29 @@
 import 'package:delalo/delalo_app/models/order_jobs.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class OrderEvent extends Equatable {
-  const OrderEvent();
+abstract class AdminOrderEvent extends Equatable {
+  const AdminOrderEvent();
 }
 
-class OrdersLoad extends OrderEvent {
-  const OrdersLoad();
+class AdminOrdersLoad extends AdminOrderEvent {
+  const AdminOrdersLoad();
 
   @override
   List<Object> get props => [];
 }
 
-class OrderLoad extends OrderEvent {
+class AdminOrderLoad extends AdminOrderEvent {
   final String seeker_id;
-  const OrderLoad(this.seeker_id);
+  const AdminOrderLoad(this.seeker_id);
 
   @override
   List<Object> get props => [];
 }
 
-class OrderCreate extends OrderEvent {
+class AdminOrderCreate extends AdminOrderEvent {
   final Order order;
 
-  const OrderCreate(this.order);
+  const AdminOrderCreate(this.order);
 
   @override
   List<Object> get props => [order];
@@ -32,10 +32,10 @@ class OrderCreate extends OrderEvent {
   String toString() => 'Order Created {order: $order}';
 }
 
-class OrderUpdate extends OrderEvent {
+class AdminOrderUpdate extends AdminOrderEvent {
   final Order order;
 
-  const OrderUpdate(this.order);
+  const AdminOrderUpdate(this.order);
 
   @override
   List<Object> get props => [order];
@@ -44,10 +44,10 @@ class OrderUpdate extends OrderEvent {
   String toString() => 'Order Updated {order: $order}';
 }
 
-class OrderDelete extends OrderEvent {
+class AdminOrderDelete extends AdminOrderEvent {
   final Order order;
 
-  const OrderDelete(this.order);
+  const AdminOrderDelete(this.order);
 
   @override
   List<Object> get props => [order];

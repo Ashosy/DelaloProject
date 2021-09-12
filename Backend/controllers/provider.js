@@ -78,16 +78,41 @@ const getProviderById = (req, res) => {
       }
     })
     .catch((err) => {
+      res.send(err);
       console.log(err);
     });
 };
 
 const updateProviderById = (req, res) => {
-  models.findById(req.params.id).then((result) => {
-    result.jobs_done += 1;
-    rating = req.body.average_rating;
-    review_count = orderModel.findById(result.id);
-  });
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Data to update can not be empty!",
+    });
+  }
+  models
+    .findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+
+      req.body,
+      { new: true }
+    )
+
+    .then((provider) => {
+      if (!provider) {
+        res.status(404).send({
+          message: `Couldn't update provider with id ${req.params.id}`,
+        });
+      } else {
+        res.status(201).send(provider);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error updating ${req.params.id}`,
+      });
+    });
 };
 const searchProviders = async function (req, res) {
   const keyword = req.body.keyword;

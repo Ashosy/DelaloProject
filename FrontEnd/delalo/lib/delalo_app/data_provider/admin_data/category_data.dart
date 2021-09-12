@@ -6,35 +6,48 @@ import 'package:delalo/delalo_app/models/category.dart';
 import 'package:http/http.dart' as http;
 
 class AdminCategoryDataProvider {
-  final _baseurl = 'http://127.0.0.1:3000';
+  final _baseUrl = "127.0.0.1:3000";
   final http.Client httpClient;
 
-  AdminCategoryDataProvider({required this.httpClient})
-      : assert(httpClient != null);
+  Uri generateUri(path) {
+    return Uri.http(_baseUrl, path);
+  }
+
+  AdminCategoryDataProvider({required this.httpClient});
 
   // creating a category or posting
+  // final response =  httpClient.post(Uri.parse("http://127.0.0.1:3000/category");
+  // print("this is status ${response.statusCode} on category data provider ${response.body}");
 
-  Future<Category> createCategory(Category category) async {
+  Future<void> createCategory(Category category) async {
     try {
       final response =
-          await httpClient.post(Uri.http("127.0.0.1:3000", "/category"),
+          await httpClient.post(Uri.parse("http://localhost:3000/category"),
               headers: <String, String>{
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json; charset=UTF-8',
               },
               body: jsonEncode(<String, dynamic>{
+                'id': category.id,
+                'name': category.name,
                 'image': category.image,
                 'numOfProviders': category.numOfProviders,
                 'description': category.description
               }));
+     
 
-      if (response.statusCode == 200) {
-        return Category.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 201) {
+        print(response.statusCode);
+        return;
       } else {
         throw Exception("Error");
       }
     } on SocketException catch (e) {
+      
       throw e;
     } on HttpException catch (e) {
+     
       throw e;
     }
   }
@@ -42,15 +55,28 @@ class AdminCategoryDataProvider {
   // get categories
   Future<List<Category>> getCategoriesFromCategory() async {
     try {
-      final response = await httpClient.get(Uri.https(_baseurl, "/category"));
+      final response = await httpClient.get(
+          Uri.parse("http://localhost:3000/category"),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+      // print("this is in data provider");
 
       if (response.statusCode == 200) {
-        final categories = jsonDecode(response.body) as List;
-        return categories
-            .map((category) => Category.fromJson(category))
-            .toList();
+        Iterable categories = jsonDecode(response.body);
+      
+        List<Category> categoriesmaped = List<Category>.from(
+            categories.map((category) => Category.fromJson(category))).toList();
+
+        
+        return categoriesmaped;
+        //  categories
+        //     .map((category) => Category.fromJson(category))
+        //     .toList();
       } else {
-        throw Exception("Error");
+        throw Exception("Failed to load Categories");
       }
     } on SocketException catch (e) {
       throw e;
@@ -60,16 +86,21 @@ class AdminCategoryDataProvider {
   }
 
   Future<void> deleteCategory(String id) async {
-    try{
-      final http.Response response = await httpClient.delete(
-        Uri.https(_baseurl, '/category/:$id'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        });
-    if (response.statusCode != 204) {
-      throw Exception("Error deleting Category");
-    }
-    }on SocketException catch (e) {
+    try {
+     
+      final response = await httpClient.delete(
+          Uri.parse("http://localhost:3000/category/$id"),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
+     
+      if (response.statusCode != 200) {
+        print("new debug...2");
+        throw Exception("Error deleting Category");
+      }
+    } on SocketException catch (e) {
       throw e;
     } on HttpException catch (e) {
       throw e;
@@ -77,23 +108,27 @@ class AdminCategoryDataProvider {
   }
 
   Future<void> updateCategory(Category category) async {
-    try
-    {final http.Response response = await httpClient.put(
-      Uri.https(_baseurl, '/category/:${category.id}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'id': category.id,
-        'image': category.image,
-        'numOfProviders': category.numOfProviders,
-        'description': category.description
-      }),
-    );
-    if (response.statusCode != 204) {
-      throw Exception('Error Updating category');
-    }
-    }on SocketException catch (e) {
+    try {
+      final response = await httpClient.put(
+        Uri.parse("http://localhost:3000/category/${category.id}"),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'id': category.id,
+          'name': category.name,
+          'image': category.image,
+          'numOfProviders': category.numOfProviders,
+          'description': category.description
+        }),
+      );
+      
+      if (response.statusCode != 200) {
+        throw Exception('Error Updating category');
+      }
+    } on SocketException catch (e) {
       throw e;
     } on HttpException catch (e) {
       throw e;

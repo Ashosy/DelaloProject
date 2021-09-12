@@ -22,16 +22,9 @@ class CategoryDataProvider {
         final categories = jsonDecode(response.body) as List;
         print(categories);
         return categories
-              .map((category) => Category.fromJson(category))
-              .toList();
-
-      } else if (response.statusCode != 200) {
-        final categories = jsonDecode(response.body) as List;
-        return categories
             .map((category) => Category.fromJson(category))
             .toList();
-      } 
-      else {
+      } else {
         throw Exception("Error");
       }
     } on SocketException catch (e) {

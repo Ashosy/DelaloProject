@@ -78,9 +78,9 @@ const updateCategory = function (req, res) {
             message: "Data to update can not be empty!"
         });
     }
-    Category.findByIdAndUpdate(
+    Category.findOneAndUpdate(
         {
-            _id: req.params.id
+            _id:req.params.id
         },
 
         req.body,
@@ -93,7 +93,7 @@ const updateCategory = function (req, res) {
             });
         }
         else {
-            res.status(201).send(category);
+            res.status(200).send(category);
         }
 
     }).catch((err) => {

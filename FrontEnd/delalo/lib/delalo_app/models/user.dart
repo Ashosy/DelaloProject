@@ -21,7 +21,6 @@ class User extends Equatable {
       this.recommendation,
       this.average_rating,
       this.per_hour_wage});
-
   final String id;
   final String firstname;
   final String lastname;
@@ -36,7 +35,7 @@ class User extends Equatable {
   final int? jobs_done;
   final int? per_hour_wage;
   final String? recommendation;
-  final int? average_rating;
+  final double? average_rating;
   
   @override
   List<Object?> get props => [
@@ -44,24 +43,20 @@ class User extends Equatable {
         firstname,
         lastname,
         password,
-        description,
         email,
         role,
         phone,
-        image,
         address,
-        description,
-        category,
-        jobs_done,
-        per_hour_wage,
-        recommendation,
-        average_rating
+        average_rating,
       ];
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json) {
+    print("factory...provider");
+    var us = User(
         id: json['_id'],
         firstname: json['firstname'],
         lastname: json['lastname'],
+        password: json['password'],
         email: json['email'],
         role: json['role'],
         phone: json['phone'],
@@ -72,10 +67,12 @@ class User extends Equatable {
         image: json['image'],
         per_hour_wage: json['per_hour_wage'],
         recommendation: json['recommendation'],
-        average_rating: json['average_rating'],
-        password: json['password']);
-  
+        average_rating: json['average_rating']?.toDouble(),
+      );
+    print(us);
+    return us;
+  }
   @override
   String toString() =>
-      'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address, description: $description, category: $category, jobs_done: $jobs_done, image: $image, per_hour_wage: $per_hour_wage, recommendation: $recommendation, average_rating: $average_rating,  password: $password,  }';
+      'User { firstname: $firstname, lastname: $lastname, email: $email,  role: $role, phone: $phone, adderess: $address , average_rating: $average_rating }';
 }

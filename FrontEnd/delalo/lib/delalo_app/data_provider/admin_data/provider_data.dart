@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:delalo/delalo_app/models/models.dart';
 import 'package:http/http.dart' as http;
  
+ 
 class AdminProviderDataProvider {
-  final _baseurl = 'http://127.0.0.1:3000';
+  final _baseurl = 'http://localhost:3000';
   final http.Client httpClient;
   AdminProviderDataProvider({required this.httpClient})
      ;
@@ -14,19 +15,19 @@ class AdminProviderDataProvider {
     try {
       final response =
           await httpClient.get(
-            Uri.parse("http://127.0.0.1:3000/provider"),
+            Uri.parse("http://localhost:3000/provider"),
           headers: <String, String>{
             'Accept': 'application/json',
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json; charset=UTF-8',
           });
-      print(response.statusCode);
+     
       if (response.statusCode == 200) {
         Iterable providers = jsonDecode(response.body);
-        print(providers);
+     
         List<User> providersmaped = List<User>.from(
             providers.map((provider) => User.fromJson(provider))).toList();
-        print("hello");
+       
         return providersmaped;
       } else {
         throw Exception("Error");

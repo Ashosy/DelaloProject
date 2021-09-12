@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 @immutable
 class Category {
   const Category(
-      {required this.id,
+      {this.id,
       required this.name,
       this.image,
       required this.numOfProviders,
       required this.description});
   final String name;
-  final String id;
+  final String? id;
   final String? image;
   final int numOfProviders;
   final String description;
@@ -27,5 +27,6 @@ class Category {
         description: json['description']);
   }
   @override
-  String toString() => 'Category {id: $id , image: $image, numOfProviders: $numOfProviders, description: $description}';
+  String toString() =>
+      'Category {id: $id , image: $image, numOfProviders: $numOfProviders, description: $description}';
 }

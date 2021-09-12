@@ -45,6 +45,7 @@ class _CategoryPageState extends State<CategoryPage> {
         ],
         
       ),
+      // categoryBloc.add()
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (Context, CategoryState) {
           print(CategoryState);

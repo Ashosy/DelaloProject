@@ -449,7 +449,10 @@ class _SignupProviderFormState extends State<SignupProviderForm> {
                               width: 10,
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(
+                                    RouteGenerator.loginScreenName);
+                              },
                               child: Text(
                                 "Login",
                               ),
