@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'delalo_app/screens/allScreens.dart';
 
 class RouteGenerator {
-  static const String welcomeScreenName = "/welcomescreen";
+  static const String welcomeScreenName = "/";
   static const String getStartedScreenName = "/getStartedScreen";
   static const String signupChoiceName = "/signUpChoiceScreen";
   static const String singleProviderPageName = "/singleProviderPage";
@@ -36,7 +36,10 @@ class RouteGenerator {
       case categoryListPage:
         return MaterialPageRoute(builder: (_) => CategoryPage());
       case providerListPage:
-        return MaterialPageRoute(builder: (_) => ProviderListPage());
+        final args= settings.arguments as ScreenArguments;
+        return MaterialPageRoute(builder: (context) {
+          return ProviderListPage(argObj: args.argObj);
+        });
       case orderDetailScreenName:
         final args = settings.arguments as ScreenArguments;
         return MaterialPageRoute(builder: (context) {

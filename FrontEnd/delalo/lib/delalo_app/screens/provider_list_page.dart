@@ -1,4 +1,5 @@
 import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_bloc.dart';
+import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_event.dart';
 import 'package:delalo/delalo_app/blocs/provider_list_bloc/provider_list_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,20 +10,30 @@ import 'navigation_drawer/navigation_drawer.dart';
 
 class ProviderListPage extends StatefulWidget {
   static const routeName='/providerlist';
+  final Map argObj;
+
+  ProviderListPage({Key? key, required this.argObj}) : super(key:key);
+
   @override
-  _ProviderListPageState createState() => _ProviderListPageState();
+  _ProviderListPageState createState() => _ProviderListPageState(argObj:argObj);
 }
 
 class _ProviderListPageState extends State<ProviderListPage> {
-
+  final Map argObj;
+  _ProviderListPageState({required this.argObj});
   @override
   Widget build(BuildContext context) {
+    print("name");
+    final name= argObj['category_name'];
+    
+    final providerBloc= BlocProvider.of<ProviderListBloc>(context);
+    providerBloc.add(ProviderListLoad(category: name));
     return SafeArea(
       child: Scaffold(
         drawer: NavigationDrawer(),
         body: BlocBuilder<ProviderListBloc, ProviderListState>(
         builder: (context, providerListState) {
-          print(providerListState);
+          
           if (providerListState is ProviderListLoading) {
             return Text("Loading...");
           }

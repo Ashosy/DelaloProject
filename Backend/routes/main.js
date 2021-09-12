@@ -16,7 +16,10 @@ const {
   postProvider,
   getProvider,
   getProviderById,
-  searchProviders
+  searchProviders,
+  getProvidersByCategory,
+  getTopProviders,
+  getTopProvidersByCategory
 } = require("../controllers/provider"); //IMPORT PROVIDER FUNCTIONS HERE
 
 const { 
@@ -69,6 +72,7 @@ router.post("/provider", postProvider);
 router.get("/provider", getProvider);
 router.get("/provider/:id", getProviderById);
 router.get("/searchProviders",searchProviders);
+router.get("/providers/:category",getProvidersByCategory);
 
 //category routes
 router.get("/category", getCategories);

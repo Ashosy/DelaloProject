@@ -1,6 +1,7 @@
 import 'package:delalo/delalo_app/blocs/search_bloc/search_bloc.dart';
 import 'package:delalo/delalo_app/blocs/search_bloc/search_event.dart';
 import 'package:delalo/delalo_app/blocs/search_bloc/search_state.dart';
+import 'package:delalo/delalo_app/screens/provider_list_page.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
 // import 'package:delalo/routeGenerator.dart';
@@ -45,7 +46,7 @@ class _CategoryPageState extends State<CategoryPage> {
         
       ),
       body: BlocBuilder<CategoryBloc, CategoryState>(
-        builder: (_, CategoryState) {
+        builder: (Context, CategoryState) {
           print(CategoryState);
           if (CategoryState is CategoryLoading) {
             return Text("Loading...");
@@ -66,67 +67,77 @@ class _CategoryPageState extends State<CategoryPage> {
                     childAspectRatio: 8.0 / 8.0,
                     crossAxisCount: 2,
                   ),
-                  itemBuilder: (_, index) {
+                  itemBuilder: (context, index) {
                     final category = categories[index];
                     return Expanded(
-                      child: Card(   
-                         color: Colors.grey[100],
-                          semanticContainer: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                    child: Container(
-                                        child: Center(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 20),
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: NetworkImage(category.image),
-                                          radius: 28,
-                                        ),
-                                        SizedBox(
-                                          height: 7,
-                                        ),
-                                        Text(
-                                          category.name,
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                        SizedBox(
-                                          height: 7,
-                                        ),
-                                        Text(
-                                          category.description,
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                        SizedBox(
-                                          height: 7,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.people),
-                                             Text(
-                                              category.numOfProviders.toString()+" providers available",
-                                              style: TextStyle(fontSize: 10),
-                                        ),
-                                          ],
-                                          
-                                          )
-                                       
-                                      ],
+                      child: GestureDetector(
+                        onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProviderListPage(argObj: {'category_name':category.name})));
+                          // Navigator.pushNamed(context, RouteGenerator.providerListPage,
+                          // arguments: ScreenArguments({"category_name":category.name}));
+                        },
+                        child: Card(   
+                           color: Colors.grey[100],
+                            semanticContainer: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: Container(
+                                          child: Center(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.symmetric(vertical: 20),
+                                      child: Column(
+                                        children: [
+                                          if(category.name =="Cleaning")
+                                            Icon(Icons.cleaning_services_outlined,size: 50,),
+                                          if(category.name=="Electrician")
+                                            Icon(Icons.electrical_services_outlined,size: 50),
+                                          if(category.name=="Plumber")
+                                            Icon(Icons.plumbing_sharp,size: 50),
+                                          if(category.name=="Painting")
+                                            Icon(Icons.brush_outlined,size: 50),
+                                          if(category.name=="Mechanic")
+                                            Icon(Icons.motorcycle_outlined,size: 50),
+                                          if(category.name=="Tutor")
+                                            Icon(Icons.book_online_outlined,size: 50),
+
+                                          SizedBox(
+                                            height: 7,
+                                          ),
+                                          Text(
+                                            category.name,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          SizedBox(
+                                            height: 7,
+                                          ),
+                                
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.people),
+                                               Text(
+                                                category.numOfProviders.toString()+" providers available",
+                                                style: TextStyle(fontSize: 10),
+                                          ),
+                                            ],
+                                            
+                                            )
+                                         
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )))
-                              ]
-                              )
-                          ),
+                                  )))
+                                ]
+                                )
+                            ),
+                      ),
                     );
                   }),
             );

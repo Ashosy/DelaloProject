@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           bottomNavigationBar: BottomNav(),
         ),
         debugShowCheckedModeBanner: false,
-        // initialRoute: RouteGenerator.providerListPage,
+        initialRoute: RouteGenerator.welcomeScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

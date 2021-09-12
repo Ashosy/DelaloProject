@@ -10,15 +10,13 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   BottomNavigationBloc(int currentIndex) : super(ShowHomePage());
 
   @override
-  BottomNavigationState get initialState => ShowHomePage();
-
-  @override
   Stream<BottomNavigationState> mapEventToState(BottomNavigationEvent event) async* {
       
       if(event is BottomHomePageEvent){
         yield ShowHomePage();
       }
      else if(event is BottomCategoryPageEvent){
+       print('show category called');
        yield ShowCategoryPage();
      }
      else if(event is BottomOrdersPageEvent){

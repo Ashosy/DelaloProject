@@ -3,7 +3,9 @@ import 'package:delalo/delalo_app/blocs/bottom_nav_bloc/bottomNavigationEvent.da
 import 'package:delalo/delalo_app/blocs/bottom_nav_bloc/bottomNavigationState.dart';
 import 'package:delalo/delalo_app/screens/category_page.dart';
 import 'package:delalo/delalo_app/screens/provider_list_page.dart';
+import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'navigation_drawer/navigation_drawer.dart';
@@ -18,20 +20,22 @@ class BottomNav extends StatelessWidget {
       home: BlocConsumer<BottomNavigationBloc,BottomNavigationState>(
               listener: (context,bottomState){
                 if(bottomState is ShowHomePage){
-                  Navigator.push(context, new MaterialPageRoute(builder: (context) => new CategoryPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryPage()));
+                  // Navigator.pushNamed(context, routeName);
                 }
                 else if(bottomState is ShowCategoryPage){
-                  Navigator.push(context,  new MaterialPageRoute(builder: (context) => new CategoryPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryPage()));
+                  // Navigator.pushNamed(context, RouteGenerator.categoryListPage);
                 }
-                else if(bottomState is ShowOrdersPage){
-                 Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProviderListPage()));
-                }
-                else if(bottomState is ShowJobsPage){
-                 Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProviderListPage()));
-                }
-                else if(bottomState is ShowAccountPage){
-                  Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProviderListPage()));
-                }
+                // else if(bottomState is ShowOrdersPage){
+                //  Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProviderListPage()));
+                // }
+                // else if(bottomState is ShowJobsPage){
+                //  Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProviderListPage()));
+                // }
+                // else if(bottomState is ShowAccountPage){
+                //   Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProviderListPage()));
+                // }
                   
                 },
               

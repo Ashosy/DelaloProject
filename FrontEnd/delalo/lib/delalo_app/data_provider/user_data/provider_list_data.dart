@@ -17,7 +17,6 @@ class ProviderListDataProvider{
   Future<List<User>> getProviderList(String category) async {
     try{
       print("hey");
-      const category="cleaning";
       final response= await httpClient.get(Uri.http(_baseurl,"/providers/$category"));
       // print(response.body);
       if(response.statusCode==200){
@@ -25,7 +24,7 @@ class ProviderListDataProvider{
         // List<Category> data=map['result'];
         // print(data[1]);
         final providers= jsonDecode(response.body) as List;
-        print(providers);
+        // print(providers);
         List<User> mappedProviders= providers.map((provider) => User.fromJson(provider)).toList();  
 
         print(mappedProviders);
