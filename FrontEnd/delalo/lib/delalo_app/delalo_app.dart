@@ -1,5 +1,6 @@
 
 
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:delalo/delalo_app/blocs/auth_bloc/login_bloc/login_bloc.dart';
 import 'package:delalo/delalo_app/blocs/blocs.dart';
 import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/provider_profile_bloc.dart';
@@ -7,8 +8,8 @@ import 'package:delalo/delalo_app/blocs/user/provider_profile_page_bloc/reviews_
 import 'package:delalo/delalo_app/data_provider/auth_data/login_data.dart';
 import 'package:delalo/delalo_app/data_provider/auth_data/singupUser_data.dart';
 import 'package:delalo/delalo_app/data_provider/data_provider.dart';
-import 'package:delalo/delalo_app/data_provider/user_data/review_data.dart';
 import 'package:delalo/delalo_app/data_provider/user_data/single_provider_page_data.dart';
+import 'package:delalo/delalo_app/exports.dart';
 import 'package:delalo/delalo_app/repository/admin_repository/admin_category_repository.dart';
 import 'package:delalo/delalo_app/repository/admin_repository/admin_order_jobs_repository.dart';
 import 'package:delalo/delalo_app/repository/admin_repository/admin_provider_repository.dart';
@@ -16,11 +17,13 @@ import 'package:delalo/delalo_app/repository/auth_repository/login_repository.da
 import 'package:delalo/delalo_app/repository/auth_repository/signupProvider_repository.dart';
 import 'package:delalo/delalo_app/repository/auth_repository/signupUser_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/order_jobs_repository.dart';
-import 'package:delalo/delalo_app/repository/user_repository/review_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/provider_list_repository.dart';
 import 'package:delalo/delalo_app/repository/user_repository/search_repository.dart';
+import 'package:delalo/delalo_app/screens/allScreens.dart';
 import 'package:delalo/delalo_app/screens/bottom_nav.dart';
 import 'package:delalo/delalo_app/repository/user_repository/single_provider_page_repository.dart';
+import 'package:delalo/delalo_app/screens/category_page.dart';
+import 'package:delalo/delalo_app/screens/home_page.dart';
 import 'package:delalo/delalo_app/screens/navigation_drawer/navigation.dart';
 // import 'package:/delalo/delalo_app/blocs/admin_bloc/category_bloc/category_event.dart';
 import 'package:delalo/routeGenerator.dart';
@@ -51,47 +54,76 @@ import 'data_provider/user_data/category_data.dart';
 import 'data_provider/user_data/provider_list_data.dart';
 import 'data_provider/user_data/search_data.dart';
 
-class MyApp extends StatelessWidget {
-  final String category="gfd";
-    int currentIndex=0;
+class MyApp extends StatefulWidget {
   static final httpClient = http.Client();
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _currentIndex = 0;
+
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  final String category="gfd";
+
+    int currentIndex=0;
+
   final orderRepository = OrderRepository(
       dataProvider: OrderDataProvider(
-    httpClient: http.Client(),
+    httpClient: MyApp.httpClient,
   ));
-  final reviiewRepository = ReviewRepository(
-      reviewDataProvider: ReviewDataProvider(
-    httpClient: http.Client(),
-  ));
+
   final loginRepository =
-      LoginRepository(dataProvider: LoginDataProvider(httpClient: httpClient));
+      LoginRepository(dataProvider: LoginDataProvider(httpClient: MyApp.httpClient));
+
   final signupUserRepository = SignupUserRepository(
-      dataProvider: SignupUserDataProvider(httpClient: httpClient));
+      dataProvider: SignupUserDataProvider(httpClient: MyApp.httpClient));
+
   final signupProviderRepository = SignupProviderRepository(
-      dataProvider: SignupProviderDataProvider(httpClient: httpClient));   
+      dataProvider: SignupProviderDataProvider(httpClient: MyApp.httpClient));    
+
   final CategoryRepository categoryRepository = CategoryRepository(
   dataProvider: CategoryDataProvider(
     httpClient: http.Client(),
     ),
   );
+
   final searchRepository= SearchCategoryRepository(searchCategoryDataProvider: SearchCategoryDataProvider(httpClient: http.Client()) );
+
   final providerListRepository = ProviderListRepository(providerListDataProvider: ProviderListDataProvider(httpClient: http.Client()));
-      
+
   final providerProfileRepository = ProviderProfileRepository(
-      dataProvider: ProviderProfileDataProvider(httpClient: httpClient));
+      dataProvider: ProviderProfileDataProvider(httpClient: MyApp.httpClient));
 
   final adminCategoryRepository = AdminCategoryRepository(
       categoryDataProvider: AdminCategoryDataProvider(
     httpClient: http.Client(),
   ));
+
   final providersRepository = AdminProviderRepository(
       providerDataProvider: AdminProviderDataProvider(
     httpClient: http.Client(),
   ));
+
   final adminOrdersRepository = AdminOrderRepository(
       orderdataProvider: AdminOrderDataProvider(
     httpClient: http.Client(),
   ));
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -120,20 +152,15 @@ class MyApp extends StatelessWidget {
               OrdersLoad(),
             ),
         ),
-        BlocProvider(
-          create: (context) => ReviewBloc(reviewRepository: reviiewRepository)
-            ..add(
-              ReviewLoad(),
-            ),
-        ),
+        
         BlocProvider(
             create: (context) => LoginBloc(loginRepository: loginRepository)),
         BlocProvider(
             create: (context) =>
                 SignupUserBloc(signupUserRepository: signupUserRepository)),
         BlocProvider(
-            create: (context) => SignupProviderBloc(
-                signupProviderRepository: signupProviderRepository)),
+            create: (context) =>
+                SignupProviderBloc(signupProviderRepository: signupProviderRepository)),
         BlocProvider(
                 create: (context) =>
                     CategoryBloc(categoryRepository: categoryRepository)
@@ -153,18 +180,69 @@ class MyApp extends StatelessWidget {
            
         BlocProvider(
             create: (context) => ProviderProfileBloc(
-                providerProfileRepository: providerProfileRepository)),
+                providerProfileRepository: providerProfileRepository)
+              ..add(LoadProviderInfo(
+                  providerId: "613a6d0efa94bb01f0afbfa5",
+                  seekerId: "6118e035e030821c38a75f24"))),
         BlocProvider(
             create: (context) => ReviewsOfProviderBloc(
-                providerProfileRepository: providerProfileRepository))
+                providerProfileRepository: providerProfileRepository)
+              ..add(LoadReviewsOfProvider(
+                  providerId: "613a6d0efa94bb01f0afbfa5")))
       ],
       child: MaterialApp(
         home: Scaffold(
           drawer: NavigationDrawer(),
-          bottomNavigationBar: BottomNav(),
+          body: SizedBox.expand(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() => _currentIndex = index);
+          },
+          children: <Widget>[
+            //Add Home Page Here
+            HomePage(),
+            CategoryPage(),
+            OrdersScreen(),
+            AccountPage()
+           
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavyBar(
+   selectedIndex: _currentIndex,
+   showElevation: true, // use this to remove appBar's elevation
+   onItemSelected: (index) => setState(() {
+              _currentIndex = index;
+              _pageController.animateToPage(index,
+                  duration: Duration(milliseconds: 300), curve: Curves.ease);
+    }),
+   items: [
+     BottomNavyBarItem(
+       icon: Icon(Icons.home),
+       title: Text('Home'),
+       activeColor: Colors.red,
+     ),
+     BottomNavyBarItem(
+         icon: Icon(Icons.category),
+         title: Text('Categories'),
+         activeColor: Colors.purpleAccent
+     ),
+     BottomNavyBarItem(
+         icon: Icon(Icons.assignment),
+         title: Text('Orders'),
+         activeColor: Colors.pink
+     ),
+     BottomNavyBarItem(
+         icon: Icon(Icons.account_circle),
+         title: Text('Account'),
+         activeColor: Colors.blue
+     ),
+   ],
+)
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.homePageName,
+        // initialRoute: RouteGenerator.adminScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

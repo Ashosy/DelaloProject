@@ -24,6 +24,7 @@ class AccountPage extends StatelessWidget {
       bottomNavigationBar: BottomNav(),
         appBar: AppBar(
           title: Text("Profile Page"),
+          backgroundColor: Colors.purple
         ),
         body: BlocBuilder<UserBloc, UserState>(builder: (_, UserState) {
           if (UserState is UserLoading) {

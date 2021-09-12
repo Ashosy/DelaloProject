@@ -1,4 +1,5 @@
 import 'package:delalo/delalo_app/blocs/navigation_drawer/navigation.dart';
+import 'package:delalo/delalo_app/exports.dart';
 import 'package:delalo/delalo_app/screens/allScreens.dart';
 import 'package:delalo/routeGenerator.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +26,15 @@ class NavigationDrawer extends StatelessWidget {
             BlocConsumer<NavDrawerBloc,NavDrawerState>(
               listener: (context,navState){
                 if(navState is Account){
-                 Navigator.push(context, new MaterialPageRoute(builder: (context) => new CategoryPage()));
+                 Navigator.push(context, new MaterialPageRoute(builder: (context) => new AccountPage()));
                 }
-                // else if(navState is Orders){
-                //   Navigator.of(context).pushNamed(OrdersPage.routeName);
-                // }
-                // else if(navState is Jobs){
-                //   Navigator.of(context).pushNamed(JobsPage.routeName);
-                // }
+                else if(navState is Orders){
+                   Navigator.push(context, new MaterialPageRoute(builder: (context) => new OrdersScreen()));
+                }
+                else if(navState is Jobs){
+                   Navigator.push(context, new MaterialPageRoute(builder: (context) => new JobsScreen()));
+                }
+               
                 // else if(navState is LoggedOut){
                 //   Navigator.of(context).pushNamed(LogoutPage.routeName);
                 // }

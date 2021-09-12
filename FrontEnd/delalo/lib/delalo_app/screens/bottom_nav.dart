@@ -18,37 +18,42 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
-  int _currentIndex = 0;
-  PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
+   @override
   Widget build(BuildContext context) {
-    return BottomNavyBar(
-      selectedIndex: _selectedIndex,
-      showElevation: true, // use this to remove appBar's elevation
-      onItemSelected: (index) => setState(() {
-        _selectedIndex = index;
-        _pageController.animateToPage(index,
-            duration: Duration(milliseconds: 300), curve: Curves.ease);
-      }),
-      items: [
-        BottomNavyBarItem(
-          icon: Icon(Icons.apps),
-          title: Text('Home'),
-          activeColor: Colors.red,
-        ),
+    return Container();
+  }
+}
+  // int _currentIndex = 0;
+  // PageController _pageController;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _pageController = PageController();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _pageController.dispose();
+  //   super.dispose();
+  // }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return BottomNavyBar(
+  //     selectedIndex: _selectedIndex,
+  //     showElevation: true, // use this to remove appBar's elevation
+  //     onItemSelected: (index) => setState(() {
+  //       _selectedIndex = index;
+  //       _pageController.animateToPage(index,
+  //           duration: Duration(milliseconds: 300), curve: Curves.ease);
+  //     }),
+  //     items: [
+  //       BottomNavyBarItem(
+  //         icon: Icon(Icons.apps),
+  //         title: Text('Home'),
+  //         activeColor: Colors.red,
+  //       ),
         // BottomNavyBarItem(
         //     icon: Icon(Icons.people),
         //     title: Text('Users'),
@@ -61,10 +66,10 @@ class _BottomNavState extends State<BottomNav> {
         //     icon: Icon(Icons.settings),
         //     title: Text('Settings'),
         //     activeColor: Colors.blue),
-      ],
-    );
-  }
-}
+  //     ],
+  //   );
+  // }
+// }
 
 // class BottomNav extends StatelessWidget {
 //   static int currentIndex = 0;

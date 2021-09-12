@@ -34,6 +34,7 @@ class _CategoryPageState extends State<CategoryPage> {
       bottomNavigationBar: BottomNav(),
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.purple,
         actions: <Widget>[
           IconButton(
                   onPressed: (){

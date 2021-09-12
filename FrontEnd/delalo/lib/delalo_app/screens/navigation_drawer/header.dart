@@ -14,20 +14,11 @@ class Header extends StatelessWidget {
         child: Column(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.white,
+              backgroundImage: AssetImage("assets/images/logo.png"),
               radius: 35,
             ),
             SizedBox(height: 10,),
-            Text(
-              "Current User",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                
-              ),
-         
-            
-            )
+           
           ],
         ),
       ),
