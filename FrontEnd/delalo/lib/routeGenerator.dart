@@ -32,6 +32,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AdminCategoryList());
       case adminScreenName:
         return MaterialPageRoute(builder: (_) => AdminScreen());
+      case signupProviderScreenName:
+        return MaterialPageRoute(builder: (_) => SignupProviderForm());  
       case getStartedScreenName:
         return MaterialPageRoute(builder: (_) => GetStartedScreen());
       case loginScreenName:

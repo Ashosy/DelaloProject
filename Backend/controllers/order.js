@@ -848,16 +848,6 @@ const getPendingJobs = async(req,res)=>{
                         }
                     });
     
-                    const findReview= await Review.find({order_id:job._id},(err,userObj)=>{
-                        if(err){
-                            return err
-                        }else if (userObj){
-                            return userObj
-                        }else{
-                            return null
-                        }
-                    });
-    
                     lst.push({
                             "User":JSON.parse(JSON.stringify(findUser))[0],
                             "Provider":JSON.parse(JSON.stringify(findProvider))[0],
