@@ -45,13 +45,12 @@ class _LoginFormState extends State<LoginForm> {
             );
             print(state.error);
           } else if (state is LoginSuccess) {
-            if (state.role == 'admin') {
-              Navigator.of(context).pushNamed(RouteGenerator.getStartedScreenName);
-            } else if (state.role == 'user' || state.role == 'provider') {
-              print("I logged in as a user");
-              Navigator.of(context)
-                  .pushNamed(RouteGenerator.welcomeScreenName);
-            }
+            // if(state.role == 'admin'){
+            //   Navigator.of(context).pushNamed(RouteGenerator.adminScreen);
+            // }else{
+            //   Navigator.of(context).pushNamed(RouteGenerator.singleProviderPageName);
+            // }
+            Navigator.of(context).pushNamed(RouteGenerator.singleProviderPageName);
           }
         },
         builder: (context, state) {

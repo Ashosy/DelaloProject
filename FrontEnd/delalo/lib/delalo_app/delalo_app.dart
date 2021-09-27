@@ -242,7 +242,7 @@ class _MyAppState extends State<MyApp> {
 )
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: RouteGenerator.welcomeScreenName,
+        // initialRoute: RouteGenerator.adminScreenName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
